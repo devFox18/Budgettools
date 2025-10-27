@@ -36,22 +36,58 @@ function fmt(v){
   return cur + (Number(v)||0).toFixed(2);
 }
 
+function sanitizeCsvField(value){
+  const str = String(value ?? "");
+  const escaped = str.replace(/"/g, '""');
+  const needsFormulaEscape = /^[=+\-@]/.test(escaped);
+  const safe = needsFormulaEscape ? `'${escaped}` : escaped;
+  return `"${safe}"`;
+}
+
 function renderRows(){
   rowsContainer.innerHTML = "";
   rows.forEach((r,i)=>{
     const row = document.createElement("div");
     row.className = "row";
-    row.innerHTML = `
-      <input type="text" value="${r.category}" placeholder="Category" aria-label="Category"/>
-      <div class="input-group">
-        <span class="prefix">${currencySelect.value}</span>
-        <input type="number" value="${r.amount}" min="0" step="0.01" aria-label="Amount"/>
-      </div>
-      <input type="text" value="${r.notes}" placeholder="Notes (optional)" aria-label="Notes"/>
-      <button class="remove" title="Remove">×</button>
-    `;
-    const [catEl, , notesEl, removeBtn] = row.children;
-    const amountEl = row.querySelector("input[type=number]");
+
+    const catEl = document.createElement("input");
+    catEl.type = "text";
+    catEl.value = r.category;
+    catEl.placeholder = "Category";
+    catEl.setAttribute("aria-label", "Category");
+
+    const group = document.createElement("div");
+    group.className = "input-group";
+
+    const prefix = document.createElement("span");
+    prefix.className = "prefix";
+    prefix.textContent = currencySelect.value;
+
+    const amountEl = document.createElement("input");
+    amountEl.type = "number";
+    amountEl.value = r.amount;
+    amountEl.min = "0";
+    amountEl.step = "0.01";
+    amountEl.setAttribute("aria-label", "Amount");
+
+    group.appendChild(prefix);
+    group.appendChild(amountEl);
+
+    const notesEl = document.createElement("input");
+    notesEl.type = "text";
+    notesEl.value = r.notes;
+    notesEl.placeholder = "Notes (optional)";
+    notesEl.setAttribute("aria-label", "Notes");
+
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "remove";
+    removeBtn.title = "Remove";
+    removeBtn.textContent = "×";
+
+    row.appendChild(catEl);
+    row.appendChild(group);
+    row.appendChild(notesEl);
+    row.appendChild(removeBtn);
 
     catEl.addEventListener("input", e => { rows[i].category = e.target.value; draw(); });
     amountEl.addEventListener("input", e => { rows[i].amount = parseFloat(e.target.value||0); draw(); });
@@ -165,16 +201,20 @@ document.getElementById("reset").addEventListener("click", ()=>{
 document.getElementById("export").addEventListener("click", ()=>{
   const cur = currencySelect.value;
   const income = Number(incomeInput.value||0);
-  const header = ["Category","Amount("+cur+")","Notes"];
+  const header = ["Category","Amount("+cur+")","Notes"].map(sanitizeCsvField);
   const lines = [header.join(",")];
   rows.forEach(r=>{
-    const safeNotes = String(r.notes||"").replaceAll('"','""');
-    lines.push([`"${r.category}"`, r.amount, `"${safeNotes}"`].join(","));
+    lines.push([
+      sanitizeCsvField(r.category),
+      sanitizeCsvField(r.amount),
+      sanitizeCsvField(r.notes)
+    ].join(","));
   });
   lines.push("");
-  lines.push(`Income,${income}`);
-  lines.push(`Total Expenses,${totalExpenses()}`);
-  lines.push(`Savings,${income - totalExpenses()}`);
+  lines.push([sanitizeCsvField("Income"), sanitizeCsvField(income)].join(","));
+  const expenses = totalExpenses();
+  lines.push([sanitizeCsvField("Total Expenses"), sanitizeCsvField(expenses)].join(","));
+  lines.push([sanitizeCsvField("Savings"), sanitizeCsvField(income - expenses)].join(","));
 
   const blob = new Blob([lines.join("\n")], {type:"text/csv"});
   const url = URL.createObjectURL(blob);

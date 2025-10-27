@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,6 +16,11 @@
         <a href="/calculator/">Calculator</a>
         <a href="/privacy.html">Privacy</a>
         <a href="/contact.html">Contact</a>
+        <!-- Zelfde schakelaar zodat bezoekers snel donker of licht kunnen kiezen -->
+        <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false">
+          <span class="theme-toggle__icon" aria-hidden="true">🌙</span>
+          <span class="theme-toggle__label">Donkere modus</span>
+        </button>
       </div>
     </nav>
 
@@ -56,9 +61,10 @@
     </section>
 
     <footer>
-      <div>© <span id="year"></span> BudgetTools — <a href="/privacy.html">Privacy</a> • <a href="/terms.html">Terms</a></div>
+      <div>© <span data-year></span> BudgetTools — <a href="/privacy.html">Privacy</a> • <a href="/terms.html">Terms</a></div>
     </footer>
   </div>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <!-- Herbruikbaar script voor thema en jaartal -->
+  <script src="/assets/theme.js"></script>
 </body>
 </html>

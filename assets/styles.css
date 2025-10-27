@@ -1,37 +1,100 @@
-/* Minimal, clean site styles */
+/* Basisthema voor licht en donker met Nederlandse toelichting */
 :root{
-  --bg:#0b1220;
-  --ink:#111314;
-  --text:#0f172a;
-  --card:#ffffff;
-  --muted:#6b7280;
-  --accent:#2563eb;
-  --accent-ink:#ffffff;
-  --ring:rgba(2,6,23,.08);
+  /* Standaardkleuren voor de lichte modus */
+  --bg:#f6f8fb; /* Achtergrondkleur van de pagina in lichte modus */
+  --text:#0f172a; /* Primaire tekstkleur in lichte modus */
+  --muted:#475569; /* Gedempte tekstkleur voor subtiele elementen */
+  --card:#ffffff; /* Achtergrondkleur van kaarten en panelen */
+  --card-soft:#f1f5f9; /* Zachtere achtergrond voor secundaire vlakken */
+  --border:#e2e8f0; /* Randkleur voor kaarten en inputs */
+  --ring:rgba(15,23,42,.08); /* Schaduwkleur voor kaarten */
+  --accent:#2563eb; /* Primaire actiekleur voor knoppen */
+  --accent-ink:#ffffff; /* Tekstkleur op primaire knoppen */
+  --ghost-bg:#eaf1ff; /* Achtergrond van secundaire knoppen */
+  --ghost-text:#0f172a; /* Tekstkleur op secundaire knoppen */
+  --notice-bg:#fff7ed; /* Achtergrondkleur voor meldingen */
+  --notice-border:#fed7aa; /* Randkleur voor meldingen */
+  --notice-text:#9a3412; /* Tekstkleur voor meldingen */
+  --badge-bg:#ecfeff; /* Achtergrondkleur van badges */
+  --badge-border:#a5f3fc; /* Randkleur van badges */
+  --badge-text:#083344; /* Tekstkleur van badges */
+  --input-bg:#ffffff; /* Achtergrondkleur van invoervelden */
+  --input-border:#e5e7eb; /* Randkleur van invoervelden */
+  --chip-bg:#f3f4f6; /* Achtergrond voor chips en labels */
+  --good:#059669; /* Kleur voor positieve waarden */
+  --bad:#dc2626; /* Kleur voor negatieve waarden */
+  --soft:#eef2ff; /* Zachte highlightkleur voor o.a. knoppen */
+  --danger-bg:#fee2e2; /* Achtergrondkleur voor verwijderknoppen */
+  --danger-border:#fecaca; /* Randkleur voor verwijderknoppen */
+  --danger-text:#991b1b; /* Tekstkleur voor verwijderknoppen */
+  --nav-link:#0f172a; /* Kleur van navigatiekoppelingen */
+  --footer-text:#64748b; /* Tekstkleur in de footer */
+  --link-hover:#0b1220; /* Hoverkleur voor links */
 }
+
+/* Donkere modus met aangepaste variabelen */
+:root[data-theme="dark"]{
+  /* Kleuren voor de donkere modus */
+  color-scheme:dark; /* Meldt aan de browser dat donkere kleuren gebruikt worden */
+  --bg:#0b1220; /* Donkere achtergrondkleur voor de hele pagina */
+  --text:#e2e8f0; /* Lichte tekstkleur voor goede contrasten */
+  --muted:#94a3b8; /* Gedempte tekstkleur in donkere modus */
+  --card:#111827; /* Achtergrond van kaarten in donkere modus */
+  --card-soft:#1f2937; /* Zachtere panelkleur voor donkere modus */
+  --border:#1f2937; /* Randkleur in donkere modus */
+  --ring:rgba(8,47,73,.45); /* Schaduw in donkere modus */
+  --accent:#3b82f6; /* Accentkleur iets lichter voor betere leesbaarheid */
+  --accent-ink:#0b1220; /* Tekstkleur voor knoppen in donkere modus */
+  --ghost-bg:#1d3a78; /* Achtergrond van secundaire knoppen in donker */
+  --ghost-text:#e2e8f0; /* Tekst op secundaire knoppen in donker */
+  --notice-bg:#1f2937; /* Achtergrond voor meldingen in donker */
+  --notice-border:#334155; /* Randkleur voor meldingen in donker */
+  --notice-text:#fbbf24; /* Tekst in meldingen in donker */
+  --badge-bg:#0f766e; /* Donkere badge-achtergrond */
+  --badge-border:#14b8a6; /* Rand van badges in donker */
+  --badge-text:#ecfeff; /* Tekstkleur van badges in donker */
+  --input-bg:#0f172a; /* Achtergrond van invoervelden in donker */
+  --input-border:#334155; /* Randkleur van invoervelden in donker */
+  --chip-bg:#1e293b; /* Achtergrond voor chips en labels in donker */
+  --good:#34d399; /* Positieve kleur in donker */
+  --bad:#f87171; /* Negatieve kleur in donker */
+  --soft:#1d3a78; /* Zachte highlightkleur in donker */
+  --danger-bg:rgba(248,113,113,.18); /* Achtergrond voor verwijderknoppen in donker */
+  --danger-border:rgba(248,113,113,.45); /* Rand voor verwijderknoppen in donker */
+  --danger-text:#fecaca; /* Tekst op verwijderknoppen in donker */
+  --nav-link:#e2e8f0; /* Navigatietekst in donker */
+  --footer-text:#94a3b8; /* Tekst in footer in donker */
+  --link-hover:#cbd5f5; /* Hoverkleur in donker */
+}
+
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:#f6f8fb}
+html,body{margin:0;padding:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:var(--bg);transition:background .3s ease,color .3s ease}
 .container{max-width:1100px;margin:0 auto;padding:24px}
 .hero{padding:64px 0 32px}
 .hero h1{font-size:40px;line-height:1.1;margin:0 0 12px}
-.hero p{font-size:18px;color:#334155;margin:0}
+.hero p{font-size:18px;color:var(--muted);margin:0}
 .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-.btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;text-decoration:none;box-shadow:0 10px 30px rgba(37,99,235,.25);transition:.15s transform ease}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;text-decoration:none;box-shadow:0 10px 30px var(--ring);transition:.15s transform ease,background .3s ease,color .3s ease}
 .btn:hover{transform:translateY(-1px)}
-.btn.ghost{background:#eaf1ff;color:#0f172a;box-shadow:none}
+.btn.ghost{background:var(--ghost-bg);color:var(--ghost-text);box-shadow:none}
 .section{padding:28px 0}
 .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
-.card{background:var(--card);border-radius:16px;padding:18px;box-shadow:0 10px 30px var(--ring)}
+.card{background:var(--card);border-radius:16px;padding:18px;box-shadow:0 10px 30px var(--ring);border:1px solid var(--border);transition:background .3s ease,color .3s ease,box-shadow .3s ease}
 .card h3{margin:0 0 6px}
-.card p{margin:0;color:#475569}
-footer{padding:36px 0;color:#64748b}
-footer a{color:#334155;text-decoration:none}
-nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
-.nav-links{display:flex;gap:14px;flex-wrap:wrap}
-.nav-links a{color:#0f172a;text-decoration:none;font-weight:600;opacity:.9}
-.nav-links a:hover{opacity:1}
-.notice{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;padding:10px 14px;border-radius:10px;margin:10px 0}
-.badge{display:inline-block;background:#ecfeff;color:#083344;border:1px solid #a5f3fc;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700}
-.kbd{display:inline-block;border:1px solid #e2e8f0;background:#f8fafc;border-bottom-width:2px;border-radius:8px;padding:2px 6px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-size:12px}
+.card p{margin:0;color:var(--muted)}
+footer{padding:36px 0;color:var(--footer-text)}
+footer a{color:var(--nav-link);text-decoration:none;transition:color .2s ease}
+footer a:hover{color:var(--link-hover)}
+nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:12px}
+.nav-links{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.nav-links a{color:var(--nav-link);text-decoration:none;font-weight:600;opacity:.9;transition:color .2s ease,opacity .2s ease}
+.nav-links a:hover{opacity:1;color:var(--link-hover)}
+.theme-toggle{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;border:1px solid var(--border);background:var(--ghost-bg);color:var(--ghost-text);font-weight:600;font-size:14px;cursor:pointer;transition:background .3s ease,color .3s ease,border-color .3s ease,transform .2s ease}
+.theme-toggle:hover{transform:translateY(-1px)}
+.theme-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.theme-toggle__icon{font-size:16px;line-height:1}
+.notice{background:var(--notice-bg);border:1px solid var(--notice-border);color:var(--notice-text);padding:10px 14px;border-radius:10px;margin:10px 0}
+.badge{display:inline-block;background:var(--badge-bg);color:var(--badge-text);border:1px solid var(--badge-border);padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700}
+.kbd{display:inline-block;border:1px solid var(--border);background:var(--card-soft);border-bottom-width:2px;border-radius:8px;padding:2px 6px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-size:12px}
 ul{padding-left:18px}
 @media (max-width:900px){.grid{grid-template-columns:1fr} .hero h1{font-size:32px}}

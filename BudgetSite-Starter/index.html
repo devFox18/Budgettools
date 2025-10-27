@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Monthly Budget Calculator — Free Online Tool</title>
+  <meta name="description" content="Free online monthly budget calculator with expense breakdown and CSV export. Try it now or get the premium downloadable version.">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <!-- Google AdSense (placeholder). After approval, replace CA-PUB-XXXX with your ID -->
+  <!--
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+          crossorigin="anonymous"></script>
+  -->
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <div><strong>BudgetTools</strong></div>
+      <div class="nav-links">
+        <a href="/calculator/">Calculator</a>
+        <a href="/premium.html">Premium</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <span class="badge">Free tool</span>
+      <h1>Monthly Budget Calculator</h1>
+      <p>Clean, fast, and private. Track your income and expenses, see your savings rate, export CSV, and print reports.</p>
+      <div class="cta-row">
+        <a class="btn" href="/calculator/">Use the Calculator</a>
+        <a class="btn ghost" href="/premium.html">Get Premium Download</a>
+      </div>
+      <div class="notice">Ads help keep this tool free. Once approved by Google AdSense, an ad may appear here.</div>
+      <!-- Example ad slot placeholder -->
+      <div id="ad-slot-1" class="card" style="margin-top:12px;text-align:center">
+        <em>Ad placeholder (auto ads will fill here after AdSense approval)</em>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="grid">
+        <div class="card">
+          <h3>Instant Overview</h3>
+          <p>Enter income & expenses and get totals and a savings rate automatically.</p>
+        </div>
+        <div class="card">
+          <h3>Visual Breakdown</h3>
+          <p>See where your money goes with a live pie chart, no external libraries needed.</p>
+        </div>
+        <div class="card">
+          <h3>Export & Print</h3>
+          <p>Export a CSV for Excel/Sheets and print a clean summary for your records.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>© <span id="year"></span> BudgetTools — <a href="/privacy.html">Privacy</a> • <a href="/terms.html">Terms</a></div>
+    </footer>
+  </div>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

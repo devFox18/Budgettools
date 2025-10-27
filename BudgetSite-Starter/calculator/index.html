@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Monthly Budget Calculator</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <div><strong>BudgetTools</strong></div>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/premium.html">Premium</a>
+        <a href="/privacy.html">Privacy</a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <h1>Monthly Budget Calculator</h1>
+      <p class="subtitle">Simple, clean, and ready to use. No installation required.</p>
+    </header>
+
+    <section class="card">
+      <div class="row">
+        <div class="col">
+          <label for="income">Total Monthly Income</label>
+          <div class="input-group">
+            <span class="prefix">€</span>
+            <input type="number" id="income" value="2500" min="0" step="0.01" />
+          </div>
+        </div>
+        <div class="col">
+          <label for="currency">Currency</label>
+          <select id="currency">
+            <option value="€" selected>Euro (€)</option>
+            <option value="$">US Dollar ($)</option>
+            <option value="£">Pound (£)</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-header">
+        <h2>Expenses</h2>
+        <div class="actions">
+          <a class="btn" id="addRow">+ Add item</a>
+          <a class="btn ghost" id="reset">Reset</a>
+          <a class="btn ghost" id="export">Export CSV</a>
+          <a class="btn ghost" id="print">Print</a>
+        </div>
+      </div>
+
+      <div class="table">
+        <div class="t-head">
+          <div>Category</div>
+          <div>Amount</div>
+          <div>Notes</div>
+          <div></div>
+        </div>
+        <div id="rows" class="t-body"></div>
+        <div class="t-foot">
+          <div class="muted">Totals</div>
+          <div id="totalExpenses" class="strong">€0.00</div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h3>Overview</h3>
+        <div class="summary">
+          <div>
+            <span class="label">Income</span>
+            <span id="sumIncome" class="value">€0.00</span>
+          </div>
+          <div>
+            <span class="label">Expenses</span>
+            <span id="sumExpenses" class="value">€0.00</span>
+          </div>
+          <div>
+            <span class="label">Savings</span>
+            <span id="sumSavings" class="value positive">€0.00</span>
+          </div>
+          <div>
+            <span class="label">Savings Rate</span>
+            <span id="savingsRate" class="value">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Expense Breakdown</h3>
+        <canvas id="chart" width="400" height="300"></canvas>
+        <div id="legend" class="legend"></div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Tip: You can customize default categories in <code>script.js</code> (no coding skills needed — just edit the list).</p>
+    </footer>
+  </div>
+
+  <script src="./script.js"></script>
+</body>
+</html>

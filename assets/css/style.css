@@ -7,7 +7,7 @@
   --color-muted: #475569;
   --color-muted-soft: #64748b;
   --color-border: #dbe4f3;
-  --color-ring: rgba(15, 23, 42, 0.08);
+  --color-ring: rgba(15, 23, 42, 0.12);
   --color-accent: #22c55e;
   --color-accent-ink: #062a12;
   --color-ghost-bg: #dcfce7;
@@ -18,41 +18,27 @@
   --color-good: #059669;
   --color-bad: #dc2626;
   --color-chip: #e2e8f0;
-  --color-footer: #64748b;
-  --shadow-lg: 0 20px 45px -20px rgba(15, 23, 42, 0.25);
-  --shadow-md: 0 10px 30px var(--color-ring);
+  --color-footer: #475569;
+  --shadow-lg: 0 24px 45px -24px rgba(15, 23, 42, 0.28);
+  --shadow-md: 0 12px 30px var(--color-ring);
   --radius-lg: 18px;
   --radius-md: 12px;
   --radius-sm: 8px;
-  --section-gap: clamp(2.5rem, 5vw, 4.5rem);
+  --section-gap: clamp(2.75rem, 6vw, 4.75rem);
   --container-width: min(1080px, 100% - 3.5rem);
   --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-}
-
-body.dark-mode,
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --color-bg: #0b1220;
-  --color-surface: #111827;
-  --color-surface-soft: #1f2937;
-  --color-text: #e2e8f0;
-  --color-muted: #94a3b8;
-  --color-muted-soft: #cbd5f5;
-  --color-border: #1f2937;
-  --color-ring: rgba(8, 47, 73, 0.45);
-  --color-accent: #4ade80;
-  --color-accent-ink: #022c22;
-  --color-ghost-bg: rgba(34, 197, 94, 0.2);
-  --color-ghost-text: #bbf7d0;
-  --color-notice-bg: rgba(253, 230, 138, 0.12);
-  --color-notice-border: rgba(250, 204, 21, 0.42);
-  --color-notice-text: #facc15;
-  --color-good: #34d399;
-  --color-bad: #f87171;
-  --color-chip: rgba(148, 163, 184, 0.2);
-  --color-footer: #94a3b8;
-  --shadow-lg: 0 30px 55px -30px rgba(15, 23, 42, 0.65);
-  --shadow-md: 0 16px 32px rgba(2, 6, 23, 0.35);
+  --font-display: var(--font-sans);
+  --font-size-h1: clamp(2.5rem, 5vw, 3.5rem);
+  --font-size-h2: clamp(1.85rem, 4vw, 2.5rem);
+  --font-size-h3: clamp(1.35rem, 3vw, 1.85rem);
+  --font-size-h4: clamp(1.15rem, 2.5vw, 1.35rem);
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
 }
 
 * {
@@ -66,22 +52,75 @@ html {
   background: var(--color-bg);
 }
 
-html.no-js .theme-toggle {
-  display: none;
-}
-
 body {
   margin: 0;
   min-height: 100vh;
   background: var(--color-bg);
   color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 1rem;
   line-height: 1.65;
-  transition: background 0.4s ease, color 0.3s ease;
 }
 
 body::selection {
   background: var(--color-accent);
   color: var(--color-accent-ink);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 var(--space-4);
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+}
+
+h3 {
+  font-size: var(--font-size-h3);
+}
+
+h4 {
+  font-size: var(--font-size-h4);
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 var(--space-4);
+  color: inherit;
+}
+
+ul,
+ol {
+  padding-left: 1.1rem;
+}
+
+p {
+  max-width: 70ch;
+}
+
+label {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+input,
+select,
+textarea {
+  font: inherit;
 }
 
 img {
@@ -102,7 +141,7 @@ a:focus-visible {
   color: var(--color-accent);
 }
 
-:where(.btn, .theme-toggle) {
+:where(.btn) {
   font: inherit;
 }
 
@@ -198,30 +237,6 @@ a:focus-visible {
   border-radius: 999px;
 }
 
-.site-nav a:hover,
-.site-nav a:focus-visible {
-  color: var(--color-accent);
-}
-
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  border-radius: 999px;
-  padding: 0.5rem 0.85rem;
-  border: 1px solid var(--color-border);
-  background: var(--color-ghost-bg);
-  color: var(--color-ghost-text);
-  font-weight: 600;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-}
-
-.theme-toggle:hover,
-.theme-toggle:focus-visible {
-  transform: translateY(-1px);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 25%, transparent);
-}
-
 main {
   display: block;
 }
@@ -283,7 +298,7 @@ main {
   gap: 0.55rem;
   padding: 0.75rem 1.35rem;
   border-radius: var(--radius-md);
-  border: none;
+  border: 1px solid transparent;
   background: var(--color-accent);
   color: var(--color-accent-ink);
   font-weight: 700;
@@ -312,6 +327,15 @@ main {
 .btn--ghost:hover,
 .btn--ghost:focus-visible {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 30%, transparent);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  background: color-mix(in srgb, var(--color-accent) 35%, var(--color-ghost-bg));
+  color: color-mix(in srgb, var(--color-accent-ink) 55%, white);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 .btn--inline {
@@ -354,13 +378,17 @@ main {
 .card h2,
 .card h3 {
   margin-top: 0;
-  margin-bottom: 0.35rem;
-  font-size: 1.2rem;
+  margin-bottom: var(--space-3);
+  font-size: var(--font-size-h3);
 }
 
 .card p {
-  margin: 0;
+  margin: 0 0 var(--space-3);
   color: var(--color-muted);
+}
+
+.card p:last-child {
+  margin-bottom: 0;
 }
 
 .metrics-list {
@@ -434,16 +462,14 @@ main {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
-.optin label {
-  font-weight: 600;
-  color: var(--color-muted);
-}
-
 .optin input[type="email"],
 .optin input[type="text"],
 .optin input[type="url"],
+input[type="email"],
 input[type="number"],
 input[type="text"],
+input[type="date"],
+input[type="tel"],
 select,
 textarea {
   width: 100%;
@@ -458,13 +484,29 @@ textarea {
 .optin input[type="email"]:focus-visible,
 .optin input[type="text"]:focus-visible,
 .optin input[type="url"]:focus-visible,
+input[type="email"]:focus-visible,
 input[type="number"]:focus-visible,
 input[type="text"]:focus-visible,
+input[type="date"]:focus-visible,
+input[type="tel"]:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
   border-color: color-mix(in srgb, var(--color-accent) 65%, var(--color-border));
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 35%, transparent);
   outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: color-mix(in srgb, var(--color-muted) 65%, #fff);
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  background: color-mix(in srgb, var(--color-surface) 70%, var(--color-border));
+  color: var(--color-muted);
+  cursor: not-allowed;
 }
 
 .optin__footnote {

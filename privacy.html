@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" class="no-js">
+<html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BudgetTools Privacy Policy</title>
   <meta name="description" content="Learn how BudgetTools handles analytics, cookies, and user data. Spoiler: everything runs client-side." />
   <link rel="canonical" href="https://budgettools.netlify.app/privacy.html" />
-  <meta name="theme-color" data-mode="light" media="(prefers-color-scheme: light)" content="#f6f8fb" />
-  <meta name="theme-color" data-mode="dark" media="(prefers-color-scheme: dark)" content="#0b1220" />
+  <meta name="theme-color" content="#f6f8fb" />
   <link rel="preload" href="/assets/css/style.css" as="style" data-preload-style />
   <noscript><link rel="stylesheet" href="/assets/css/style.css" /></noscript>
   <style>
@@ -22,8 +21,6 @@
     .site-nav { display: flex; align-items: center; gap: clamp(0.75rem, 2vw, 1.25rem); flex-wrap: wrap; }
     .site-nav a { text-decoration: none; font-weight: 600; color: #64748b; position: relative; }
     .site-nav a[aria-current="page"]::after { content: ""; position: absolute; inset-inline: 0; bottom: -0.4rem; height: 2px; border-radius: 999px; background: var(--color-accent); }
-    .theme-toggle { display: inline-flex; align-items: center; gap: 0.45rem; border-radius: 999px; padding: 0.5rem 0.85rem; border: 1px solid rgba(219,228,243,0.9); background: rgba(34,197,94,0.16); color: #065f46; font-weight: 600; }
-    html.no-js .theme-toggle { display: none; }
     main { display: block; }
     .section { width: min(1080px, 100% - 3.5rem); margin-inline: auto; padding-block: clamp(2.8rem, 6vw, 4.5rem); }
     .card { background: #ffffff; border-radius: 18px; border: 1px solid rgba(219,228,243,0.9); padding: clamp(1.5rem, 4vw, 2.25rem); box-shadow: 0 10px 30px rgba(15,23,42,0.08); }
@@ -31,19 +28,6 @@
       .site-header__inner, .section { width: min(100% - 2rem, 100%); }
     }
   </style>
-  <script>
-    (() => {
-      const STORAGE_KEY = 'budgettools-theme';
-      try {
-        const stored = window.localStorage.getItem(STORAGE_KEY);
-        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const theme = stored === 'dark' || stored === 'light' ? stored : (prefersDark ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (error) {
-        /* noop */
-      }
-    })();
-  </script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -60,10 +44,6 @@
         <a href="/premium.html">Premium</a>
         <a href="/privacy.html" aria-current="page">Privacy</a>
         <a href="/contact.html">Contact</a>
-        <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false">
-          <span class="theme-toggle__icon" aria-hidden="true">🌙</span>
-          <span class="theme-toggle__label">Donkere modus</span>
-        </button>
       </nav>
     </div>
   </header>

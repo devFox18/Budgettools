@@ -54,7 +54,7 @@ function renderRows(){
     catEl.type = "text";
     catEl.value = r.category;
     catEl.placeholder = "Category";
-    catEl.setAttribute("aria-label", "Category");
+    catEl.setAttribute("aria-label", "Expense category");
 
     const group = document.createElement("div");
     group.className = "input-group";
@@ -81,7 +81,9 @@ function renderRows(){
 
     const removeBtn = document.createElement("button");
     removeBtn.className = "remove";
+    removeBtn.type = "button";
     removeBtn.title = "Remove";
+    removeBtn.setAttribute("aria-label", "Remove this expense row");
     removeBtn.textContent = "×";
 
     row.appendChild(catEl);
@@ -165,6 +167,7 @@ function drawChart(){
     // legend
     const it = document.createElement("div");
     it.className = "item";
+    it.setAttribute("role", "listitem");
     const dot = document.createElement("span");
     dot.className = "dot";
     dot.style.background = randomColor(i);
@@ -190,15 +193,22 @@ function addRow(category="", amount=0, notes=""){
 }
 
 // Events
-document.getElementById("addRow").addEventListener("click", ()=> addRow("", 0, ""));
-document.getElementById("reset").addEventListener("click", ()=>{
-  rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
-  incomeInput.value = 2500;
-  currencySelect.value = "€";
-  renderRows();
-  draw();
-});
-document.getElementById("export").addEventListener("click", ()=>{
+if (addRowBtn) {
+  addRowBtn.addEventListener("click", () => addRow("", 0, ""));
+}
+
+if (resetBtn) {
+  resetBtn.addEventListener("click", () => {
+    rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
+    incomeInput.value = 2500;
+    currencySelect.value = "€";
+    renderRows();
+    draw();
+  });
+}
+
+if (exportBtn) {
+  exportBtn.addEventListener("click", () => {
   const cur = currencySelect.value;
   const income = Number(incomeInput.value||0);
   const header = ["Category","Amount("+cur+")","Notes"].map(sanitizeCsvField);
@@ -225,8 +235,13 @@ document.getElementById("export").addEventListener("click", ()=>{
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
-});
-document.getElementById("print").addEventListener("click", ()=> window.print());
+  });
+}
+
+if (printBtn) {
+  printBtn.addEventListener("click", () => window.print());
+}
+
 incomeInput.addEventListener("input", draw);
 currencySelect.addEventListener("change", ()=>{ renderRows(); draw(); });
 

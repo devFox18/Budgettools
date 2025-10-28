@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light" class="no-js">
+<html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Savings Goal Calculator | BudgetTools</title>
-  <meta name="description" content="Work out how long it may take to reach a savings target or how much you need to save each month. All calculations stay in your browser." />
+  <meta name="description" content="Plan how long it will take to reach your savings goal or how much to contribute each period. Adjust APY, cadence, and optional start dates with instant results." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://budgettools.netlify.app/tools/savings-goal-calculator/" />
   <meta property="og:title" content="Savings Goal Calculator — BudgetTools" />
-  <meta property="og:description" content="Interactive savings goal calculator with inflation-aware projections, CSV/PDF export, and email-ready summaries." />
+  <meta property="og:description" content="Project your savings timeline, compare contribution strategies, and export results in seconds. Everything runs locally in your browser." />
   <meta property="og:url" content="https://budgettools.netlify.app/tools/savings-goal-calculator/" />
   <meta property="og:type" content="website" />
   <meta property="twitter:card" content="summary" />
   <meta property="twitter:title" content="Savings Goal Calculator — BudgetTools" />
-  <meta property="twitter:description" content="Plan how to reach your savings goals with local-first calculations and detailed projections." />
-  <meta name="theme-color" data-mode="light" media="(prefers-color-scheme: light)" content="#f6f8fb" />
-  <meta name="theme-color" data-mode="dark" media="(prefers-color-scheme: dark)" content="#0b1220" />
+  <meta property="twitter:description" content="Discover how to reach your savings target faster with local-first calculations and clear reporting." />
+  <meta name="theme-color" content="#f6f8fb" />
   <link rel="preload" href="/assets/css/style.css" as="style" data-preload-style />
   <link rel="preload" href="/tools/savings-goal-calculator/style.css" as="style" data-preload-style />
   <noscript>
@@ -23,243 +22,10 @@
     <link rel="stylesheet" href="/tools/savings-goal-calculator/style.css" />
   </noscript>
   <style>
-    :root {
-      --color-bg: #f6f8fb;
-      --color-text: #0f172a;
-      --color-muted: #475569;
-      --color-accent: #22c55e;
-      --color-accent-ink: #062a12;
-      --color-card: #ffffff;
-      --color-border: rgba(219, 228, 243, 0.9);
-    }
-
-    html {
-      background: var(--color-bg);
-      font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-    }
-
-    body {
-      margin: 0;
-      background: var(--color-bg);
-      color: var(--color-text);
-      line-height: 1.65;
-    }
-
-    .skip-link {
-      position: absolute;
-      left: 0.75rem;
-      top: 0.75rem;
-      padding: 0.75rem 1.25rem;
-      background: var(--color-accent);
-      color: var(--color-accent-ink);
-      border-radius: 12px;
-      transform: translateY(-150%);
-      transition: transform 0.2s ease;
-    }
-
-    .skip-link:focus {
-      transform: translateY(0);
-    }
-
-    .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 9;
-      backdrop-filter: blur(18px);
-      background: rgba(246, 248, 251, 0.9);
-      border-bottom: 1px solid rgba(219, 228, 243, 0.6);
-    }
-
-    .site-header__inner {
-      width: min(1080px, 100% - 3.5rem);
-      margin-inline: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 1.1rem 0;
-    }
-
-    .site-logo {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .site-nav {
-      display: flex;
-      align-items: center;
-      gap: clamp(0.75rem, 2vw, 1.25rem);
-      flex-wrap: wrap;
-    }
-
-    .site-nav a {
-      text-decoration: none;
-      font-weight: 600;
-      color: #64748b;
-      position: relative;
-    }
-
-    .site-nav a[aria-current="page"]::after {
-      content: "";
-      position: absolute;
-      inset-inline: 0;
-      bottom: -0.4rem;
-      height: 2px;
-      border-radius: 999px;
-      background: var(--color-accent);
-    }
-
-    .theme-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      border-radius: 999px;
-      padding: 0.5rem 0.85rem;
-      border: 1px solid rgba(219, 228, 243, 0.9);
-      background: rgba(34, 197, 94, 0.16);
-      color: #065f46;
-      font-weight: 600;
-    }
-
-    html.no-js .theme-toggle {
-      display: none;
-    }
-
-    main {
-      display: block;
-    }
-
-    .wrap {
-      width: min(960px, 100% - 3rem);
-      margin-inline: auto;
-      padding-block: clamp(2.5rem, 5vw, 4rem);
-      display: grid;
-      gap: 2rem;
-    }
-
-    .page-header {
-      display: grid;
-      gap: 0.75rem;
-    }
-
-    .page-header .eyebrow {
-      display: inline-flex;
-      gap: 0.45rem;
-      align-items: center;
-      background: rgba(34, 197, 94, 0.16);
-      color: #065f46;
-      padding: 0.35rem 0.75rem;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-    }
-
-    .page-header h1 {
-      margin: 0;
-      font-size: clamp(2.1rem, 5vw, 3rem);
-    }
-
-    .page-header p {
-      margin: 0;
-      color: var(--color-muted);
-      font-size: clamp(1.05rem, 2.6vw, 1.25rem);
-      max-width: 65ch;
-    }
-
-    .card {
-      border-radius: 18px;
-      border: 1px solid var(--color-border);
-      background: var(--color-card);
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-      padding: clamp(1.25rem, 3vw, 1.75rem);
-    }
-
-    .card + .card {
-      margin-top: 0.5rem;
-    }
-
-    .supporting-copy {
-      color: var(--color-muted);
-      font-size: 0.95rem;
-      margin: 0;
-    }
-
-    .disclaimer {
-      font-size: 0.85rem;
-      color: #64748b;
-    }
-
-    .actions {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .actions__btn {
-      border-radius: 12px;
-      padding: 0.6rem 1.15rem;
-      border: 1px solid rgba(34, 197, 94, 0.35);
-      background: rgba(34, 197, 94, 0.12);
-      color: #065f46;
-      font-weight: 600;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-    }
-
-    .actions__btn[data-primary="true"] {
-      border-color: transparent;
-      background: var(--color-accent);
-      color: var(--color-accent-ink);
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-    }
-
-    .footer-inner {
-      width: min(1080px, 100% - 3.5rem);
-      margin-inline: auto;
-      padding: 2rem 0 3rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      align-items: flex-start;
-      color: #475569;
-    }
-
-    .footer-inner nav {
-      display: inline-flex;
-      gap: 1.25rem;
-      flex-wrap: wrap;
-    }
-
-    @media (max-width: 900px) {
-      .site-header__inner,
-      .wrap,
-      .footer-inner {
-        width: min(100% - 2rem, 100%);
-      }
-    }
+    :root { --color-bg: #f6f8fb; --color-text: #0f172a; }
+    html { background: var(--color-bg); font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+    body { margin: 0; background: var(--color-bg); color: var(--color-text); line-height: 1.65; }
   </style>
-  <script>
-    (() => {
-      const STORAGE_KEY = 'budgettools-theme';
-      try {
-        const stored = window.localStorage.getItem(STORAGE_KEY);
-        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const theme = stored === 'dark' || stored === 'light' ? stored : (prefersDark ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch (error) {
-        /* noop */
-      }
-    })();
-  </script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -276,96 +42,52 @@
         <a href="/premium.html">Premium</a>
         <a href="/privacy.html">Privacy</a>
         <a href="/contact.html">Contact</a>
-        <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false">
-          <span class="theme-toggle__icon" aria-hidden="true">🌙</span>
-          <span class="theme-toggle__label">Dark mode</span>
-        </button>
       </nav>
     </div>
   </header>
   <main id="main-content">
-    <article class="wrap">
-      <header class="page-header">
-        <p class="eyebrow">Savings goal planner</p>
-        <h1>Savings Goal Calculator</h1>
-        <p>
-          Find out how long it could take to reach your goal or how much you need to set aside each month. Change locales,
-          currencies, and assumptions with instant feedback.
-        </p>
-        <p class="supporting-copy">All calculations run in your browser. No data is stored.</p>
-      </header>
+    <section class="page-hero" aria-labelledby="savings-heading">
+      <div class="page-hero__inner">
+        <p class="page-hero__eyebrow">Savings goal planner</p>
+        <h1 id="savings-heading">Plan your savings timeline with confidence</h1>
+        <p class="page-hero__lede">Enter your target amount, current balance, and contribution cadence to see exactly when you could reach your goal. Adjust APY, period, and optional start date with instant updates.</p>
+        <p class="page-hero__meta">Interest is compounded using the period you select. APY and start date fields are optional—leave them blank if you prefer a simple projection.</p>
+      </div>
+    </section>
 
-      <section class="card" aria-label="Interactive savings calculator">
-        <div id="savings-calculator"></div>
-      </section>
-
-      <section class="card" aria-label="Helpful details">
-        <div class="actions" role="group" aria-label="Supporting resources">
-          <a class="actions__btn" href="/tools/budget-calculator/">Try the monthly budget calculator</a>
-          <a class="actions__btn" data-primary="true" href="/premium.html">Upgrade for premium templates</a>
-        </div>
-        <p class="disclaimer" role="note">
-          Estimates only. Returns are not guaranteed. Adjust inflation and interest assumptions to reflect your local
-          market.
-        </p>
-      </section>
-
-      <section class="card" aria-label="Need help?">
-        <h2>Need the report emailed automatically?</h2>
-        <p class="supporting-copy">
-          Enter your address via the “Email me my report” action in the tool. Want a full automation? Drop us a note and we
-          can wire this up with your CRM.
-        </p>
-        <a class="actions__btn" href="mailto:hello@budgettools.app?subject=BudgetTools%20savings%20goal%20calculator">
-          Contact BudgetTools
-        </a>
-      </section>
-    </article>
+    <section class="calculator-wrap" aria-label="Savings goal calculator">
+      <div class="calculator-layout">
+        <div class="calculator-layout__app" id="savings-calculator"></div>
+        <aside class="calculator-layout__aside" aria-labelledby="tips-heading">
+          <div class="card card--subtle">
+            <h2 id="tips-heading">Quick tips</h2>
+            <ul class="checklist">
+              <li>Switch between timeline and target-date planning with the mode buttons.</li>
+              <li>Add APY to include compounding interest or leave it blank for a straight savings plan.</li>
+              <li>Use “Remember my inputs” to pick up where you left off on this device.</li>
+            </ul>
+          </div>
+          <div class="card card--subtle">
+            <h2>Need a shareable report?</h2>
+            <p>Download a PDF or CSV instantly, email the summary to yourself, or explore branded templates with BudgetTools Premium.</p>
+            <a class="btn btn--ghost" href="/premium.html">See premium upgrades</a>
+          </div>
+        </aside>
+      </div>
+      <p class="calculator-footnote">Estimates only. Returns are not guaranteed. Everything runs locally in your browser.</p>
+    </section>
   </main>
   <footer role="contentinfo">
     <div class="footer-inner">
-      <p>© <span data-year></span> BudgetTools — calculations run in your browser. No data stored.</p>
+      <p>© <span data-year></span> BudgetTools. Built for transparent personal finance.</p>
       <nav aria-label="Footer">
         <a href="/privacy.html">Privacy</a>
         <a href="/terms.html">Terms</a>
       </nav>
     </div>
   </footer>
+
   <script type="module" src="script.js"></script>
   <script defer src="/assets/js/main.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const mountNode = document.getElementById('savings-calculator');
-      if (!mountNode || !window.initSavingsCalculator) {
-        return;
-      }
-      window.initSavingsCalculator(mountNode, {
-        defaultCurrency: 'EUR',
-        defaultLocale: 'nl-NL'
-      });
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Savings Goal Calculator | BudgetTools</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <main class="bt-demo">
-    <h1>BudgetTools — Savings Goal Calculator</h1>
-    <p class="bt-demo__lede">Estimate how long it could take to reach your target savings or how much you need to save each month. All calculations run in your browser.</p>
-    <div id="savings-calculator"></div>
-  </main>
-  <script type="module" src="script.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      if (window.initSavingsCalculator) {
-        window.initSavingsCalculator(document.getElementById('savings-calculator'), {
-          defaultCurrency: 'EUR',
-          defaultLocale: 'nl-NL'
-        });
-      }
-    });
-  </script>
 </body>
 </html>

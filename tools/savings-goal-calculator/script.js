@@ -973,3 +973,10 @@ export function initSavingsCalculator(el, props = {}) {
 if (typeof window !== 'undefined') {
     window.initSavingsCalculator = initSavingsCalculator;
 }
+
+if (typeof document !== 'undefined') {
+    const mountEl = document.getElementById('savings-calculator');
+    if (mountEl instanceof HTMLElement) {
+        initSavingsCalculator(mountEl);
+    }
+}

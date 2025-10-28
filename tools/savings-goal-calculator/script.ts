@@ -515,7 +515,6 @@ class SavingsCalculatorUI {
   private root!: HTMLElement;
   private summaryRegion!: HTMLElement;
   private summaryAnnouncer!: HTMLElement;
-  private summaryCard!: HTMLElement;
   private tableBody!: HTMLElement;
   private showAllButton!: HTMLButtonElement;
   private messageRegion!: HTMLElement;
@@ -656,12 +655,14 @@ class SavingsCalculatorUI {
           </form>
           <div id="bt-message" class="bt-message" aria-live="polite"></div>
         </div>
-        <aside class="bt-results-column" id="bt-results" aria-labelledby="bt-details-heading">
+        <aside class="bt-results-column" id="bt-results" aria-labelledby="bt-results-heading">
           <section class="bt-results-card">
             <div class="bt-results-header">
-              <h3 id="bt-details-heading">Detailed results</h3>
-              <p class="bt-results-subtitle">Download, copy, or explore the milestones below.</p>
+              <h3 id="bt-results-heading">Results summary</h3>
+              <p class="bt-results-subtitle">We refresh your plan after each calculation.</p>
             </div>
+            <div id="bt-summary" class="bt-summary" role="region" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
+            <p class="sr-only" id="bt-summary-announcer" aria-live="polite"></p>
             <div class="bt-actions">
               <button type="button" class="bt-button" data-action="reset">Reset</button>
               <button type="button" class="bt-button" data-action="copy">Copy results</button>
@@ -696,7 +697,6 @@ class SavingsCalculatorUI {
 
     this.summaryRegion = this.root.querySelector('#bt-summary') as HTMLElement;
     this.summaryAnnouncer = this.root.querySelector('#bt-summary-announcer') as HTMLElement;
-    this.summaryCard = this.root.querySelector('#bt-summary-card') as HTMLElement;
     this.tableBody = this.root.querySelector('#bt-table-body') as HTMLElement;
     this.showAllButton = this.root.querySelector('[data-action="toggle-rows"]') as HTMLButtonElement;
     this.messageRegion = this.root.querySelector('#bt-message') as HTMLElement;
@@ -1023,7 +1023,7 @@ class SavingsCalculatorUI {
     const behavior: ScrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
     const desktopQuery = window.matchMedia('(min-width: 960px)');
     if (desktopQuery.matches) {
-      const target = this.summaryCard || this.resultsColumn || this.summaryRegion;
+      const target = this.resultsColumn || this.summaryRegion;
       target?.scrollIntoView({ behavior, block: 'start' });
       if (this.summaryRegion) {
         window.setTimeout(() => {

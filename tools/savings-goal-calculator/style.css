@@ -145,7 +145,7 @@
   font-size: var(--font-size-h3);
 }
 
-.bt-savings-header p {
+.bt-savings-header .bt-demo__lede {
   margin: 0;
   color: var(--bt-muted);
 }

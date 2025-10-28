@@ -576,14 +576,24 @@ class SavingsCalculatorUI {
     this.root.className = 'bt-savings-card';
     this.root.innerHTML = `
       <header class="bt-savings-header">
-        <div>
-          <h2>Savings goal calculator</h2>
-          <p class="bt-demo__lede">Switch between finding out how long it may take to reach your goal or the monthly amount needed by a target date.</p>
+        <div class="bt-savings-header__intro">
+          <div>
+            <h2>Savings goal calculator</h2>
+            <p class="bt-demo__lede">Switch between finding out how long it may take to reach your goal or the monthly amount needed by a target date.</p>
+          </div>
+          <div class="bt-mode-toggle" role="group" aria-label="Calculation mode">
+            <button type="button" data-mode="time" aria-pressed="false">Time to reach goal</button>
+            <button type="button" data-mode="monthly" aria-pressed="false">Monthly savings by date</button>
+          </div>
         </div>
-        <div class="bt-mode-toggle" role="group" aria-label="Calculation mode">
-          <button type="button" data-mode="time" aria-pressed="false">Time to reach goal</button>
-          <button type="button" data-mode="monthly" aria-pressed="false">Monthly savings by date</button>
-        </div>
+        <section class="bt-summary-card" id="bt-summary-card" aria-labelledby="bt-summary-heading">
+          <div class="bt-summary-card__header">
+            <h3 id="bt-summary-heading">Results summary</h3>
+            <p class="bt-summary-card__subtitle">We refresh your plan after each calculation.</p>
+          </div>
+          <div id="bt-summary" class="bt-summary" role="region" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
+          <p class="sr-only" id="bt-summary-announcer" aria-live="polite"></p>
+        </section>
       </header>
       <div class="bt-savings-body">
         <div class="bt-form-column">

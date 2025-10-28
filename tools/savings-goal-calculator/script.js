@@ -854,12 +854,14 @@ class SavingsCalculatorUI {
         this.notify(this.resultSummary);
     }
     renderSummary() {
+        var _a, _b;
         if (!this.resultSummary)
             return;
         const { mode, months, totalContributions, totalInterest, finishDate, requiredMonthlyContribution, inflation } = this.resultSummary;
         const locale = this.state.locale;
         const currency = this.state.currency;
         const rows = [];
+        const fragment = document.createDocumentFragment();
         const addRow = (label, value) => {
             const div = document.createElement('div');
             div.className = 'bt-summary__row';
@@ -871,6 +873,30 @@ class SavingsCalculatorUI {
             div.append(labelSpan, valueSpan);
             rows.push(div);
         };
+        const goalAmount = Math.max(0, (_a = this.state.goalAmount) !== null && _a !== void 0 ? _a : 0);
+        const currentSavings = Math.max(0, (_b = this.state.currentSavings) !== null && _b !== void 0 ? _b : 0);
+        if (goalAmount > 0) {
+            const progressRatio = Math.min(Math.max(currentSavings / goalAmount, 0), 1);
+            const percent = Math.round((currentSavings / goalAmount) * 100);
+            const progress = document.createElement('div');
+            progress.className = 'bt-progress';
+            progress.setAttribute('role', 'progressbar');
+            progress.setAttribute('aria-valuemin', '0');
+            progress.setAttribute('aria-valuemax', goalAmount.toString());
+            progress.setAttribute('aria-valuenow', Math.min(goalAmount, currentSavings).toString());
+            progress.setAttribute('aria-valuetext', `${percent}% of goal saved`);
+            const label = document.createElement('div');
+            label.className = 'bt-progress__label';
+            label.innerHTML = `<span>Current progress</span><span>${formatCurrency(currentSavings, locale, currency)} of ${formatCurrency(goalAmount, locale, currency)} (${percent}%)</span>`;
+            const bar = document.createElement('div');
+            bar.className = 'bt-progress__bar';
+            const value = document.createElement('div');
+            value.className = 'bt-progress__value';
+            value.style.setProperty('--bt-progress', progressRatio.toString());
+            bar.appendChild(value);
+            progress.append(label, bar);
+            fragment.appendChild(progress);
+        }
         if (mode === 'time') {
             addRow('Estimated time', describeDuration(months, locale));
             if (finishDate) {
@@ -890,7 +916,8 @@ class SavingsCalculatorUI {
             addRow('Contributions (real)', formatCurrency(inflation.realContributions, locale, currency));
             addRow('Interest (real)', formatCurrency(inflation.realInterest, locale, currency));
         }
-        this.summaryRegion.replaceChildren(...rows);
+        rows.forEach((row) => fragment.appendChild(row));
+        this.summaryRegion.replaceChildren(fragment);
     }
     renderProjection() {
         if (!this.resultSummary)

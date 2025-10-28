@@ -1,0 +1,269 @@
+:root {
+  color-scheme: light dark;
+  --bt-surface: color-mix(in srgb, var(--bt-bg, #f5f5f5) 60%, transparent);
+  --bt-border: color-mix(in srgb, #0f172a 10%, transparent);
+  --bt-primary: #2563eb;
+  --bt-primary-dark: #1d4ed8;
+  --bt-danger: #dc2626;
+  --bt-muted: color-mix(in srgb, #475569 60%, transparent);
+  --bt-radius: 18px;
+  --bt-transition: 160ms ease;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bt-bg: #0f172a;
+    --bt-surface: color-mix(in srgb, #1e293b 85%, transparent);
+    --bt-border: color-mix(in srgb, white 12%, transparent);
+    color: #f8fafc;
+    background-color: #0f172a;
+  }
+}
+
+.bt-demo {
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.bt-demo h1 {
+  font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+  margin: 0;
+}
+
+.bt-demo__lede {
+  margin: 0;
+  color: var(--bt-muted);
+  max-width: 50ch;
+}
+
+.bt-savings-card {
+  background: var(--bt-surface, #ffffff);
+  border-radius: var(--bt-radius);
+  border: 1px solid var(--bt-border);
+  box-shadow: 0 20px 60px color-mix(in srgb, black 12%, transparent);
+  padding: clamp(1.25rem, 4vw, 2rem);
+  display: grid;
+  gap: 1.75rem;
+}
+
+.bt-savings-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.bt-savings-header h2 {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.bt-mode-toggle {
+  display: inline-flex;
+  border-radius: 999px;
+  border: 1px solid var(--bt-border);
+  padding: 0.25rem;
+  background: color-mix(in srgb, white 60%, transparent);
+  width: fit-content;
+}
+
+.bt-mode-toggle button {
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background var(--bt-transition), color var(--bt-transition), box-shadow var(--bt-transition);
+}
+
+.bt-mode-toggle button[aria-pressed="true"] {
+  background: var(--bt-primary);
+  color: white;
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--bt-primary) 35%, transparent);
+}
+
+.bt-mode-toggle button:focus-visible {
+  outline: 2px solid var(--bt-primary);
+  outline-offset: 2px;
+}
+
+.bt-grid {
+  display: grid;
+  gap: 1rem 1.25rem;
+}
+
+@media (min-width: 860px) {
+  .bt-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.bt-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.bt-field label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.bt-field input,
+.bt-field select,
+.bt-field button,
+.bt-field textarea {
+  font: inherit;
+}
+
+.bt-input {
+  border: 1px solid var(--bt-border);
+  border-radius: 12px;
+  padding: 0.65rem 0.75rem;
+  background: color-mix(in srgb, white 90%, transparent);
+  transition: border var(--bt-transition), box-shadow var(--bt-transition);
+}
+
+.bt-input:focus-visible {
+  outline: 2px solid var(--bt-primary);
+  outline-offset: 2px;
+}
+
+.bt-field small {
+  color: var(--bt-muted);
+}
+
+.bt-inline {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.bt-inline label {
+  font-weight: 500;
+}
+
+.bt-output {
+  background: color-mix(in srgb, white 60%, transparent);
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--bt-border) 60%, transparent);
+  padding: 1.25rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.bt-summary {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.bt-summary__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.bt-summary__label {
+  color: var(--bt-muted);
+}
+
+.bt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.bt-button {
+  border: 1px solid var(--bt-border);
+  border-radius: 999px;
+  background: white;
+  color: inherit;
+  font: inherit;
+  padding: 0.5rem 1.1rem;
+  cursor: pointer;
+  transition: background var(--bt-transition), color var(--bt-transition), border var(--bt-transition);
+}
+
+.bt-button:hover,
+.bt-button:focus-visible {
+  background: var(--bt-primary);
+  color: white;
+  border-color: var(--bt-primary);
+}
+
+.bt-button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.bt-table-wrapper {
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--bt-border) 60%, transparent);
+}
+
+.bt-projection-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.bt-projection-table thead {
+  background: color-mix(in srgb, var(--bt-primary) 12%, transparent);
+}
+
+.bt-projection-table th,
+.bt-projection-table td {
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--bt-border) 60%, transparent);
+  text-align: right;
+}
+
+.bt-projection-table th:first-child,
+.bt-projection-table td:first-child {
+  text-align: left;
+}
+
+.bt-alert {
+  border-left: 4px solid var(--bt-danger);
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--bt-danger) 12%, transparent);
+  color: color-mix(in srgb, var(--bt-danger) 65%, black);
+}
+
+.bt-footer {
+  font-size: 0.85rem;
+  color: var(--bt-muted);
+}
+
+.bt-remember {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.bt-remember input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

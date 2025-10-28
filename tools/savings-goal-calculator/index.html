@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Savings Goal Calculator | BudgetTools</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="bt-demo">
+    <h1>BudgetTools — Savings Goal Calculator</h1>
+    <p class="bt-demo__lede">Estimate how long it could take to reach your target savings or how much you need to save each month. All calculations run in your browser.</p>
+    <div id="savings-calculator"></div>
+  </main>
+  <script type="module" src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.initSavingsCalculator) {
+        window.initSavingsCalculator(document.getElementById('savings-calculator'), {
+          defaultCurrency: 'EUR',
+          defaultLocale: 'nl-NL'
+        });
+      }
+    });
+  </script>
+</body>
+</html>

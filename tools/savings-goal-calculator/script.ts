@@ -39,7 +39,6 @@ export interface SavingsCalculatorProps {
   defaultCurrency?: SupportedCurrency;
   defaultLocale?: string;
   onCalculated?(summary: CalculatedSummary | null): void;
-  sendReport?(email: string, csv: Blob, pdf: Blob): Promise<void>;
 }
 
 interface CalculatorState {
@@ -82,6 +81,7 @@ interface ScenarioInput {
 
 const STORAGE_KEY = 'bt-savings-calculator';
 const MAX_MONTHS = 600; // 50 years
+const PREVIEW_ROW_COUNT = 6;
 
 const DEFAULT_STATE: CalculatorState = {
   mode: 'time',
@@ -514,10 +514,15 @@ class SavingsCalculatorUI {
   private showAllRows = false;
   private root!: HTMLElement;
   private summaryRegion!: HTMLElement;
+  private summaryAnnouncer!: HTMLElement;
+  private summaryCard!: HTMLElement;
   private tableBody!: HTMLElement;
   private showAllButton!: HTMLButtonElement;
   private messageRegion!: HTMLElement;
   private rememberToggle!: HTMLInputElement;
+  private resultsColumn!: HTMLElement;
+  private mobileSummaryRegion!: HTMLElement;
+  private mobileSummaryCard!: HTMLElement;
 
   constructor(container: HTMLElement, props: SavingsCalculatorProps) {
     this.container = container;
@@ -572,100 +577,133 @@ class SavingsCalculatorUI {
     this.root.className = 'bt-savings-card';
     this.root.innerHTML = `
       <header class="bt-savings-header">
-        <div>
-          <h2>Savings goal calculator</h2>
-          <p class="bt-demo__lede">Switch between finding out how long it may take to reach your goal or the monthly amount needed by a target date.</p>
+        <div class="bt-savings-header__intro">
+          <div>
+            <h2>Savings goal calculator</h2>
+            <p class="bt-demo__lede">Switch between finding out how long it may take to reach your goal or the monthly amount needed by a target date.</p>
+          </div>
+          <div class="bt-mode-toggle" role="group" aria-label="Calculation mode">
+            <button type="button" data-mode="time" aria-pressed="false">Time to reach goal</button>
+            <button type="button" data-mode="monthly" aria-pressed="false">Monthly savings by date</button>
+          </div>
         </div>
-        <div class="bt-mode-toggle" role="group" aria-label="Calculation mode">
-          <button type="button" data-mode="time" aria-pressed="false">Time to reach goal</button>
-          <button type="button" data-mode="monthly" aria-pressed="false">Monthly savings by date</button>
-        </div>
+        <section class="bt-summary-card" id="bt-summary-card" aria-labelledby="bt-summary-heading">
+          <div class="bt-summary-card__header">
+            <h3 id="bt-summary-heading">Results summary</h3>
+            <p class="bt-summary-card__subtitle">We refresh your plan after each calculation.</p>
+          </div>
+          <div id="bt-summary" class="bt-summary" role="region" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
+          <p class="sr-only" id="bt-summary-announcer" aria-live="polite"></p>
+        </section>
       </header>
-      <form class="bt-grid" novalidate>
-        <div class="bt-field">
-          <label for="goalAmount">Goal amount</label>
-          <input id="goalAmount" name="goalAmount" type="number" inputmode="decimal" min="0" step="0.01" class="bt-input" placeholder="10000" />
+      <div class="bt-savings-body">
+        <div class="bt-form-column">
+          <div class="bt-mobile-summary" id="bt-mobile-summary" aria-live="polite" data-has-results="false">
+            <div class="bt-mobile-summary__card" tabindex="-1">
+              <p class="bt-mobile-summary__placeholder">Your results summary will appear here after you calculate.</p>
+            </div>
+          </div>
+          <form class="bt-grid" novalidate>
+            <div class="bt-field">
+              <label for="goalAmount">Goal amount</label>
+              <input id="goalAmount" name="goalAmount" type="number" inputmode="decimal" min="0" step="0.01" class="bt-input" placeholder="10000" />
+            </div>
+            <div class="bt-field">
+              <label for="currentSavings">Current savings</label>
+              <input id="currentSavings" name="currentSavings" type="number" inputmode="decimal" min="0" step="0.01" class="bt-input" placeholder="0" />
+            </div>
+            <div class="bt-field" data-field="monthlyContribution">
+              <label for="monthlyContribution">Monthly contribution</label>
+              <input id="monthlyContribution" name="monthlyContribution" type="number" inputmode="decimal" min="0" step="0.01" class="bt-input" placeholder="250" />
+              <small>Required for time-to-goal calculations.</small>
+            </div>
+            <div class="bt-field" data-field="targetDate">
+              <label for="targetDate">Target date</label>
+              <input id="targetDate" name="targetDate" type="month" class="bt-input" />
+              <small>Required for target-date calculations.</small>
+            </div>
+            <div class="bt-field">
+              <label for="apr">Annual interest rate (APR %)</label>
+              <input id="apr" name="apr" type="number" inputmode="decimal" min="0" max="50" step="0.01" class="bt-input" placeholder="3" />
+            </div>
+            <div class="bt-field">
+              <label for="compounding">Compounding frequency</label>
+              <select id="compounding" name="compounding" class="bt-input">
+                <option value="monthly">Monthly</option>
+                <option value="quarterly">Quarterly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </div>
+            <div class="bt-field">
+              <label for="inflation">Inflation rate (optional %)</label>
+              <input id="inflation" name="inflation" type="number" inputmode="decimal" min="0" max="20" step="0.01" class="bt-input" placeholder="2" />
+            </div>
+            <div class="bt-field">
+              <label for="currency">Currency</label>
+              <select id="currency" name="currency" class="bt-input"></select>
+            </div>
+            <div class="bt-field">
+              <label for="locale">Locale</label>
+              <select id="locale" name="locale" class="bt-input"></select>
+            </div>
+            <div class="bt-remember">
+              <input type="checkbox" id="rememberInputs" />
+              <label for="rememberInputs">Remember my last inputs on this device</label>
+            </div>
+            <div class="bt-form-actions">
+              <button type="submit" class="bt-submit">Calculate</button>
+            </div>
+          </form>
+          <div id="bt-message" class="bt-message" aria-live="polite"></div>
         </div>
-        <div class="bt-field">
-          <label for="currentSavings">Current savings</label>
-          <input id="currentSavings" name="currentSavings" type="number" inputmode="decimal" min="0" step="0.01" class="bt-input" placeholder="0" />
-        </div>
-        <div class="bt-field" data-field="monthlyContribution">
-          <label for="monthlyContribution">Monthly contribution</label>
-          <input id="monthlyContribution" name="monthlyContribution" type="number" inputmode="decimal" min="0" step="0.01" class="bt-input" placeholder="250" />
-          <small>Required for time-to-goal calculations.</small>
-        </div>
-        <div class="bt-field" data-field="targetDate">
-          <label for="targetDate">Target date</label>
-          <input id="targetDate" name="targetDate" type="month" class="bt-input" />
-          <small>Required for target-date calculations.</small>
-        </div>
-        <div class="bt-field">
-          <label for="apr">Annual interest rate (APR %)</label>
-          <input id="apr" name="apr" type="number" inputmode="decimal" min="0" max="50" step="0.01" class="bt-input" placeholder="3" />
-        </div>
-        <div class="bt-field">
-          <label for="compounding">Compounding frequency</label>
-          <select id="compounding" name="compounding" class="bt-input">
-            <option value="monthly">Monthly</option>
-            <option value="quarterly">Quarterly</option>
-            <option value="yearly">Yearly</option>
-          </select>
-        </div>
-        <div class="bt-field">
-          <label for="inflation">Inflation rate (optional %)</label>
-          <input id="inflation" name="inflation" type="number" inputmode="decimal" min="0" max="20" step="0.01" class="bt-input" placeholder="2" />
-        </div>
-        <div class="bt-field">
-          <label for="currency">Currency</label>
-          <select id="currency" name="currency" class="bt-input"></select>
-        </div>
-        <div class="bt-field">
-          <label for="locale">Locale</label>
-          <select id="locale" name="locale" class="bt-input"></select>
-        </div>
-        <div class="bt-remember">
-          <input type="checkbox" id="rememberInputs" />
-          <label for="rememberInputs">Remember my last inputs on this device</label>
-        </div>
-      </form>
-      <div id="bt-message" aria-live="polite"></div>
-      <section class="bt-output" aria-live="polite" aria-atomic="true">
-        <div id="bt-summary" class="bt-summary"></div>
-        <div class="bt-actions">
-          <button type="button" class="bt-button" data-action="reset">Reset</button>
-          <button type="button" class="bt-button" data-action="copy">Copy results</button>
-          <button type="button" class="bt-button" data-action="download-pdf">Download PDF</button>
-          <button type="button" class="bt-button" data-action="download-csv">Download CSV</button>
-          <button type="button" class="bt-button" data-action="email">Email me my report</button>
-        </div>
-        <div class="bt-table-wrapper">
-          <table class="bt-projection-table">
-            <thead>
-              <tr>
-                <th scope="col">Month</th>
-                <th scope="col">Date</th>
-                <th scope="col">Starting balance</th>
-                <th scope="col">Contribution</th>
-                <th scope="col">Interest</th>
-                <th scope="col">Ending balance</th>
-              </tr>
-            </thead>
-            <tbody id="bt-table-body"></tbody>
-          </table>
-        </div>
-        <button type="button" class="bt-button" data-action="toggle-rows">Show all</button>
-        <p class="bt-footer">BudgetTools — calculations run in your browser. No data stored. Estimates only. Returns are not guaranteed.</p>
-      </section>
+        <aside class="bt-results-column" id="bt-results" aria-labelledby="bt-details-heading">
+          <section class="bt-results-card">
+            <div class="bt-results-header">
+              <h3 id="bt-details-heading">Detailed results</h3>
+              <p class="bt-results-subtitle">Download, copy, or explore the milestones below.</p>
+            </div>
+            <div class="bt-actions">
+              <button type="button" class="bt-button" data-action="reset">Reset</button>
+              <button type="button" class="bt-button" data-action="copy">Copy results</button>
+              <button type="button" class="bt-button" data-action="download-pdf">Download PDF</button>
+              <button type="button" class="bt-button" data-action="download-csv">Download CSV</button>
+            </div>
+            <div class="bt-results-details" id="bt-results-details">
+              <div class="bt-table-wrapper">
+                <table class="bt-projection-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Month</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Starting balance</th>
+                      <th scope="col">Contribution</th>
+                      <th scope="col">Interest</th>
+                      <th scope="col">Ending balance</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bt-table-body"></tbody>
+                </table>
+              </div>
+              <button type="button" class="bt-button" data-action="toggle-rows" aria-expanded="false">View full schedule</button>
+              <p class="bt-footer">BudgetTools — calculations run in your browser. No data stored. Estimates only. Returns are not guaranteed.</p>
+            </div>
+          </section>
+        </aside>
+      </div>
     `;
     this.container.innerHTML = '';
     this.container.appendChild(this.root);
 
     this.summaryRegion = this.root.querySelector('#bt-summary') as HTMLElement;
+    this.summaryAnnouncer = this.root.querySelector('#bt-summary-announcer') as HTMLElement;
+    this.summaryCard = this.root.querySelector('#bt-summary-card') as HTMLElement;
     this.tableBody = this.root.querySelector('#bt-table-body') as HTMLElement;
     this.showAllButton = this.root.querySelector('[data-action="toggle-rows"]') as HTMLButtonElement;
     this.messageRegion = this.root.querySelector('#bt-message') as HTMLElement;
     this.rememberToggle = this.root.querySelector('#rememberInputs') as HTMLInputElement;
+    this.resultsColumn = this.root.querySelector('.bt-results-column') as HTMLElement;
+    this.mobileSummaryRegion = this.root.querySelector('#bt-mobile-summary') as HTMLElement;
+    this.mobileSummaryCard = this.mobileSummaryRegion.querySelector('.bt-mobile-summary__card') as HTMLElement;
 
     const modeButtons = Array.from(this.root.querySelectorAll<HTMLButtonElement>('.bt-mode-toggle button'));
     modeButtons.forEach((btn) => {
@@ -700,6 +738,10 @@ class SavingsCalculatorUI {
     const form = this.root.querySelector('form');
     form?.addEventListener('input', (event) => this.handleInput(event));
     form?.addEventListener('change', (event) => this.handleInput(event));
+    form?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      this.calculate({ focus: true });
+    });
 
     this.rememberToggle.addEventListener('change', () => {
       this.state.rememberInputs = this.rememberToggle.checked;
@@ -716,7 +758,6 @@ class SavingsCalculatorUI {
 
     this.showAllButton.addEventListener('click', () => {
       this.showAllRows = !this.showAllRows;
-      this.showAllButton.textContent = this.showAllRows ? 'Show first 24 months' : 'Show all';
       this.renderProjection();
     });
 
@@ -835,9 +876,6 @@ class SavingsCalculatorUI {
       case 'download-csv':
         this.downloadCsv();
         break;
-      case 'email':
-        this.emailReport();
-        break;
       default:
         break;
     }
@@ -899,27 +937,6 @@ class SavingsCalculatorUI {
     URL.revokeObjectURL(url);
   }
 
-  private async emailReport(): Promise<void> {
-    if (!this.resultSummary) return;
-    const email = prompt('Where should we send your report?');
-    if (!email) {
-      return;
-    }
-    const lines = this.buildSummaryLines(true);
-    const csvBlob = buildCsv(lines, this.resultSummary.projection, this.state.locale);
-    const pdfBlob = buildPdf(lines);
-    const subject = encodeURIComponent('My BudgetTools savings goal report');
-    const body = encodeURIComponent(lines.join('\n'));
-    window.location.href = `mailto:${encodeURIComponent(email)}?subject=${subject}&body=${body}`;
-    if (typeof this.props.sendReport === 'function') {
-      try {
-        await this.props.sendReport(email, csvBlob, pdfBlob);
-      } catch (error) {
-        console.warn('sendReport hook failed', error);
-      }
-    }
-  }
-
   private showMessage(message: string): void {
     this.messageRegion.innerHTML = '';
     if (!message) return;
@@ -927,6 +944,98 @@ class SavingsCalculatorUI {
     div.className = 'bt-alert';
     div.textContent = message;
     this.messageRegion.appendChild(div);
+  }
+
+  private setSummaryPlaceholder(message?: string): void {
+    if (!this.summaryRegion) return;
+    const text = message ?? 'Enter your details and press Calculate to view your results.';
+    const paragraph = document.createElement('p');
+    paragraph.className = 'bt-summary__placeholder';
+    paragraph.textContent = text;
+    this.summaryRegion.setAttribute('data-has-results', 'false');
+    this.summaryRegion.replaceChildren(paragraph);
+  }
+
+  private announceResults(): void {
+    if (!this.summaryAnnouncer) return;
+    this.summaryAnnouncer.textContent = '';
+    window.setTimeout(() => {
+      if (this.summaryAnnouncer) {
+        this.summaryAnnouncer.textContent = 'Results updated';
+      }
+    }, 60);
+  }
+
+  private updateMobileSummary(): void {
+    if (!this.mobileSummaryRegion || !this.mobileSummaryCard) return;
+    if (!this.resultSummary) {
+      this.mobileSummaryRegion.dataset.hasResults = 'false';
+      const placeholderText = this.summaryRegion?.textContent?.trim() || 'Your results summary will appear here after you calculate.';
+      this.mobileSummaryCard.innerHTML = `<p class="bt-mobile-summary__placeholder">${placeholderText}</p>`;
+      return;
+    }
+
+    const { mode, months, totalContributions, totalInterest, finishDate, requiredMonthlyContribution } = this.resultSummary;
+    const locale = this.state.locale;
+    const currency = this.state.currency;
+    const durationText = describeDuration(months, locale);
+    const formatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long' });
+    const finishText = finishDate ? formatter.format(finishDate) : 'Goal already reached';
+    const contributions = formatCurrency(totalContributions, locale, currency);
+    const interest = formatCurrency(totalInterest, locale, currency);
+    const monthlyText = requiredMonthlyContribution !== undefined ? formatCurrency(requiredMonthlyContribution, locale, currency) : null;
+
+    const highlightLabel = monthlyText ? 'Monthly savings needed' : 'Estimated time';
+    const highlightValue = monthlyText ?? durationText;
+
+    const metrics: Array<{ label: string; value: string }> = [];
+    if (monthlyText) {
+      metrics.push({ label: 'Monthly savings needed', value: monthlyText });
+    }
+    metrics.push({ label: 'Estimated time', value: durationText });
+    metrics.push({ label: 'Total contributions', value: contributions });
+    metrics.push({ label: 'Total interest', value: interest });
+
+    this.mobileSummaryRegion.dataset.hasResults = 'true';
+    const metricsHtml = metrics.map((metric) => `
+        <div class="bt-mobile-summary__metric">
+          <dt>${metric.label}</dt>
+          <dd>${metric.value}</dd>
+        </div>
+      `).join('');
+
+    this.mobileSummaryCard.innerHTML = `
+      <p class="bt-mobile-summary__eyebrow">${highlightLabel}</p>
+      <p class="bt-mobile-summary__value">${highlightValue}</p>
+      <p class="bt-mobile-summary__meta">Projected finish: ${finishText}</p>
+      <dl class="bt-mobile-summary__metrics">
+        ${metricsHtml}
+      </dl>
+      <a class="bt-mobile-summary__link" href="#bt-results-details">Jump to full results</a>
+    `;
+  }
+
+  private focusResults(): void {
+    if (!this.resultSummary || typeof window === 'undefined') {
+      return;
+    }
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const behavior: ScrollBehavior = prefersReducedMotion ? 'auto' : 'smooth';
+    const desktopQuery = window.matchMedia('(min-width: 960px)');
+    if (desktopQuery.matches) {
+      const target = this.summaryCard || this.resultsColumn || this.summaryRegion;
+      target?.scrollIntoView({ behavior, block: 'start' });
+      if (this.summaryRegion) {
+        window.setTimeout(() => {
+          this.summaryRegion.focus({ preventScroll: true });
+        }, prefersReducedMotion ? 0 : 180);
+      }
+    } else if (this.mobileSummaryRegion && this.mobileSummaryCard) {
+      this.mobileSummaryRegion.scrollIntoView({ behavior, block: 'start' });
+      window.setTimeout(() => {
+        this.mobileSummaryCard.focus({ preventScroll: true });
+      }, prefersReducedMotion ? 0 : 180);
+    }
   }
 
   private buildSummaryLines(includeTableHint = false): string[] {
@@ -945,18 +1054,24 @@ class SavingsCalculatorUI {
     );
     if (includeTableHint) {
       lines.push('');
-      lines.push('Projection (first rows shown in tool). Download CSV for full history.');
+      lines.push('Projection preview shown in tool. Use "View full schedule" or download CSV for full history.');
     }
     return lines;
   }
 
-  private calculate(): void {
+  private calculate(options: { focus?: boolean } = {}): void {
+    const { focus = false } = options;
     this.messageRegion.innerHTML = '';
-    this.summaryRegion.innerHTML = '';
     this.tableBody.innerHTML = '';
     this.resultSummary = null;
+    this.setSummaryPlaceholder();
+    this.updateMobileSummary();
+
     if (!this.state.goalAmount || this.state.goalAmount <= 0) {
-      this.showMessage('Enter a goal amount to begin.');
+      const message = 'Enter a goal amount to begin.';
+      this.showMessage(message);
+      this.setSummaryPlaceholder(message);
+      this.updateMobileSummary();
       this.notify(null);
       return;
     }
@@ -973,7 +1088,10 @@ class SavingsCalculatorUI {
         startDate: new Date(),
       }) as ModeAResult | null;
       if (!result) {
-        this.showMessage('Increase monthly savings or adjust your goal to get a result.');
+        const message = 'Increase monthly savings or adjust your goal to get a result.';
+        this.showMessage(message);
+        this.setSummaryPlaceholder(message);
+        this.updateMobileSummary();
         this.notify(null);
         return;
       }
@@ -991,7 +1109,10 @@ class SavingsCalculatorUI {
         startDate: new Date(),
       }) as ModeBResult | null;
       if (!result) {
-        this.showMessage('Goal may already be met or the target date is too soon.');
+        const message = 'Goal may already be met or the target date is too soon.';
+        this.showMessage(message);
+        this.setSummaryPlaceholder(message);
+        this.updateMobileSummary();
         this.notify(null);
         return;
       }
@@ -1000,6 +1121,11 @@ class SavingsCalculatorUI {
 
     this.renderSummary();
     this.renderProjection();
+    this.updateMobileSummary();
+    this.announceResults();
+    if (focus) {
+      this.focusResults();
+    }
     this.notify(this.resultSummary);
   }
 
@@ -1009,51 +1135,107 @@ class SavingsCalculatorUI {
     const { mode, months, totalContributions, totalInterest, finishDate, requiredMonthlyContribution, inflation } = this.resultSummary;
     const locale = this.state.locale;
     const currency = this.state.currency;
-    const rows: HTMLElement[] = [];
 
-    const addRow = (label: string, value: string) => {
-      const div = document.createElement('div');
-      div.className = 'bt-summary__row';
-      const labelSpan = document.createElement('span');
-      labelSpan.className = 'bt-summary__label';
-      labelSpan.textContent = label;
-      const valueSpan = document.createElement('span');
-      valueSpan.textContent = value;
-      div.append(labelSpan, valueSpan);
-      rows.push(div);
+    const fragment = document.createDocumentFragment();
+    const durationText = describeDuration(months, locale);
+    const formatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long' });
+    const finishText = finishDate ? formatter.format(finishDate) : 'Goal already reached';
+    const contributionsText = formatCurrency(totalContributions, locale, currency);
+    const interestText = formatCurrency(totalInterest, locale, currency);
+    const highlightMonthly = mode === 'monthly' && requiredMonthlyContribution !== undefined;
+    const highlightLabel = highlightMonthly ? 'Monthly savings needed' : 'Estimated time';
+    const highlightValue = highlightMonthly && requiredMonthlyContribution !== undefined
+      ? formatCurrency(requiredMonthlyContribution, locale, currency)
+      : durationText;
+
+    const hero = document.createElement('div');
+    hero.className = 'bt-summary__hero';
+    const eyebrow = document.createElement('p');
+    eyebrow.className = 'bt-summary__eyebrow';
+    eyebrow.textContent = highlightLabel;
+    const value = document.createElement('p');
+    value.className = 'bt-summary__value';
+    value.textContent = highlightValue;
+    const meta = document.createElement('p');
+    meta.className = 'bt-summary__meta';
+    meta.textContent = finishDate ? `Projected finish: ${finishText}` : 'Goal already reached.';
+    hero.append(eyebrow, value, meta);
+    fragment.appendChild(hero);
+
+    const goalAmount = Math.max(0, this.state.goalAmount ?? 0);
+    const currentSavings = Math.max(0, this.state.currentSavings ?? 0);
+    if (goalAmount > 0) {
+      const progressRatio = Math.min(Math.max(currentSavings / goalAmount, 0), 1);
+      const percent = Math.round(progressRatio * 100);
+      const progress = document.createElement('div');
+      progress.className = 'bt-progress';
+      progress.setAttribute('role', 'progressbar');
+      progress.setAttribute('aria-valuemin', '0');
+      progress.setAttribute('aria-valuemax', goalAmount.toString());
+      progress.setAttribute('aria-valuenow', Math.min(goalAmount, currentSavings).toString());
+      progress.setAttribute('aria-valuetext', `${percent}% of goal saved`);
+
+      const label = document.createElement('div');
+      label.className = 'bt-progress__label';
+      label.innerHTML = `<span>Current progress</span><span>${formatCurrency(currentSavings, locale, currency)} of ${formatCurrency(goalAmount, locale, currency)} (${percent}%)</span>`;
+      const bar = document.createElement('div');
+      bar.className = 'bt-progress__bar';
+      const valueBar = document.createElement('div');
+      valueBar.className = 'bt-progress__value';
+      valueBar.style.setProperty('--bt-progress', progressRatio.toString());
+      bar.appendChild(valueBar);
+      progress.append(label, bar);
+      fragment.appendChild(progress);
+    }
+
+    const metrics = document.createElement('dl');
+    metrics.className = 'bt-summary__metrics';
+    const addMetric = (label: string, metricValue: string) => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'bt-summary__metric';
+      const term = document.createElement('dt');
+      term.textContent = label;
+      const definition = document.createElement('dd');
+      definition.textContent = metricValue;
+      wrapper.append(term, definition);
+      metrics.appendChild(wrapper);
     };
 
-    if (mode === 'time') {
-      addRow('Estimated time', describeDuration(months, locale));
-      if (finishDate) {
-        const formatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long' });
-        addRow('Projected finish date', formatter.format(finishDate));
-      }
-    } else if (mode === 'monthly' && requiredMonthlyContribution !== undefined) {
-      addRow('Required monthly savings', formatCurrency(requiredMonthlyContribution, locale, currency));
-      addRow('Months until target', describeDuration(months, locale));
+    if (highlightMonthly) {
+      addMetric('Estimated time', durationText);
     }
-
-    addRow('Total contributions', formatCurrency(totalContributions, locale, currency));
-    addRow('Total interest', formatCurrency(totalInterest, locale, currency));
+    if (finishDate) {
+      addMetric('Projected finish date', finishText);
+    }
+    addMetric('Total contributions', contributionsText);
+    addMetric('Total interest', interestText);
 
     if (inflation) {
-      addRow('Goal in today\'s money', formatCurrency(inflation.realGoalValue, locale, currency));
-      addRow('Projected finish (real)', formatCurrency(inflation.realEndingBalance, locale, currency));
-      addRow('Contributions (real)', formatCurrency(inflation.realContributions, locale, currency));
-      addRow('Interest (real)', formatCurrency(inflation.realInterest, locale, currency));
+      addMetric('Goal in today\'s money', formatCurrency(inflation.realGoalValue, locale, currency));
+      addMetric('Projected finish (real)', formatCurrency(inflation.realEndingBalance, locale, currency));
+      addMetric('Contributions (real)', formatCurrency(inflation.realContributions, locale, currency));
+      addMetric('Interest (real)', formatCurrency(inflation.realInterest, locale, currency));
     }
 
-    this.summaryRegion.replaceChildren(...rows);
+    fragment.appendChild(metrics);
+    this.summaryRegion.setAttribute('data-has-results', 'true');
+    this.summaryRegion.replaceChildren(fragment);
   }
 
   private renderProjection(): void {
-    if (!this.resultSummary) return;
+    if (!this.resultSummary) {
+      this.tableBody.innerHTML = '';
+      this.showAllButton.style.display = 'none';
+      return;
+    }
     const projection = this.resultSummary.projection;
     const locale = this.state.locale;
     const currency = this.state.currency;
     const dateFormatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'short' });
-    const rowsToShow = this.showAllRows ? projection.length : Math.min(24, projection.length);
+    if (projection.length <= PREVIEW_ROW_COUNT) {
+      this.showAllRows = false;
+    }
+    const rowsToShow = this.showAllRows ? projection.length : Math.min(PREVIEW_ROW_COUNT, projection.length);
     const fragment = document.createDocumentFragment();
     for (let i = 0; i < rowsToShow; i++) {
       const row = projection[i];
@@ -1077,11 +1259,13 @@ class SavingsCalculatorUI {
       fragment.appendChild(tr);
     }
     this.tableBody.replaceChildren(fragment);
-    this.showAllButton.style.display = projection.length > 24 ? 'inline-flex' : 'none';
-    if (!this.showAllRows && projection.length > 24) {
-      this.showAllButton.textContent = 'Show all';
-    } else if (projection.length > 24) {
-      this.showAllButton.textContent = 'Show first 24 months';
+    const hasMoreRows = projection.length > PREVIEW_ROW_COUNT;
+    this.showAllButton.style.display = hasMoreRows ? 'inline-flex' : 'none';
+    if (hasMoreRows) {
+      this.showAllButton.textContent = this.showAllRows ? 'Show first 6 rows' : 'View full schedule';
+      this.showAllButton.setAttribute('aria-expanded', this.showAllRows ? 'true' : 'false');
+    } else {
+      this.showAllButton.setAttribute('aria-expanded', 'false');
     }
   }
 

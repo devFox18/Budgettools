@@ -1,38 +1,95 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="light" class="no-js">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Privacy Policy</title>
-  <link rel="stylesheet" href="/assets/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BudgetTools Privacy Policy</title>
+  <meta name="description" content="Learn how BudgetTools handles analytics, cookies, and user data. Spoiler: everything runs client-side." />
+  <link rel="canonical" href="https://budgettools.netlify.app/privacy.html" />
+  <meta name="theme-color" data-mode="light" media="(prefers-color-scheme: light)" content="#f6f8fb" />
+  <meta name="theme-color" data-mode="dark" media="(prefers-color-scheme: dark)" content="#0b1220" />
+  <link rel="preload" href="/assets/css/style.css" as="style" data-preload-style />
+  <noscript><link rel="stylesheet" href="/assets/css/style.css" /></noscript>
+  <style>
+    :root { --color-bg: #f6f8fb; --color-text: #0f172a; --color-accent: #22c55e; --color-accent-ink: #062a12; }
+    html { background: var(--color-bg); font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
+    body { margin: 0; background: var(--color-bg); color: var(--color-text); line-height: 1.65; }
+    .skip-link { position: absolute; left: 0.75rem; top: 0.75rem; padding: 0.75rem 1.25rem; background: var(--color-accent); color: var(--color-accent-ink); border-radius: 12px; transform: translateY(-150%); transition: transform 0.2s ease; }
+    .skip-link:focus { transform: translateY(0); }
+    .site-header { position: sticky; top: 0; z-index: 9; backdrop-filter: blur(18px); background: rgba(246,248,251,0.88); border-bottom: 1px solid rgba(219,228,243,0.6); }
+    .site-header__inner { width: min(1080px, 100% - 3.5rem); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem 0; }
+    .site-logo { display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 700; letter-spacing: -0.01em; text-decoration: none; }
+    .site-nav { display: flex; align-items: center; gap: clamp(0.75rem, 2vw, 1.25rem); flex-wrap: wrap; }
+    .site-nav a { text-decoration: none; font-weight: 600; color: #64748b; position: relative; }
+    .site-nav a[aria-current="page"]::after { content: ""; position: absolute; inset-inline: 0; bottom: -0.4rem; height: 2px; border-radius: 999px; background: var(--color-accent); }
+    .theme-toggle { display: inline-flex; align-items: center; gap: 0.45rem; border-radius: 999px; padding: 0.5rem 0.85rem; border: 1px solid rgba(219,228,243,0.9); background: rgba(34,197,94,0.16); color: #065f46; font-weight: 600; }
+    html.no-js .theme-toggle { display: none; }
+    main { display: block; }
+    .section { width: min(1080px, 100% - 3.5rem); margin-inline: auto; padding-block: clamp(2.8rem, 6vw, 4.5rem); }
+    .card { background: #ffffff; border-radius: 18px; border: 1px solid rgba(219,228,243,0.9); padding: clamp(1.5rem, 4vw, 2.25rem); box-shadow: 0 10px 30px rgba(15,23,42,0.08); }
+    @media (max-width: 900px) {
+      .site-header__inner, .section { width: min(100% - 2rem, 100%); }
+    }
+  </style>
+  <script>
+    (() => {
+      const STORAGE_KEY = 'budgettools-theme';
+      try {
+        const stored = window.localStorage.getItem(STORAGE_KEY);
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = stored === 'dark' || stored === 'light' ? stored : (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (error) {
+        /* noop */
+      }
+    })();
+  </script>
 </head>
 <body>
-  <div class="container">
-    <nav>
-      <div><strong>BudgetTools</strong></div>
-      <div class="nav-links">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header" role="banner">
+    <div class="site-header__inner">
+      <a class="site-logo" href="/">
+        <span aria-hidden="true">💸</span>
+        <span>BudgetTools</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
         <a href="/">Home</a>
-        <a href="/calculator/">Calculator</a>
+        <a href="/tools/budget-calculator/">Calculator</a>
+        <a href="/premium.html">Premium</a>
+        <a href="/privacy.html" aria-current="page">Privacy</a>
         <a href="/contact.html">Contact</a>
-        <!-- Schakelaar voor donker/licht om consistent te blijven -->
         <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false">
           <span class="theme-toggle__icon" aria-hidden="true">🌙</span>
           <span class="theme-toggle__label">Donkere modus</span>
         </button>
-      </div>
-    </nav>
-
+      </nav>
+    </div>
+  </header>
+  <main id="main-content">
     <section class="section">
-      <h1>Privacy Policy</h1>
-      <p>This site does not collect personal information. The calculator runs in your browser; data is not sent to a server.</p>
-      <p>If you enable ads, third-party vendors (like Google) may use cookies to serve ads based on your visit. You can opt-out via your Ad Settings.</p>
+      <article class="card" aria-labelledby="privacy-heading">
+        <h1 id="privacy-heading">Privacy Policy</h1>
+        <p>BudgetTools is a static site. All calculations run in your browser — we do not collect, store, or transmit your data.</p>
+        <h2>Analytics</h2>
+        <p>We recommend privacy-friendly analytics such as Plausible. If you enable analytics, update this section with your data retention policy.</p>
+        <h2>Advertising &amp; affiliates</h2>
+        <p>Affiliate links may reward us when you sign up or purchase. We only promote partners that respect user privacy. You can opt out by clearing cookies at any time.</p>
+        <h2>Contact</h2>
+        <p>Questions about privacy? Email <a href="mailto:privacy@budgettools.com">privacy@budgettools.com</a>.</p>
+      </article>
     </section>
+  </main>
+  <footer role="contentinfo">
+    <div class="footer-inner">
+      <p>© <span data-year></span> BudgetTools. Built for transparent personal finance.</p>
+      <nav aria-label="Footer">
+        <a href="/terms.html">Terms</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+    </div>
+  </footer>
 
-    <footer>
-      <div>© <span data-year></span> BudgetTools</div>
-    </footer>
-  </div>
-  <!-- Script dat thema-keuze bewaart en het jaartal bijwerkt -->
-  <script src="/assets/theme.js"></script>
+  <script defer src="/assets/js/main.js"></script>
 </body>
 </html>

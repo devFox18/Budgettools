@@ -519,7 +519,9 @@ class SavingsCalculatorUI {
   private showAllButton!: HTMLButtonElement;
   private messageRegion!: HTMLElement;
   private rememberToggle!: HTMLInputElement;
+  private resultsCard!: HTMLElement;
   private resultsColumn!: HTMLElement;
+  private resultsMount: HTMLElement | null = null;
   private mobileSummaryRegion!: HTMLElement;
   private mobileSummaryCard!: HTMLElement;
 
@@ -586,14 +588,6 @@ class SavingsCalculatorUI {
             <button type="button" data-mode="monthly" aria-pressed="false">Monthly savings by date</button>
           </div>
         </div>
-        <section class="bt-summary-card" id="bt-summary-card" aria-labelledby="bt-summary-heading">
-          <div class="bt-summary-card__header">
-            <h3 id="bt-summary-heading">Results summary</h3>
-            <p class="bt-summary-card__subtitle">We refresh your plan after each calculation.</p>
-          </div>
-          <div id="bt-summary" class="bt-summary" role="region" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
-          <p class="sr-only" id="bt-summary-announcer" aria-live="polite"></p>
-        </section>
       </header>
       <div class="bt-savings-body">
         <div class="bt-form-column">
@@ -655,53 +649,69 @@ class SavingsCalculatorUI {
           </form>
           <div id="bt-message" class="bt-message" aria-live="polite"></div>
         </div>
-        <aside class="bt-results-column" id="bt-results" aria-labelledby="bt-results-heading">
-          <section class="bt-results-card">
-            <div class="bt-results-header">
-              <h3 id="bt-results-heading">Results summary</h3>
-              <p class="bt-results-subtitle">We refresh your plan after each calculation.</p>
-            </div>
-            <div id="bt-summary" class="bt-summary" role="region" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
-            <p class="sr-only" id="bt-summary-announcer" aria-live="polite"></p>
-            <div class="bt-actions">
-              <button type="button" class="bt-button" data-action="reset">Reset</button>
-              <button type="button" class="bt-button" data-action="copy">Copy results</button>
-              <button type="button" class="bt-button" data-action="download-pdf">Download PDF</button>
-              <button type="button" class="bt-button" data-action="download-csv">Download CSV</button>
-            </div>
-            <div class="bt-results-details" id="bt-results-details">
-              <div class="bt-table-wrapper">
-                <table class="bt-projection-table">
-                  <thead>
-                    <tr>
-                      <th scope="col">Month</th>
-                      <th scope="col">Date</th>
-                      <th scope="col">Starting balance</th>
-                      <th scope="col">Contribution</th>
-                      <th scope="col">Interest</th>
-                      <th scope="col">Ending balance</th>
-                    </tr>
-                  </thead>
-                  <tbody id="bt-table-body"></tbody>
-                </table>
-              </div>
-              <button type="button" class="bt-button" data-action="toggle-rows" aria-expanded="false">View full schedule</button>
-              <p class="bt-footer">BudgetTools — calculations run in your browser. No data stored. Estimates only. Returns are not guaranteed.</p>
-            </div>
-          </section>
-        </aside>
       </div>
     `;
     this.container.innerHTML = '';
     this.container.appendChild(this.root);
 
-    this.summaryRegion = this.root.querySelector('#bt-summary') as HTMLElement;
-    this.summaryAnnouncer = this.root.querySelector('#bt-summary-announcer') as HTMLElement;
-    this.tableBody = this.root.querySelector('#bt-table-body') as HTMLElement;
-    this.showAllButton = this.root.querySelector('[data-action="toggle-rows"]') as HTMLButtonElement;
+    const resultsCard = document.createElement('section');
+    resultsCard.className = 'bt-results-card';
+    resultsCard.setAttribute('aria-labelledby', 'bt-results-heading');
+    resultsCard.setAttribute('data-has-results', 'false');
+    resultsCard.setAttribute('hidden', '');
+    resultsCard.innerHTML = `
+      <div class="bt-results-header">
+        <h3 id="bt-results-heading">Your Results Summary</h3>
+        <p class="bt-results-subtitle">We refresh your plan after each calculation.</p>
+      </div>
+      <div id="bt-summary-region" class="bt-summary" role="region" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
+      <p class="sr-only" id="bt-summary-announcer" aria-live="polite"></p>
+      <div class="bt-actions">
+        <button type="button" class="bt-button" data-action="reset">Reset</button>
+        <button type="button" class="bt-button" data-action="copy">Copy results</button>
+        <button type="button" class="bt-button" data-action="download-pdf">Download PDF</button>
+        <button type="button" class="bt-button" data-action="download-csv">Download CSV</button>
+      </div>
+      <div class="bt-results-details" id="bt-results-details">
+        <div class="bt-table-wrapper">
+          <table class="bt-projection-table">
+            <thead>
+              <tr>
+                <th scope="col">Month</th>
+                <th scope="col">Date</th>
+                <th scope="col">Starting balance</th>
+                <th scope="col">Contribution</th>
+                <th scope="col">Interest</th>
+                <th scope="col">Ending balance</th>
+              </tr>
+            </thead>
+            <tbody id="bt-table-body"></tbody>
+          </table>
+        </div>
+        <button type="button" class="bt-button" data-action="toggle-rows" aria-expanded="false">View full schedule</button>
+        <p class="bt-footer">BudgetTools — calculations run in your browser. No data stored. Estimates only. Returns are not guaranteed.</p>
+      </div>
+    `;
+
+    const summaryMount = document.querySelector('[data-results-summary]');
+    if (summaryMount instanceof HTMLElement) {
+      summaryMount.innerHTML = '';
+      summaryMount.appendChild(resultsCard);
+      this.resultsMount = summaryMount;
+      this.resultsMount.setAttribute('hidden', '');
+    } else {
+      this.root.appendChild(resultsCard);
+      this.resultsMount = null;
+    }
+
+    this.resultsCard = resultsCard;
+    this.resultsColumn = resultsCard;
+    this.summaryRegion = resultsCard.querySelector('#bt-summary-region') as HTMLElement;
+    this.summaryAnnouncer = resultsCard.querySelector('#bt-summary-announcer') as HTMLElement;
+    this.tableBody = resultsCard.querySelector('#bt-table-body') as HTMLElement;
+    this.showAllButton = resultsCard.querySelector('[data-action="toggle-rows"]') as HTMLButtonElement;
     this.messageRegion = this.root.querySelector('#bt-message') as HTMLElement;
     this.rememberToggle = this.root.querySelector('#rememberInputs') as HTMLInputElement;
-    this.resultsColumn = this.root.querySelector('.bt-results-column') as HTMLElement;
     this.mobileSummaryRegion = this.root.querySelector('#bt-mobile-summary') as HTMLElement;
     this.mobileSummaryCard = this.mobileSummaryRegion.querySelector('.bt-mobile-summary__card') as HTMLElement;
 
@@ -748,7 +758,7 @@ class SavingsCalculatorUI {
       this.persistState();
     });
 
-    const actionButtons = Array.from(this.root.querySelectorAll<HTMLButtonElement>('.bt-actions .bt-button'));
+    const actionButtons = Array.from(resultsCard.querySelectorAll<HTMLButtonElement>('.bt-actions .bt-button'));
     actionButtons.forEach((button) => {
       button.addEventListener('click', () => {
         const action = button.dataset.action;
@@ -756,7 +766,7 @@ class SavingsCalculatorUI {
       });
     });
 
-    this.showAllButton.addEventListener('click', () => {
+    this.showAllButton?.addEventListener('click', () => {
       this.showAllRows = !this.showAllRows;
       this.renderProjection();
     });
@@ -954,6 +964,13 @@ class SavingsCalculatorUI {
     paragraph.textContent = text;
     this.summaryRegion.setAttribute('data-has-results', 'false');
     this.summaryRegion.replaceChildren(paragraph);
+    if (this.resultsCard) {
+      this.resultsCard.dataset.hasResults = 'false';
+      this.resultsCard.setAttribute('hidden', '');
+    }
+    if (this.resultsMount) {
+      this.resultsMount.setAttribute('hidden', '');
+    }
   }
 
   private announceResults(): void {
@@ -1220,12 +1237,22 @@ class SavingsCalculatorUI {
     fragment.appendChild(metrics);
     this.summaryRegion.setAttribute('data-has-results', 'true');
     this.summaryRegion.replaceChildren(fragment);
+    if (this.resultsCard) {
+      this.resultsCard.dataset.hasResults = 'true';
+      this.resultsCard.removeAttribute('hidden');
+    }
+    if (this.resultsMount) {
+      this.resultsMount.removeAttribute('hidden');
+    }
   }
 
   private renderProjection(): void {
     if (!this.resultSummary) {
       this.tableBody.innerHTML = '';
-      this.showAllButton.style.display = 'none';
+      if (this.showAllButton) {
+        this.showAllButton.style.display = 'none';
+        this.showAllButton.setAttribute('aria-expanded', 'false');
+      }
       return;
     }
     const projection = this.resultSummary.projection;
@@ -1259,6 +1286,9 @@ class SavingsCalculatorUI {
       fragment.appendChild(tr);
     }
     this.tableBody.replaceChildren(fragment);
+    if (!this.showAllButton) {
+      return;
+    }
     const hasMoreRows = projection.length > PREVIEW_ROW_COUNT;
     this.showAllButton.style.display = hasMoreRows ? 'inline-flex' : 'none';
     if (hasMoreRows) {

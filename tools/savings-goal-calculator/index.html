@@ -58,7 +58,13 @@
     <section class="calculator-wrap" aria-label="Savings goal calculator">
       <div class="calculator-layout">
         <div class="calculator-layout__app" id="savings-calculator"></div>
-        <aside class="calculator-layout__aside" aria-labelledby="tips-heading">
+        <aside class="calculator-layout__aside" aria-label="Additional tools">
+          <div class="card card--subtle card--shareable" id="shareable-report">
+            <h2>Need a shareable report?</h2>
+            <p>Download a PDF or CSV instantly, or explore branded templates with BudgetTools Premium.</p>
+            <a class="btn btn--ghost" href="/premium.html">See premium upgrades</a>
+          </div>
+          <div class="results-summary-mount" data-results-summary></div>
           <div class="card card--subtle">
             <h2 id="tips-heading">Quick tips</h2>
             <ul class="checklist">
@@ -66,11 +72,6 @@
               <li>Add APY to include compounding interest or leave it blank for a straight savings plan.</li>
               <li>Use “Remember my inputs” to pick up where you left off on this device.</li>
             </ul>
-          </div>
-          <div class="card card--subtle">
-            <h2>Need a shareable report?</h2>
-            <p>Download a PDF or CSV instantly, or explore branded templates with BudgetTools Premium.</p>
-            <a class="btn btn--ghost" href="/premium.html">See premium upgrades</a>
           </div>
         </aside>
       </div>

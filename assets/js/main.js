@@ -54,6 +54,72 @@
     });
   };
 
+  const initSiteNavigation = () => {
+    const toggle = document.querySelector('[data-nav-toggle]');
+    const nav = document.querySelector('[data-site-nav]');
+    if (!toggle || !nav) return;
+
+    const rootElement = document.documentElement;
+    const mobileQuery = window.matchMedia('(min-width: 721px)');
+
+    const isOpen = () => nav.getAttribute('data-open') === 'true';
+    const isMobileViewport = () => !mobileQuery.matches;
+
+    const openNav = () => {
+      nav.setAttribute('data-open', 'true');
+      toggle.setAttribute('aria-expanded', 'true');
+      rootElement.classList.add('has-nav-open');
+    };
+
+    const closeNav = ({ shouldFocusToggle = false } = {}) => {
+      if (!isOpen()) return;
+      nav.removeAttribute('data-open');
+      toggle.setAttribute('aria-expanded', 'false');
+      rootElement.classList.remove('has-nav-open');
+      if (shouldFocusToggle) {
+        toggle.focus();
+      }
+    };
+
+    toggle.addEventListener('click', () => {
+      if (isOpen()) {
+        closeNav();
+      } else {
+        openNav();
+      }
+    });
+
+    nav.addEventListener('click', (event) => {
+      if (!isMobileViewport()) return;
+      const link = event.target.closest('.site-nav__link');
+      if (link) {
+        closeNav();
+        return;
+      }
+      if (!event.target.closest('.site-nav__list')) {
+        closeNav();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isOpen()) {
+        closeNav({ shouldFocusToggle: true });
+      }
+    });
+
+    const handleBreakpointChange = (event) => {
+      if (event.matches) {
+        closeNav();
+      }
+    };
+
+    if (typeof mobileQuery.addEventListener === 'function') {
+      mobileQuery.addEventListener('change', handleBreakpointChange);
+    } else {
+      mobileQuery.addListener(handleBreakpointChange);
+    }
+  };
+
   const hydratePreloadedStyles = () => {
     const links = document.querySelectorAll('link[data-preload-style]');
     links.forEach((link) => {
@@ -73,6 +139,7 @@
     enhanceOptInForm();
     enhanceAffiliateButtons();
     initCheckoutButtons();
+    initSiteNavigation();
     hydratePreloadedStyles();
   };
 

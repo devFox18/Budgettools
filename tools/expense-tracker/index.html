@@ -1,18 +1,19 @@
+<!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Expense Tracker | BudgetTools</title>
-  <meta name="description" content="The BudgetTools Expense Tracker is temporarily unavailable while we make improvements. Your saved data remains on your device." />
+  <meta name="description" content="Track monthly spending with a privacy-first expense tracker. Everything runs locally in your browser and stores data on your device only." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://budgettools.netlify.app/tools/expense-tracker/" />
   <meta property="og:title" content="Expense Tracker — BudgetTools" />
-  <meta property="og:description" content="The BudgetTools Expense Tracker is temporarily unavailable while we make improvements." />
+  <meta property="og:description" content="Log expenses, monitor categories, and keep everything on-device with the BudgetTools Expense Tracker." />
   <meta property="og:url" content="https://budgettools.netlify.app/tools/expense-tracker/" />
   <meta property="og:type" content="website" />
   <meta property="twitter:card" content="summary" />
   <meta property="twitter:title" content="Expense Tracker — BudgetTools" />
-  <meta property="twitter:description" content="The BudgetTools Expense Tracker is temporarily unavailable while we make improvements." />
+  <meta property="twitter:description" content="Stay on top of spending with a fast, private tracker that never leaves your browser." />
   <meta name="theme-color" content="#f6f8fb" />
   <link rel="preload" href="/assets/css/style.css" as="style" data-preload-style />
   <link rel="preload" href="/tools/expense-tracker/styles.css" as="style" data-preload-style />
@@ -84,6 +85,9 @@
       .site-nav__item[data-open="true"] > .site-nav__sub-list { max-height: 520px; padding-bottom: 0.25rem; }
       .site-nav__sub-link { padding: 0.55rem 0.85rem 0.55rem 2.35rem; border-radius: 10px; font-size: 0.96rem; }
       .site-nav__sub-link:hover, .site-nav__sub-link:focus-visible { background: rgba(34, 197, 94, 0.14); color: #052e16; }
+      .site-nav__cta { width: 100%; justify-content: center; }
+      .site-nav[data-open="true"] { pointer-events: auto; opacity: 1; }
+      .site-nav[data-open="true"] .site-nav__list { transform: translateY(0); }
       .site-nav__toggle { display: inline-flex; }
       .site-nav__toggle-line { width: 1.35rem; }
       .site-nav__toggle[aria-expanded="true"] .site-nav__toggle-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -124,6 +128,7 @@
             <ul class="site-nav__sub-list" id="nav-tools-menu" aria-labelledby="nav-tools" data-nav-submenu>
               <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/budget-calculator/">Budget Calculator</a></li>
               <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/savings-goal-calculator/">Savings Goal Calculator</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/expense-tracker/" aria-current="page">Expense Tracker</a></li>
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Budget Planner · Coming soon</span></li>
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Tax Estimator · Coming soon</span></li>
             </ul>
@@ -192,25 +197,77 @@
       <div class="tool-hero__inner">
         <h1 id="expense-tracker-heading">Expense Tracker</h1>
         <p class="tool-hero__subtitle">All calculations run locally in your browser — we never collect or store your data.</p>
-        <p class="tool-hero__note">The Expense Tracker is temporarily unavailable while we make improvements. Any data saved previously stays on your device.</p>
         <div class="button-row">
-          <a class="btn" href="/tools/budget-calculator/" aria-label="Open the Budget Calculator tool">Explore our other tools</a>
+          <button class="btn" type="button" data-start-tracking aria-label="Jump to the tracker">Start tracking</button>
         </div>
       </div>
     </section>
-    <section class="tool-update section" aria-labelledby="tool-update-heading">
-      <div class="tool-update__inner">
-        <h2 id="tool-update-heading">Expense Tracker paused</h2>
-        <p>We're making improvements to the Expense Tracker experience and have temporarily disabled it.</p>
-        <p>Your previously saved expenses remain stored locally in your browser and will be available again once the tracker returns.</p>
-        <p>Need to keep working in the meantime? Explore our other budgeting calculators below.</p>
-        <div class="button-row">
-          <a class="btn" href="/tools/budget-calculator/" aria-label="Open the Budget Calculator tool">Budget Calculator</a>
-          <a class="btn btn--ghost" href="/tools/savings-goal-calculator/" aria-label="Open the Savings Goal Calculator tool">Savings Goal Calculator</a>
+    <section class="tracker" id="tracker" aria-label="Expense tracker interface" data-tracker>
+      <div class="tracker__controls">
+        <label class="tracker__month" for="month-select">
+          <span>Month</span>
+          <input id="month-select" type="month" data-month-selector aria-label="Select month" />
+        </label>
+        <div class="tracker__chips" role="group" aria-label="Quick add categories">
+          <button type="button" class="chip" data-category-chip="Housing">Housing</button>
+          <button type="button" class="chip" data-category-chip="Food">Food</button>
+          <button type="button" class="chip" data-category-chip="Transport">Transport</button>
+          <button type="button" class="chip" data-category-chip="Subscriptions">Subscriptions</button>
+          <button type="button" class="chip" data-category-chip="Leisure">Leisure</button>
+          <div class="chip chip--custom">
+            <label class="chip__label" for="custom-category">Custom category</label>
+            <input id="custom-category" type="text" value="Other" maxlength="30" data-custom-category-input aria-label="Custom category name" />
+            <button type="button" class="chip__button" data-custom-category-apply aria-label="Apply custom category">Use</button>
+          </div>
         </div>
       </div>
+      <div class="tracker__grid">
+        <div class="tracker__table" data-table-region>
+          <div class="tracker__empty" data-empty-state hidden>
+            <p>No expenses yet. Add your first expense to get started.</p>
+            <button type="button" class="btn btn--ghost" data-empty-add aria-label="Add first expense">Add your first expense</button>
+          </div>
+          <div class="tracker__tip" data-tip hidden>Tip: use quick-add chips to speed up category selection.</div>
+          <div class="tracker__row-limit" data-row-limit hidden role="status" aria-live="polite"></div>
+          <div class="table-scroll">
+            <table class="entry-table" aria-describedby="summary-heading">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Note <span class="entry-table__optional">(optional)</span></th>
+                  <th scope="col">Amount</th>
+                </tr>
+              </thead>
+              <tbody data-entries></tbody>
+            </table>
+          </div>
+          <div class="tracker__actions">
+            <div class="tracker__action-group">
+              <button type="button" class="btn" data-add-row aria-label="Add expense row">Add row</button>
+              <button type="button" class="btn btn--ghost" data-delete-selected aria-label="Delete selected expense" disabled>Delete selected</button>
+              <button type="button" class="btn btn--danger" data-clear-month aria-label="Clear all expenses for this month">Clear month</button>
+            </div>
+            <div class="tracker__import-export">
+              <button type="button" class="btn btn--ghost" data-download aria-label="Download month as JSON">Download JSON</button>
+              <button type="button" class="btn btn--ghost" data-import aria-label="Import month from JSON">Import JSON</button>
+              <input type="file" accept="application/json" data-import-input hidden aria-hidden="true" />
+            </div>
+          </div>
+        </div>
+        <aside class="tracker__summary" aria-live="polite">
+          <h2 id="summary-heading">Summary</h2>
+          <p class="tracker__summary-total" data-total>Total spent: <span data-total-amount>$0.00</span></p>
+          <div class="tracker__summary-chart" role="img" aria-label="Category spending distribution" data-chart></div>
+          <dl class="tracker__summary-list" data-category-totals></dl>
+        </aside>
+      </div>
+      <footer class="tracker__footer">
+        <p class="tracker__privacy-note">BudgetTools is a static site. This tool stores data only on your device using localStorage. You can clear it anytime.</p>
+      </footer>
     </section>
   </main>
   <script defer src="/assets/js/main.js"></script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>

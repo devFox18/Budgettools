@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8" />
@@ -84,6 +85,9 @@
       .site-nav__item[data-open="true"] > .site-nav__sub-list { max-height: 520px; padding-bottom: 0.25rem; }
       .site-nav__sub-link { padding: 0.55rem 0.85rem 0.55rem 2.35rem; border-radius: 10px; font-size: 0.96rem; }
       .site-nav__sub-link:hover, .site-nav__sub-link:focus-visible { background: rgba(34, 197, 94, 0.14); color: #052e16; }
+      .site-nav__cta { width: 100%; justify-content: center; }
+      .site-nav[data-open="true"] { pointer-events: auto; opacity: 1; }
+      .site-nav[data-open="true"] .site-nav__list { transform: translateY(0); }
       .site-nav__toggle { display: inline-flex; }
       .site-nav__toggle-line { width: 1.35rem; }
       .site-nav__toggle[aria-expanded="true"] .site-nav__toggle-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -198,58 +202,34 @@
         </div>
       </div>
     </section>
-    <section class="tracker" aria-label="Expense tracker interface" data-tracker>
-      <div class="tracker__live" data-live-region aria-live="polite"></div>
+    <section class="tracker" id="tracker" aria-label="Expense tracker interface" data-tracker>
       <div class="tracker__controls">
-        <div class="tracker__control">
-          <label for="month-select">Month</label>
+        <label class="tracker__month" for="month-select">
+          <span>Month</span>
           <input id="month-select" type="month" data-month-selector aria-label="Select month" />
-        </div>
-        <div class="tracker__control">
-          <label for="currency-select">Currency</label>
-          <select id="currency-select" data-currency-selector aria-label="Select currency">
-            <option value="EUR">EUR — €</option>
-            <option value="USD">USD — $</option>
-            <option value="GBP">GBP — £</option>
-            <option value="CAD">CAD — $</option>
-            <option value="AUD">AUD — $</option>
-          </select>
-        </div>
-        <div class="tracker__actions" aria-label="Table actions">
-          <button type="button" class="btn" data-add-row aria-label="Add expense row">Add row</button>
-          <button type="button" class="btn btn--ghost" data-delete-row aria-label="Delete selected expense" disabled>Delete selected</button>
-          <button type="button" class="btn btn--danger" data-clear-month aria-label="Clear all expenses for this month">Clear month</button>
-          <button type="button" class="tracker__help" data-shortcuts-toggle aria-label="Keyboard shortcuts">?</button>
+        </label>
+        <div class="tracker__chips" role="group" aria-label="Quick add categories">
+          <button type="button" class="chip" data-category-chip="Housing">Housing</button>
+          <button type="button" class="chip" data-category-chip="Food">Food</button>
+          <button type="button" class="chip" data-category-chip="Transport">Transport</button>
+          <button type="button" class="chip" data-category-chip="Subscriptions">Subscriptions</button>
+          <button type="button" class="chip" data-category-chip="Leisure">Leisure</button>
+          <div class="chip chip--custom">
+            <label class="chip__label" for="custom-category">Custom category</label>
+            <input id="custom-category" type="text" value="Other" maxlength="30" data-custom-category-input aria-label="Custom category name" />
+            <button type="button" class="chip__button" data-custom-category-apply aria-label="Apply custom category">Use</button>
+          </div>
         </div>
       </div>
-      <div class="tracker__status-line">
-        <span class="tracker__save-status" data-save-status aria-live="polite"></span>
-        <div class="tracker__filter" data-filter-notice hidden>
-          <span>Filtering by <strong></strong></span>
-          <button type="button" data-clear-filter>Clear</button>
-        </div>
-      </div>
-      <div class="tracker__chips" role="group" aria-label="Quick add categories" data-chips>
-        <button type="button" class="chip" data-category-chip="Housing">Housing</button>
-        <button type="button" class="chip" data-category-chip="Food">Food</button>
-        <button type="button" class="chip" data-category-chip="Transport">Transport</button>
-        <button type="button" class="chip" data-category-chip="Subscriptions">Subscriptions</button>
-        <button type="button" class="chip" data-category-chip="Leisure">Leisure</button>
-        <div class="chip chip--custom">
-          <label class="chip__label" for="custom-category">Custom category</label>
-          <input id="custom-category" type="text" maxlength="30" data-custom-category-input aria-label="Custom category name" />
-          <button type="button" class="chip__button" data-custom-category-apply aria-label="Apply custom category">Use</button>
-        </div>
-      </div>
-      <div class="tracker__row-limit" data-row-limit hidden role="status" aria-live="polite"></div>
       <div class="tracker__grid">
-        <div class="tracker__table">
+        <div class="tracker__table" data-table-region>
           <div class="tracker__empty" data-empty-state hidden>
             <p>No expenses yet. Add your first expense to get started.</p>
             <button type="button" class="btn btn--ghost" data-empty-add aria-label="Add first expense">Add your first expense</button>
           </div>
           <div class="tracker__tip" data-tip hidden>Tip: use quick-add chips to speed up category selection.</div>
-          <div class="table-scroll" role="region" aria-label="Expenses table">
+          <div class="tracker__row-limit" data-row-limit hidden role="status" aria-live="polite"></div>
+          <div class="table-scroll">
             <table class="entry-table" aria-describedby="summary-heading">
               <thead>
                 <tr>
@@ -262,33 +242,29 @@
               <tbody data-entries></tbody>
             </table>
           </div>
-          <div class="tracker__import-export">
-            <button type="button" class="btn btn--ghost" data-download aria-label="Download month as JSON">Download JSON</button>
-            <button type="button" class="btn btn--ghost" data-import aria-label="Import month from JSON">Import JSON</button>
-            <input type="file" accept="application/json" data-import-input hidden aria-hidden="true" />
-            <p class="tracker__import-error" data-import-error hidden></p>
+          <div class="tracker__actions">
+            <div class="tracker__action-group">
+              <button type="button" class="btn" data-add-row aria-label="Add expense row">Add row</button>
+              <button type="button" class="btn btn--ghost" data-delete-selected aria-label="Delete selected expense" disabled>Delete selected</button>
+              <button type="button" class="btn btn--danger" data-clear-month aria-label="Clear all expenses for this month">Clear month</button>
+            </div>
+            <div class="tracker__import-export">
+              <button type="button" class="btn btn--ghost" data-download aria-label="Download month as JSON">Download JSON</button>
+              <button type="button" class="btn btn--ghost" data-import aria-label="Import month from JSON">Import JSON</button>
+              <input type="file" accept="application/json" data-import-input hidden aria-hidden="true" />
+            </div>
           </div>
         </div>
         <aside class="tracker__summary" aria-live="polite">
           <h2 id="summary-heading">Summary</h2>
-          <p class="tracker__summary-total">Total spent: <span data-total-amount>$0.00</span></p>
-          <div class="summary__bar" role="img" aria-label="Category spending distribution" data-summary-bar></div>
-          <ul class="summary__list" data-category-totals></ul>
+          <p class="tracker__summary-total" data-total>Total spent: <span data-total-amount>$0.00</span></p>
+          <div class="tracker__summary-chart" role="img" aria-label="Category spending distribution" data-chart></div>
+          <dl class="tracker__summary-list" data-category-totals></dl>
         </aside>
       </div>
       <footer class="tracker__footer">
-        <p class="tracker__privacy-note">Budgettools is a static site. This tool stores data only on your device using localStorage. You can clear it anytime.</p>
+        <p class="tracker__privacy-note">BudgetTools is a static site. This tool stores data only on your device using localStorage. You can clear it anytime.</p>
       </footer>
-      <dialog class="shortcuts-dialog" data-shortcuts-panel aria-labelledby="shortcuts-title" hidden>
-        <h2 id="shortcuts-title">Keyboard shortcuts</h2>
-        <ul>
-          <li><span>A</span><span>Add row</span></li>
-          <li><span>Delete / Backspace</span><span>Delete selected row</span></li>
-          <li><span>Ctrl / Cmd + S</span><span>Save month</span></li>
-          <li><span>?</span><span>Open this help</span></li>
-        </ul>
-        <button type="button" class="btn btn--ghost" data-shortcuts-close>Close</button>
-      </dialog>
     </section>
   </main>
   <script defer src="/assets/js/main.js"></script>

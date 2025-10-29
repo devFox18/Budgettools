@@ -28,16 +28,32 @@
     .site-nav__toggle[aria-expanded="true"] .site-nav__toggle-line:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
     .site-nav__toggle-label { display: inline-flex; align-items: center; gap: 0.25rem; }
     .site-nav__list { display: flex; list-style: none; gap: clamp(1rem, 2.6vw, 1.75rem); padding: 0; margin: 0; align-items: center; }
-    .site-nav__item { margin: 0; }
-    .site-nav__link { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.35rem 0; font-weight: 600; font-size: 0.97rem; color: #64748b; text-decoration: none; position: relative; transition: color 0.2s ease; }
+    .site-nav__item { margin: 0; position: relative; }
+    .site-nav__link { appearance: none; background: none; border: 0; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0; font-weight: 600; font-size: 0.97rem; color: #64748b; text-decoration: none; position: relative; transition: color 0.2s ease; cursor: pointer; border-radius: 0; }
     .site-nav__link::after { content: ""; position: absolute; left: 0; bottom: -0.45rem; width: 100%; height: 3px; border-radius: 999px; background: var(--color-accent); transform: scaleX(0); transform-origin: left; opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease; }
     .site-nav__link:hover, .site-nav__link:focus-visible { color: #0f172a; }
     .site-nav__link:hover::after, .site-nav__link:focus-visible::after { transform: scaleX(1); opacity: 0.6; }
-    .site-nav__link[aria-current="page"] { color: #0f172a; font-weight: 700; }
-    .site-nav__link[aria-current="page"]::after { transform: scaleX(1); opacity: 1; }
+    .site-nav__link[aria-current="page"], .site-nav__link[data-active="true"] { color: #0f172a; font-weight: 700; }
+    .site-nav__link[aria-current="page"]::after, .site-nav__link[data-active="true"]::after { transform: scaleX(1); opacity: 1; }
+    .site-nav__link:focus-visible { outline: 2px solid rgba(34, 197, 94, 0.55); outline-offset: 4px; border-radius: 12px; }
+    .site-nav__caret { width: 0.75rem; height: 0.75rem; display: inline-flex; color: currentColor; transition: transform 0.25s ease; }
+    .site-nav__item[data-open="true"] > .site-nav__link .site-nav__caret { transform: rotate(180deg); }
+    .site-nav__sub-list { list-style: none; padding: 0.75rem; margin: 0; position: absolute; top: calc(100% + 0.65rem); left: 0; min-width: 220px; border-radius: 16px; background: #ffffff; box-shadow: 0 26px 45px -25px rgba(15, 23, 42, 0.35); border: 1px solid rgba(219, 228, 243, 0.85); opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-0.4rem); transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease; z-index: 10; display: grid; gap: 0.15rem; }
+    .site-nav__item[data-open="true"] > .site-nav__sub-list { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); }
+    .site-nav__sub-item { margin: 0; }
+    .site-nav__sub-link { display: block; padding: 0.6rem 0.75rem; border-radius: 12px; color: #0f172a; text-decoration: none; font-weight: 600; font-size: 0.92rem; transition: background-color 0.2s ease, color 0.2s ease; }
+    .site-nav__sub-link:hover, .site-nav__sub-link:focus-visible { background: rgba(34, 197, 94, 0.12); color: #052e16; outline: none; }
+    .site-nav__sub-link[data-disabled="true"] { color: #94a3b8; cursor: not-allowed; pointer-events: none; }
+    .site-nav__sub-link[data-disabled="true"]:hover, .site-nav__sub-link[data-disabled="true"]:focus-visible { background: transparent; color: #94a3b8; }
+    .site-nav__item--cta { margin-left: clamp(1rem, 2vw, 2.25rem); }
+    .site-nav__cta { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border-radius: 999px; background: var(--color-accent); color: var(--color-accent-ink); font-size: 0.95rem; font-weight: 700; text-decoration: none; box-shadow: 0 14px 32px rgba(34, 197, 94, 0.28); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .site-nav__cta:hover, .site-nav__cta:focus-visible { transform: translateY(-1px); box-shadow: 0 18px 40px rgba(34, 197, 94, 0.36); outline: none; }
     .has-nav-open, .has-nav-open body { overflow: hidden; }
-    .no-js .site-nav { flex-wrap: wrap; }
-    .no-js .site-nav__list { flex-wrap: wrap; }
+    .no-js .site-nav { position: static; padding: 0; background: transparent; opacity: 1; pointer-events: auto; display: flex; }
+    .no-js .site-nav__list { display: flex; flex-wrap: wrap; gap: clamp(0.75rem, 2.6vw, 1.5rem); background: transparent; border: 0; box-shadow: none; padding: 0; }
+    .no-js .site-nav__item { position: static; }
+    .no-js .site-nav__sub-list { position: static; opacity: 1; visibility: visible; pointer-events: auto; transform: none; box-shadow: none; border: 0; background: transparent; padding: 0.35rem 0 0 0; display: grid; gap: 0.35rem; }
+    .no-js .site-nav__sub-link { padding: 0.35rem 0; color: #0f172a; }
     main { display: block; }
     .section { width: min(1080px, 100% - 3.5rem); margin-inline: auto; padding-block: clamp(2.8rem, 6vw, 4.5rem); }
     .card { background: #ffffff; border-radius: 18px; border: 1px solid rgba(219,228,243,0.9); padding: clamp(1.5rem, 4vw, 2.25rem); box-shadow: 0 10px 30px rgba(15,23,42,0.08); }
@@ -47,11 +63,19 @@
     @media (max-width: 720px) {
       .site-header__inner { padding-block: 0.85rem; }
       .site-nav { position: fixed; inset: 0; padding: 5.5rem 1.5rem 2rem; background: rgba(246, 248, 251, 0.92); backdrop-filter: blur(18px); pointer-events: none; opacity: 0; transition: opacity 0.25s ease; display: grid; place-items: start end; }
-      .site-nav__list { width: min(360px, 100%); background: #ffffff; border-radius: 18px; border: 1px solid rgba(219, 228, 243, 0.9); box-shadow: 0 24px 45px -24px rgba(15, 23, 42, 0.32); padding: 1rem; display: grid; gap: 0.5rem; transform: translateY(-0.75rem); transition: transform 0.24s ease; }
-      .site-nav__link { width: 100%; font-size: 1rem; color: #0f172a; padding: 0.65rem 0.75rem; border-radius: 12px; }
+      .site-nav__list { width: min(360px, 100%); background: #ffffff; border-radius: 18px; border: 1px solid rgba(219, 228, 243, 0.9); box-shadow: 0 24px 45px -24px rgba(15, 23, 42, 0.32); padding: 1.1rem; display: grid; gap: 0.4rem; transform: translateY(-0.75rem); transition: transform 0.24s ease; }
+      .site-nav__item { width: 100%; }
+      .site-nav__item--cta { margin-left: 0; padding-top: 0.65rem; margin-top: 0.35rem; border-top: 1px solid rgba(226, 232, 240, 0.9); }
+      .site-nav__link { width: 100%; justify-content: space-between; font-size: 1rem; color: #0f172a; padding: 0.7rem 0.85rem; border-radius: 12px; }
       .site-nav__link::after { display: none; }
       .site-nav__link:hover, .site-nav__link:focus-visible { background: rgba(34, 197, 94, 0.14); color: #0f172a; }
-      .site-nav__link[aria-current="page"] { background: rgba(34, 197, 94, 0.22); }
+      .site-nav__link[aria-current="page"], .site-nav__link[data-active="true"] { background: rgba(34, 197, 94, 0.22); }
+      .site-nav__caret { margin-left: auto; }
+      .site-nav__sub-list { position: static; opacity: 1; visibility: visible; pointer-events: auto; transform: none; padding: 0; margin: 0; border: 0; box-shadow: none; background: transparent; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+      .site-nav__item[data-open="true"] > .site-nav__sub-list { max-height: 520px; padding-bottom: 0.25rem; }
+      .site-nav__sub-link { padding: 0.55rem 0.85rem 0.55rem 2.35rem; border-radius: 10px; font-size: 0.96rem; }
+      .site-nav__sub-link:hover, .site-nav__sub-link:focus-visible { background: rgba(34, 197, 94, 0.14); color: #052e16; }
+      .site-nav__cta { width: 100%; justify-content: center; }
       .site-nav[data-open="true"] { pointer-events: auto; opacity: 1; }
       .site-nav[data-open="true"] .site-nav__list { transform: translateY(0); }
       .site-nav__toggle { display: inline-flex; }
@@ -61,6 +85,7 @@
       .no-js .site-nav { position: static; padding: 0; background: transparent; opacity: 1; pointer-events: auto; display: flex; }
       .no-js .site-nav__list { transform: none; background: transparent; border: 0; box-shadow: none; padding: 0; display: flex; gap: clamp(0.75rem, 2.6vw, 1.5rem); }
       .no-js .site-nav__link { border-radius: 0; padding: 0.35rem 0; }
+      .no-js .site-nav__sub-list { max-height: none; padding-bottom: 0; }
     }
   </style>
 </head>
@@ -83,11 +108,75 @@
       <nav class="site-nav" aria-label="Main navigation" data-site-nav>
         <ul class="site-nav__list" id="site-menu">
           <li class="site-nav__item"><a class="site-nav__link" href="/">Home</a></li>
-          <li class="site-nav__item"><a class="site-nav__link" href="/tools/budget-calculator/">Calculator</a></li>
-          <li class="site-nav__item"><a class="site-nav__link" href="/tools/savings-goal-calculator/">Savings Goal</a></li>
-          <li class="site-nav__item"><a class="site-nav__link" href="/premium.html">Premium</a></li>
-          <li class="site-nav__item"><a class="site-nav__link" href="/privacy.html">Privacy</a></li>
-          <li class="site-nav__item"><a class="site-nav__link" href="/terms.html" aria-current="page">Terms</a></li>
+          <li class="site-nav__item site-nav__item--has-children" data-nav-item>
+            <button class="site-nav__link" type="button" id="nav-tools" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-tools-menu">
+              <span>Tools</span>
+              <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+                <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
+              </svg>
+            </button>
+            <ul class="site-nav__sub-list" id="nav-tools-menu" aria-labelledby="nav-tools" data-nav-submenu>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/budget-calculator/">Budget Calculator</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/savings-goal-calculator/">Savings Goal Calculator</a></li>
+              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Budget Planner · Coming soon</span></li>
+              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Tax Estimator · Coming soon</span></li>
+            </ul>
+          </li>
+          <li class="site-nav__item site-nav__item--has-children" data-nav-item>
+            <button class="site-nav__link" type="button" id="nav-premium" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-premium-menu">
+              <span>Premium</span>
+              <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+                <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
+              </svg>
+            </button>
+            <ul class="site-nav__sub-list" id="nav-premium-menu" aria-labelledby="nav-premium" data-nav-submenu>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/premium.html">Premium overview</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/premium.html#pricing">Pricing plans</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/premium.html#compare">Compare free vs premium</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/premium.html#faq">Premium FAQ</a></li>
+            </ul>
+          </li>
+          <li class="site-nav__item site-nav__item--has-children" data-nav-item>
+            <button class="site-nav__link" type="button" id="nav-resources" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-resources-menu">
+              <span>Resources</span>
+              <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+                <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
+              </svg>
+            </button>
+            <ul class="site-nav__sub-list" id="nav-resources-menu" aria-labelledby="nav-resources" data-nav-submenu>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#guides">Blog &amp; articles</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#newsletter">Tips &amp; guides</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#testimonials">Customer stories</a></li>
+              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Updates &amp; changelog · Coming soon</span></li>
+            </ul>
+          </li>
+          <li class="site-nav__item site-nav__item--has-children" data-nav-item>
+            <button class="site-nav__link" type="button" id="nav-privacy" data-nav-parent data-active="true" aria-expanded="false" aria-haspopup="true" aria-controls="nav-privacy-menu">
+              <span>Privacy &amp; Terms</span>
+              <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+                <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
+              </svg>
+            </button>
+            <ul class="site-nav__sub-list" id="nav-privacy-menu" aria-labelledby="nav-privacy" data-nav-submenu>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/privacy.html">Privacy policy</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/terms.html" aria-current="page">Terms of use</a></li>
+              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Cookie policy · Coming soon</span></li>
+            </ul>
+          </li>
+          <li class="site-nav__item site-nav__item--has-children" data-nav-item>
+            <button class="site-nav__link" type="button" id="nav-contact" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-contact-menu">
+              <span>Contact</span>
+              <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+                <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
+              </svg>
+            </button>
+            <ul class="site-nav__sub-list" id="nav-contact-menu" aria-labelledby="nav-contact" data-nav-submenu>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/contact.html">Contact form</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/contact.html#support">Support</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/contact.html#feedback">Feedback</a></li>
+            </ul>
+          </li>
+          <li class="site-nav__item site-nav__item--cta"><a class="site-nav__cta" href="/premium.html">Get Premium</a></li>
         </ul>
       </nav>
     </div>

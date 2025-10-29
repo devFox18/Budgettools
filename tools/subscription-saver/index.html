@@ -202,19 +202,11 @@
   </header>
   <main id="main-content">
     <div class="wrap">
-      <header class="page-header card hero-card">
-        <div class="hero-copy">
-          <p class="eyebrow">Smart subscription tracking</p>
-          <h1>Subscription Saver</h1>
-          <p class="subtitle">List every subscription you pay for, see your true monthly and yearly totals, and find easy wins to pause or cancel when budgets tighten.</p>
-        </div>
-        <ul class="hero-bullets">
-          <li><span>Spot monthly and yearly totals instantly</span></li>
-          <li><span>Pause items to reveal potential savings</span></li>
-          <li><span>Export filtered data whenever you need</span></li>
-        </ul>
+      <header class="page-header">
+        <h1>Subscription Saver</h1>
+        <p class="subtitle">List every subscription you pay for, see your true monthly and yearly totals, and find easy wins to pause or cancel when budgets tighten.</p>
       </header>
-      <section aria-labelledby="add-subscription-heading" class="card form-card">
+      <section aria-labelledby="add-subscription-heading" class="card subscription-form">
         <div class="form-header">
           <h2 id="add-subscription-heading">Add a subscription</h2>
           <p class="form-helper">Keep the list current so the totals always match your real spending.</p>
@@ -273,56 +265,48 @@
           </div>
         </form>
       </section>
-      <section class="insights-section" aria-labelledby="insights-heading">
-        <div class="insights-grid">
-          <div class="insights-copy">
-            <div class="section-heading">
-              <h2 id="insights-heading">Spending snapshot</h2>
-              <p class="section-subtitle">Totals update in real-time when you edit the list below.</p>
-            </div>
-            <div class="summary-grid">
-              <article class="card summary-card summary-card--monthly" aria-live="polite">
-                <h3>Total monthly cost</h3>
-                <p class="summary-value" id="totalMonthly">$0.00</p>
-                <p class="summary-caption">Only subscriptions that are included in calculations.</p>
-              </article>
-              <article class="card summary-card summary-card--yearly" aria-live="polite">
-                <h3>Total yearly cost</h3>
-                <p class="summary-value" id="totalYearly">$0.00</p>
-                <p class="summary-caption">Based on the billing frequency you entered.</p>
-              </article>
-              <article class="card summary-card summary-card--savings" aria-live="polite">
-                <h3>Potential savings</h3>
-                <p class="summary-value" id="potentialSavings">$0.00</p>
-                <p class="summary-caption">Unchecked subscriptions won&apos;t be counted in totals.</p>
-              </article>
-            </div>
-          </div>
-          <article class="card chart-card" aria-labelledby="chart-heading">
-            <div class="chart-card__header">
-              <h2 id="chart-heading">Monthly cost by category</h2>
-              <p class="chart-card__caption">Toggle items off using the legend to focus on specific categories.</p>
-            </div>
-            <div class="chart-card__canvas">
-              <canvas id="subscriptionChart" width="420" height="420" role="img" aria-label="Donut chart of monthly subscription cost by category"></canvas>
-            </div>
-            <p class="chart-empty" id="chartEmpty">Add a subscription to see the chart.</p>
+      <section class="summary-section" aria-label="Totals overview">
+        <div class="summary-grid">
+          <article class="card summary-card" aria-live="polite">
+            <h3>Total monthly cost</h3>
+            <p class="summary-value" id="totalMonthly">$0.00</p>
+            <p class="summary-caption">Only subscriptions that are included in calculations.</p>
+          </article>
+          <article class="card summary-card" aria-live="polite">
+            <h3>Total yearly cost</h3>
+            <p class="summary-value" id="totalYearly">$0.00</p>
+            <p class="summary-caption">Based on the billing frequency you entered.</p>
+          </article>
+          <article class="card summary-card savings" aria-live="polite">
+            <h3>Potential savings</h3>
+            <p class="summary-value" id="potentialSavings">$0.00</p>
+            <p class="summary-caption">Unchecked subscriptions won&apos;t be counted in totals.</p>
           </article>
         </div>
       </section>
+      <section class="card chart-card" aria-labelledby="chart-heading">
+        <div class="chart-card__header">
+          <h2 id="chart-heading">Monthly cost by category</h2>
+          <p class="chart-card__caption">Toggle items off using the legend to focus on specific categories.</p>
+        </div>
+        <div class="chart-card__canvas">
+          <canvas id="subscriptionChart" width="420" height="420" role="img" aria-label="Donut chart of monthly subscription cost by category"></canvas>
+        </div>
+        <p class="chart-empty" id="chartEmpty">Add a subscription to see the chart.</p>
+      </section>
       <section class="card table-card" aria-labelledby="subscriptions-heading">
         <div class="table-card__header">
-          <div class="table-card__title">
+          <div>
             <h2 id="subscriptions-heading">Subscriptions</h2>
             <p class="table-card__caption" id="tableDescription">Use the filters to zero in on the services costing the most.</p>
           </div>
-          <div class="toolbar" role="region" aria-label="Table actions">
-            <div class="toolbar__buttons">
+          <div class="actions-bar" role="region" aria-label="Table actions">
+            <div class="actions-group">
               <button type="button" class="btn btn--ghost" id="exportCsvButton">Export CSV</button>
               <button type="button" class="btn btn--ghost" id="demoDataButton">Demo data</button>
               <button type="button" class="btn btn--ghost" id="resetButton">Reset all</button>
             </div>
-            <div class="toolbar__filters">
+            <div class="filters-group">
               <label for="searchInput" class="sr-only">Search subscriptions</label>
               <input type="search" id="searchInput" placeholder="Search name or category" aria-describedby="tableDescription" />
               <label for="frequencyFilter" class="sr-only">Filter by billing frequency</label>

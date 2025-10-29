@@ -1,4 +1,15 @@
+/**
+ * Findings:
+ * - Totals and insights are buried beneath the add form, making users scroll before seeing the big picture.
+ * - Filters, search, and actions are scattered with mobile-hostile controls, and inline edits lack clear save/cancel affordances.
+ * - Table rendering recreates markup wholesale, aria-sort hints are missing, and empty/chart states offer little guidance.
+ */
 (() => {
+  /** Redesign Notes
+   * IA: Totals surface first, followed by manage controls, the subscription list, then the chart for a top-down narrative.
+   * Components: Summary cards, manage controls (filters/actions + add form), responsive table/mobile cards, and Chart.js donut.
+   * Extension points: Drop in new filters/actions or additional summary tiles without rewriting persistence or render loops.
+   */
   const STORAGE_KEY = 'bt_subscription_saver_v1';
   const clone = (value) => {
     if (typeof structuredClone === 'function') {
@@ -13,6 +24,13 @@
     }
     return `id-${Date.now().toString(36)}-${Math.random().toString(16).slice(2)}`;
   };
+
+  const currencyFormatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
 
   const DEMO_ROWS = [
     { name: 'Netflix', category: 'Streaming', frequency: 'monthly', price: 15.99, nextBilling: '', notes: '4K plan', included: true },
@@ -46,11 +64,15 @@
     totalMonthly: document.getElementById('totalMonthly'),
     totalYearly: document.getElementById('totalYearly'),
     potentialSavings: document.getElementById('potentialSavings'),
+    monthlyDelta: document.getElementById('monthlyDelta'),
+    yearlyDelta: document.getElementById('yearlyDelta'),
+    savingsHelper: document.getElementById('savingsHelper'),
+    tableCount: document.getElementById('tableCount'),
     chartCanvas: document.getElementById('subscriptionChart'),
     chartEmpty: document.getElementById('chartEmpty'),
     search: document.getElementById('searchInput'),
-    frequencyFilter: document.getElementById('frequencyFilter'),
-    categoryFilter: document.getElementById('categoryFilter'),
+    frequencyRadios: Array.from(document.querySelectorAll('input[name="frequencyFilter"]')),
+    categoryCheckboxes: Array.from(document.querySelectorAll('[data-category-filter]')),
     exportCsv: document.getElementById('exportCsvButton'),
     reset: document.getElementById('resetButton'),
     demo: document.getElementById('demoDataButton')
@@ -61,6 +83,9 @@
   let editDraft = null;
   let chartInstance = null;
   let searchTimer = null;
+  let pendingFocus = null;
+  let editingTrigger = null;
+  let lastFocusedEditField = null;
 
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.body.classList.add('prefers-reduced-motion');
@@ -123,27 +148,24 @@
     elements.reset.addEventListener('click', handleReset);
     elements.demo.addEventListener('click', insertDemoData);
 
-    elements.search.addEventListener('input', (event) => {
-      const value = event.target.value;
-      window.clearTimeout(searchTimer);
-      searchTimer = window.setTimeout(() => {
-        state.filters.query = value.trim();
+    elements.search.addEventListener('input', handleSearchInput);
+
+    elements.frequencyRadios.forEach((radio) => {
+      radio.addEventListener('change', () => {
+        if (!radio.checked) return;
+        state.filters.frequency = radio.value;
         persist();
         render();
-      }, 150);
+      });
     });
 
-    elements.frequencyFilter.addEventListener('change', (event) => {
-      state.filters.frequency = event.target.value;
-      persist();
-      render();
-    });
-
-    elements.categoryFilter.addEventListener('change', () => {
-      const selected = Array.from(elements.categoryFilter.selectedOptions).map((option) => option.value);
-      state.filters.categories = selected;
-      persist();
-      render();
+    elements.categoryCheckboxes.forEach((checkbox) => {
+      checkbox.addEventListener('change', () => {
+        const selected = elements.categoryCheckboxes.filter((input) => input.checked).map((input) => input.value);
+        state.filters.categories = selected;
+        persist();
+        render();
+      });
     });
 
     document.querySelectorAll('.sort-button').forEach((button) => {
@@ -163,6 +185,25 @@
         render();
       });
     });
+
+    document.addEventListener('keydown', handleGlobalKeydown);
+  }
+
+  function handleSearchInput(event) {
+    const value = event.target.value;
+    window.clearTimeout(searchTimer);
+    searchTimer = window.setTimeout(() => {
+      state.filters.query = value.trim();
+      persist();
+      render();
+    }, 150);
+  }
+
+  function handleGlobalKeydown(event) {
+    if (event.key === 'Escape' && editingId) {
+      event.preventDefault();
+      cancelEdit();
+    }
   }
 
   function handleAdd(event) {
@@ -171,7 +212,7 @@
     const category = elements.category.value;
     const frequency = elements.frequencyYearly.checked ? 'yearly' : 'monthly';
     const priceRaw = elements.price.value;
-    const priceValue = Number(priceRaw);
+    const priceValue = Number.parseFloat(priceRaw);
     const nextBilling = elements.nextBilling.value;
     const notes = elements.notes.value.trim();
 
@@ -218,7 +259,7 @@
   }
 
   function formatCurrency(value) {
-    return `$${(Number(value) || 0).toFixed(2)}`;
+    return currencyFormatter.format(Number.isFinite(value) ? value : 0);
   }
 
   function formatFrequency(frequency) {
@@ -279,8 +320,51 @@
     renderTable(filtered);
     renderMobileCards(filtered);
     updateSummary(filtered);
+    updateTableMeta(filtered);
     updateChart(filtered);
     updateEmptyStates(filtered);
+    queueFocusWork();
+  }
+
+  function queueFocusWork() {
+    window.requestAnimationFrame(() => {
+      if (editingId) {
+        focusFirstEditable();
+      } else {
+        lastFocusedEditField = null;
+        restorePendingFocus();
+      }
+    });
+  }
+
+  function focusFirstEditable() {
+    const container = document.querySelector('[data-editing="true"]');
+    if (!container) return;
+    const focusTarget = container.querySelector('[data-focus-initial]') || container.querySelector('input, select, textarea');
+    if (focusTarget && focusTarget !== lastFocusedEditField) {
+      focusTarget.focus({ preventScroll: true });
+      if (typeof focusTarget.select === 'function') {
+        focusTarget.select();
+      }
+      lastFocusedEditField = focusTarget;
+    }
+  }
+
+  function restorePendingFocus() {
+    if (!pendingFocus) return;
+    if (pendingFocus.id && pendingFocus.action) {
+      const selector = `[data-row-id="${pendingFocus.id}"][data-action="${pendingFocus.action}"]`;
+      const node = document.querySelector(selector);
+      if (node) {
+        node.focus({ preventScroll: true });
+        pendingFocus = null;
+        return;
+      }
+    }
+    if (pendingFocus.fallback && typeof pendingFocus.fallback.focus === 'function') {
+      pendingFocus.fallback.focus({ preventScroll: true });
+    }
+    pendingFocus = null;
   }
 
   function updateSortIndicators() {
@@ -295,7 +379,7 @@
       } else {
         button.removeAttribute('data-direction');
         if (th) {
-          th.removeAttribute('aria-sort');
+          th.setAttribute('aria-sort', 'none');
         }
       }
     });
@@ -303,34 +387,49 @@
 
   function renderTable(rows) {
     const tbody = elements.tableBody;
-    tbody.innerHTML = '';
+    if (!tbody) return;
+    const existingRows = new Map(Array.from(tbody.children).map((rowEl) => [rowEl.dataset.id, rowEl]));
+    const fragment = document.createDocumentFragment();
+
     rows.forEach((row) => {
-      const tr = document.createElement('tr');
+      const tr = existingRows.get(row.id) || document.createElement('tr');
       tr.dataset.id = row.id;
       tr.dataset.included = String(row.included);
       if (editingId === row.id) {
         tr.dataset.editing = 'true';
+        tr.replaceChildren();
         renderEditingRow(row, tr);
       } else {
+        tr.removeAttribute('data-editing');
+        tr.replaceChildren();
         renderDisplayRow(row, tr);
       }
-      tbody.appendChild(tr);
+      fragment.appendChild(tr);
     });
+
+    tbody.replaceChildren(fragment);
   }
 
   function renderDisplayRow(row, tr) {
     const includeCell = document.createElement('td');
+    includeCell.className = 'col-include';
     const includeCheckbox = createIncludeCheckbox(row);
     includeCell.appendChild(includeCheckbox);
+    const includeLabel = document.createElement('label');
+    includeLabel.className = 'sr-only';
+    includeLabel.setAttribute('for', includeCheckbox.id);
+    includeLabel.textContent = `Include ${row.name} in totals`;
+    includeCell.appendChild(includeLabel);
     tr.appendChild(includeCell);
 
     const nameCell = document.createElement('td');
+    nameCell.className = 'cell-name';
     const nameText = document.createElement('span');
     nameText.className = 'subscription-name';
     nameText.textContent = row.name;
     nameCell.appendChild(nameText);
     if (row.notes) {
-      const notes = document.createElement('div');
+      const notes = document.createElement('p');
       notes.className = 'subscription-notes';
       notes.textContent = row.notes;
       nameCell.appendChild(notes);
@@ -346,14 +445,17 @@
     tr.appendChild(frequencyCell);
 
     const priceCell = document.createElement('td');
+    priceCell.className = 'numeric';
     priceCell.textContent = formatCurrency(row.price);
     tr.appendChild(priceCell);
 
     const monthlyCell = document.createElement('td');
+    monthlyCell.className = 'numeric';
     monthlyCell.textContent = formatCurrency(monthlyCost(row));
     tr.appendChild(monthlyCell);
 
     const yearlyCell = document.createElement('td');
+    yearlyCell.className = 'numeric';
     yearlyCell.textContent = formatCurrency(yearlyCost(row));
     tr.appendChild(yearlyCell);
 
@@ -370,9 +472,12 @@
     editButton.type = 'button';
     editButton.textContent = 'Edit';
     editButton.setAttribute('aria-label', `Edit ${row.name}`);
+    editButton.dataset.action = 'edit';
+    editButton.dataset.rowId = row.id;
     editButton.addEventListener('click', () => {
       editingId = row.id;
       editDraft = { ...row, priceEmpty: false };
+      editingTrigger = { id: row.id, action: 'edit' };
       render();
     });
 
@@ -380,6 +485,8 @@
     deleteButton.type = 'button';
     deleteButton.textContent = 'Delete';
     deleteButton.setAttribute('aria-label', `Delete ${row.name}`);
+    deleteButton.dataset.action = 'delete';
+    deleteButton.dataset.rowId = row.id;
     deleteButton.addEventListener('click', () => {
       const confirmed = window.confirm(`Delete ${row.name}?`);
       if (!confirmed) return;
@@ -389,6 +496,7 @@
         editingId = null;
         editDraft = null;
       }
+      pendingFocus = { fallback: elements.search };
       render();
     });
 
@@ -406,42 +514,43 @@
     }
 
     const includeCell = document.createElement('td');
+    includeCell.className = 'col-include';
     const includeCheckbox = createIncludeCheckbox(row);
     includeCell.appendChild(includeCheckbox);
+    const includeLabel = document.createElement('label');
+    includeLabel.className = 'sr-only';
+    includeLabel.setAttribute('for', includeCheckbox.id);
+    includeLabel.textContent = `Include ${row.name} in totals`;
+    includeCell.appendChild(includeLabel);
     tr.appendChild(includeCell);
 
     const nameCell = document.createElement('td');
+    nameCell.className = 'cell-name edit-cell';
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.value = editDraft.name;
-    nameInput.className = 'edit-field';
-    nameInput.setAttribute('aria-label', 'Subscription name');
     nameInput.placeholder = 'Subscription name';
+    nameInput.setAttribute('aria-label', 'Subscription name');
+    nameInput.dataset.focusInitial = 'true';
     nameInput.addEventListener('input', (event) => {
       editDraft.name = event.target.value;
     });
-    nameCell.className = 'edit-field';
+    addEditFieldKeyboard(nameInput);
     nameCell.appendChild(nameInput);
 
-    if (editDraft.notes !== undefined) {
-      const notesArea = document.createElement('textarea');
-      notesArea.rows = 2;
-      notesArea.value = editDraft.notes;
-      notesArea.className = 'edit-field';
-      notesArea.setAttribute('aria-label', 'Notes');
-      notesArea.placeholder = 'Notes (optional)';
-      notesArea.addEventListener('input', (event) => {
-        editDraft.notes = event.target.value;
-      });
-      const notesWrapper = document.createElement('div');
-      notesWrapper.className = 'edit-field';
-      notesWrapper.appendChild(notesArea);
-      nameCell.appendChild(notesWrapper);
-    }
+    const notesArea = document.createElement('textarea');
+    notesArea.rows = 2;
+    notesArea.value = editDraft.notes || '';
+    notesArea.placeholder = 'Notes (optional)';
+    notesArea.setAttribute('aria-label', 'Notes');
+    notesArea.addEventListener('input', (event) => {
+      editDraft.notes = event.target.value;
+    });
+    nameCell.appendChild(notesArea);
     tr.appendChild(nameCell);
 
     const categoryCell = document.createElement('td');
-    categoryCell.className = 'edit-field';
+    categoryCell.className = 'edit-cell';
     const categorySelect = document.createElement('select');
     ['Streaming', 'Music', 'Gaming', 'Productivity', 'Phone', 'Internet', 'Fitness', 'Other'].forEach((value) => {
       const option = document.createElement('option');
@@ -456,11 +565,12 @@
     categorySelect.addEventListener('change', (event) => {
       editDraft.category = event.target.value;
     });
+    addEditFieldKeyboard(categorySelect);
     categoryCell.appendChild(categorySelect);
     tr.appendChild(categoryCell);
 
     const frequencyCell = document.createElement('td');
-    frequencyCell.className = 'edit-field';
+    frequencyCell.className = 'edit-cell';
     const frequencySelect = document.createElement('select');
     [['monthly', 'Monthly'], ['yearly', 'Yearly']].forEach(([value, label]) => {
       const option = document.createElement('option');
@@ -475,11 +585,12 @@
       monthlyValue.textContent = formatCurrency(monthlyCost(editDraft));
       yearlyValue.textContent = formatCurrency(yearlyCost(editDraft));
     });
+    addEditFieldKeyboard(frequencySelect);
     frequencyCell.appendChild(frequencySelect);
     tr.appendChild(frequencyCell);
 
     const priceCell = document.createElement('td');
-    priceCell.className = 'edit-field';
+    priceCell.className = 'edit-cell numeric';
     const priceInput = document.createElement('input');
     priceInput.type = 'number';
     priceInput.min = '0';
@@ -488,7 +599,7 @@
     priceInput.setAttribute('aria-label', 'Price');
     priceInput.addEventListener('input', (event) => {
       const raw = event.target.value;
-      const numeric = Number(raw);
+      const numeric = Number.parseFloat(raw);
       const isEmpty = raw === '';
       const isInvalid = Number.isNaN(numeric);
       editDraft.priceEmpty = isEmpty || isInvalid;
@@ -497,23 +608,26 @@
       yearlyValue.textContent = formatCurrency(yearlyCost(editDraft));
       showEditError('');
     });
+    addEditFieldKeyboard(priceInput);
     priceCell.appendChild(priceInput);
     tr.appendChild(priceCell);
 
     const monthlyCell = document.createElement('td');
+    monthlyCell.className = 'numeric';
     const monthlyValue = document.createElement('span');
     monthlyValue.textContent = formatCurrency(monthlyCost(editDraft));
     monthlyCell.appendChild(monthlyValue);
     tr.appendChild(monthlyCell);
 
     const yearlyCell = document.createElement('td');
+    yearlyCell.className = 'numeric';
     const yearlyValue = document.createElement('span');
     yearlyValue.textContent = formatCurrency(yearlyCost(editDraft));
     yearlyCell.appendChild(yearlyValue);
     tr.appendChild(yearlyCell);
 
     const nextBillingCell = document.createElement('td');
-    nextBillingCell.className = 'edit-field';
+    nextBillingCell.className = 'edit-cell';
     const nextBillingInput = document.createElement('input');
     nextBillingInput.type = 'date';
     nextBillingInput.value = editDraft.nextBilling || '';
@@ -521,6 +635,7 @@
     nextBillingInput.addEventListener('change', (event) => {
       editDraft.nextBilling = event.target.value;
     });
+    addEditFieldKeyboard(nextBillingInput);
     nextBillingCell.appendChild(nextBillingInput);
     tr.appendChild(nextBillingCell);
 
@@ -532,28 +647,37 @@
     const saveButton = document.createElement('button');
     saveButton.type = 'button';
     saveButton.textContent = 'Save';
+    saveButton.dataset.action = 'save';
     saveButton.addEventListener('click', () => saveEdit(row));
 
     const cancelButton = document.createElement('button');
     cancelButton.type = 'button';
     cancelButton.textContent = 'Cancel';
-    cancelButton.addEventListener('click', () => {
-      editingId = null;
-      editDraft = null;
-      render();
-    });
+    cancelButton.dataset.action = 'cancel';
+    cancelButton.addEventListener('click', () => cancelEdit());
 
     const errorMessage = document.createElement('div');
     errorMessage.setAttribute('data-edit-error', '');
-    errorMessage.style.color = '#dc2626';
-    errorMessage.style.fontSize = '0.85rem';
-    errorMessage.style.fontWeight = '600';
+    errorMessage.className = 'edit-error';
 
     actions.appendChild(saveButton);
     actions.appendChild(cancelButton);
     actionsCell.appendChild(actions);
     actionsCell.appendChild(errorMessage);
     tr.appendChild(actionsCell);
+  }
+
+  function addEditFieldKeyboard(node) {
+    if (!node || node.tagName === 'TEXTAREA') return;
+    node.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        const current = state.rows.find((item) => item.id === editingId);
+        if (current) {
+          saveEdit(current);
+        }
+      }
+    });
   }
 
   function saveEdit(row) {
@@ -568,20 +692,36 @@
       return;
     }
 
+    const target = state.rows.find((item) => item.id === row.id);
+    if (!target) return;
+
     const nextBilling = editDraft.nextBilling ? editDraft.nextBilling : '';
-    Object.assign(row, {
+    Object.assign(target, {
       name: trimmedName,
       category: editDraft.category,
       frequency: editDraft.frequency === 'yearly' ? 'yearly' : 'monthly',
       price: Number(editDraft.price),
       nextBilling,
       notes: editDraft.notes ? editDraft.notes.trim() : '',
-      included: row.included
+      included: target.included
     });
 
+    pendingFocus = editingTrigger || { id: row.id, action: 'edit' };
+    editingTrigger = null;
     editingId = null;
     editDraft = null;
+    showEditError('');
     persist();
+    render();
+  }
+
+  function cancelEdit() {
+    if (!editingId) return;
+    pendingFocus = editingTrigger || { id: editingId, action: 'edit' };
+    editingTrigger = null;
+    editingId = null;
+    editDraft = null;
+    showEditError('');
     render();
   }
 
@@ -596,18 +736,31 @@
     checkbox.type = 'checkbox';
     checkbox.className = 'include-checkbox';
     checkbox.checked = row.included;
-    checkbox.setAttribute('aria-label', `Include ${row.name} in totals`);
-    checkbox.addEventListener('change', (event) => {
-      row.included = event.target.checked;
-      persist();
-      render();
+    checkbox.id = `include-${row.id}`;
+    checkbox.setAttribute('aria-describedby', 'tableDescription');
+    checkbox.addEventListener('change', () => {
+      updateIncludedState(row, checkbox.checked);
+    });
+    checkbox.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        checkbox.checked = !checkbox.checked;
+        updateIncludedState(row, checkbox.checked);
+      }
     });
     return checkbox;
   }
 
+  function updateIncludedState(row, included) {
+    row.included = included;
+    persist();
+    render();
+  }
+
   function renderMobileCards(rows) {
     const container = elements.mobileList;
-    container.innerHTML = '';
+    if (!container) return;
+    container.replaceChildren();
     if (!rows.length) {
       container.hidden = true;
       container.setAttribute('aria-hidden', 'true');
@@ -615,6 +768,7 @@
     }
     container.hidden = false;
     container.removeAttribute('aria-hidden');
+
     rows.forEach((row) => {
       const card = document.createElement('article');
       card.className = 'subscription-card';
@@ -625,6 +779,7 @@
         card.dataset.editing = 'true';
         renderMobileEditingCard(row, card);
       } else {
+        card.removeAttribute('data-editing');
         renderMobileDisplayCard(row, card);
       }
 
@@ -638,6 +793,11 @@
 
     const includeCheckbox = createIncludeCheckbox(row);
     header.appendChild(includeCheckbox);
+    const includeLabel = document.createElement('label');
+    includeLabel.className = 'sr-only';
+    includeLabel.setAttribute('for', includeCheckbox.id);
+    includeLabel.textContent = `Include ${row.name} in totals`;
+    header.appendChild(includeLabel);
 
     const name = document.createElement('div');
     name.className = 'subscription-name';
@@ -646,7 +806,7 @@
     card.appendChild(header);
 
     if (row.notes) {
-      const notes = document.createElement('div');
+      const notes = document.createElement('p');
       notes.className = 'subscription-notes';
       notes.textContent = row.notes;
       card.appendChild(notes);
@@ -669,9 +829,12 @@
     editButton.type = 'button';
     editButton.textContent = 'Edit';
     editButton.setAttribute('aria-label', `Edit ${row.name}`);
+    editButton.dataset.action = 'edit';
+    editButton.dataset.rowId = row.id;
     editButton.addEventListener('click', () => {
       editingId = row.id;
       editDraft = { ...row, priceEmpty: false };
+      editingTrigger = { id: row.id, action: 'edit' };
       render();
     });
 
@@ -679,6 +842,8 @@
     deleteButton.type = 'button';
     deleteButton.textContent = 'Delete';
     deleteButton.setAttribute('aria-label', `Delete ${row.name}`);
+    deleteButton.dataset.action = 'delete';
+    deleteButton.dataset.rowId = row.id;
     deleteButton.addEventListener('click', () => {
       const confirmed = window.confirm(`Delete ${row.name}?`);
       if (!confirmed) return;
@@ -688,6 +853,7 @@
         editingId = null;
         editDraft = null;
       }
+      pendingFocus = { fallback: elements.search };
       render();
     });
 
@@ -708,17 +874,24 @@
 
     const includeCheckbox = createIncludeCheckbox(row);
     header.appendChild(includeCheckbox);
+    const includeLabel = document.createElement('label');
+    includeLabel.className = 'sr-only';
+    includeLabel.setAttribute('for', includeCheckbox.id);
+    includeLabel.textContent = `Include ${row.name} in totals`;
+    header.appendChild(includeLabel);
 
     const nameField = document.createElement('div');
     nameField.className = 'edit-field';
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.value = editDraft.name;
-    nameInput.setAttribute('aria-label', 'Subscription name');
     nameInput.placeholder = 'Subscription name';
+    nameInput.setAttribute('aria-label', 'Subscription name');
+    nameInput.dataset.focusInitial = 'true';
     nameInput.addEventListener('input', (event) => {
       editDraft.name = event.target.value;
     });
+    addEditFieldKeyboard(nameInput);
     nameField.appendChild(nameInput);
     header.appendChild(nameField);
     card.appendChild(header);
@@ -728,8 +901,8 @@
     const notesInput = document.createElement('textarea');
     notesInput.rows = 2;
     notesInput.value = editDraft.notes || '';
-    notesInput.setAttribute('aria-label', 'Notes');
     notesInput.placeholder = 'Notes (optional)';
+    notesInput.setAttribute('aria-label', 'Notes');
     notesInput.addEventListener('input', (event) => {
       editDraft.notes = event.target.value;
     });
@@ -750,6 +923,7 @@
     categorySelect.addEventListener('change', (event) => {
       editDraft.category = event.target.value;
     });
+    addEditFieldKeyboard(categorySelect);
     categoryField.appendChild(categorySelect);
     card.appendChild(categoryField);
 
@@ -766,9 +940,10 @@
     frequencySelect.setAttribute('aria-label', 'Billing frequency');
     frequencySelect.addEventListener('change', (event) => {
       editDraft.frequency = event.target.value;
-      monthlyValue.textContent = formatCurrency(monthlyCost(editDraft));
-      yearlyValue.textContent = formatCurrency(yearlyCost(editDraft));
+      monthlyValue.textContent = `Monthly: ${formatCurrency(monthlyCost(editDraft))}`;
+      yearlyValue.textContent = `Yearly: ${formatCurrency(yearlyCost(editDraft))}`;
     });
+    addEditFieldKeyboard(frequencySelect);
     frequencyField.appendChild(frequencySelect);
     card.appendChild(frequencyField);
 
@@ -782,15 +957,16 @@
     priceInput.setAttribute('aria-label', 'Price');
     priceInput.addEventListener('input', (event) => {
       const raw = event.target.value;
-      const numeric = Number(raw);
+      const numeric = Number.parseFloat(raw);
       const isEmpty = raw === '';
       const isInvalid = Number.isNaN(numeric);
       editDraft.priceEmpty = isEmpty || isInvalid;
       editDraft.price = isEmpty || isInvalid ? 0 : numeric;
-      monthlyValue.textContent = formatCurrency(monthlyCost(editDraft));
-      yearlyValue.textContent = formatCurrency(yearlyCost(editDraft));
+      monthlyValue.textContent = `Monthly: ${formatCurrency(monthlyCost(editDraft))}`;
+      yearlyValue.textContent = `Yearly: ${formatCurrency(yearlyCost(editDraft))}`;
       showEditError('');
     });
+    addEditFieldKeyboard(priceInput);
     priceField.appendChild(priceInput);
     card.appendChild(priceField);
 
@@ -813,6 +989,7 @@
     nextBillingInput.addEventListener('change', (event) => {
       editDraft.nextBilling = event.target.value;
     });
+    addEditFieldKeyboard(nextBillingInput);
     nextBillingField.appendChild(nextBillingInput);
     card.appendChild(nextBillingField);
 
@@ -825,46 +1002,91 @@
     const cancelButton = document.createElement('button');
     cancelButton.type = 'button';
     cancelButton.textContent = 'Cancel';
-    cancelButton.addEventListener('click', () => {
-      editingId = null;
-      editDraft = null;
-      render();
-    });
+    cancelButton.addEventListener('click', () => cancelEdit());
     actions.appendChild(saveButton);
     actions.appendChild(cancelButton);
     card.appendChild(actions);
 
     const errorMessage = document.createElement('div');
     errorMessage.setAttribute('data-edit-error', '');
-    errorMessage.style.color = '#dc2626';
-    errorMessage.style.fontSize = '0.85rem';
-    errorMessage.style.fontWeight = '600';
+    errorMessage.className = 'edit-error';
     card.appendChild(errorMessage);
   }
 
-  function updateSummary(rows) {
-    const included = rows.filter((row) => row.included);
-    const excluded = rows.filter((row) => !row.included);
-    const totalMonthly = included.reduce((total, row) => total + monthlyCost(row), 0);
-    const totalYearly = included.reduce((total, row) => total + yearlyCost(row), 0);
-    const potentialSavings = excluded.reduce((total, row) => total + monthlyCost(row), 0);
+  function updateSummary(filteredRows) {
+    const includedAll = state.rows.filter((row) => row.included);
+    const includedFiltered = filteredRows.filter((row) => row.included);
+    const excludedAll = state.rows.filter((row) => !row.included);
+    const excludedFiltered = filteredRows.filter((row) => !row.included);
 
-    elements.totalMonthly.textContent = formatCurrency(totalMonthly);
-    elements.totalYearly.textContent = formatCurrency(totalYearly);
-    elements.potentialSavings.textContent = formatCurrency(potentialSavings);
+    const totalMonthlyAll = sumBy(includedAll, monthlyCost);
+    const totalMonthlyFiltered = sumBy(includedFiltered, monthlyCost);
+    const totalYearlyAll = sumBy(includedAll, yearlyCost);
+    const totalYearlyFiltered = sumBy(includedFiltered, yearlyCost);
+    const savingsAll = sumBy(excludedAll, monthlyCost);
+    const savingsFiltered = sumBy(excludedFiltered, monthlyCost);
+
+    elements.totalMonthly.textContent = formatCurrency(totalMonthlyFiltered);
+    elements.totalYearly.textContent = formatCurrency(totalYearlyFiltered);
+    elements.potentialSavings.textContent = formatCurrency(savingsAll);
+
+    updateDeltaCopy(elements.monthlyDelta, totalMonthlyFiltered, totalMonthlyAll);
+    updateDeltaCopy(elements.yearlyDelta, totalYearlyFiltered, totalYearlyAll);
+    updateSavingsHelper(elements.savingsHelper, savingsFiltered, savingsAll);
+  }
+
+  function sumBy(list, fn) {
+    return list.reduce((total, item) => total + fn(item), 0);
+  }
+
+  function updateDeltaCopy(node, filteredValue, allValue) {
+    if (!node) return;
+    const diff = filteredValue - allValue;
+    if (Math.abs(diff) < 0.01) {
+      node.textContent = 'Showing all included subscriptions.';
+      return;
+    }
+    if (diff < 0) {
+      node.textContent = `Filtered view hides ${formatCurrency(Math.abs(diff))} each cycle.`;
+      return;
+    }
+    node.textContent = `Filtered view adds ${formatCurrency(diff)} compared to all data.`;
+  }
+
+  function updateSavingsHelper(node, filteredValue, allValue) {
+    if (!node) return;
+    if (allValue <= 0.009) {
+      node.textContent = 'All tracked subscriptions are currently included in totals.';
+      return;
+    }
+    if (Math.abs(filteredValue - allValue) < 0.01) {
+      node.textContent = 'Potential savings from excluded subscriptions (all categories).';
+      return;
+    }
+    node.textContent = `Filters cover ${formatCurrency(filteredValue)} of ${formatCurrency(allValue)} monthly savings opportunities.`;
+  }
+
+  function updateTableMeta(rows) {
+    if (!elements.tableCount) return;
+    const total = rows.length;
+    const label = total === 1 ? 'subscription' : 'subscriptions';
+    elements.tableCount.textContent = `${total} ${label}`;
   }
 
   function updateChart(rows) {
+    if (!elements.chartCanvas || !window.Chart) return;
     const included = rows.filter((row) => row.included);
     if (!included.length) {
-      elements.chartEmpty.style.display = 'block';
+      elements.chartEmpty.hidden = false;
+      elements.chartEmpty.setAttribute('aria-hidden', 'false');
       if (chartInstance) {
         chartInstance.destroy();
         chartInstance = null;
       }
       return;
     }
-    elements.chartEmpty.style.display = 'none';
+    elements.chartEmpty.hidden = true;
+    elements.chartEmpty.setAttribute('aria-hidden', 'true');
 
     const dataByCategory = included.reduce((accumulator, row) => {
       const monthly = monthlyCost(row);
@@ -872,22 +1094,22 @@
       return accumulator;
     }, {});
 
-    const labels = Object.keys(dataByCategory);
-    const data = labels.map((label) => Number(dataByCategory[label].toFixed(2)));
-    const hasValue = data.some((value) => value > 0);
+    const sortedEntries = Object.entries(dataByCategory).sort((a, b) => b[1] - a[1]);
+    const labels = sortedEntries.map(([label]) => label);
+    const data = sortedEntries.map(([, value]) => Number(value.toFixed(2)));
+    const total = data.reduce((sum, value) => sum + value, 0);
 
-    if (!hasValue) {
-      elements.chartEmpty.style.display = 'block';
+    if (!total) {
+      elements.chartEmpty.hidden = false;
+      elements.chartEmpty.setAttribute('aria-hidden', 'false');
       if (chartInstance) {
         chartInstance.destroy();
         chartInstance = null;
       }
       return;
     }
-    const colors = [
-      '#0ea5e9', '#a855f7', '#f97316', '#22c55e', '#facc15', '#ec4899', '#14b8a6', '#6366f1'
-    ];
 
+    const colors = ['#0ea5e9', '#a855f7', '#f97316', '#22c55e', '#facc15', '#ec4899', '#14b8a6', '#6366f1'];
     const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (chartInstance) {
@@ -914,12 +1136,14 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        layout: { padding: 8 },
         plugins: {
           legend: {
             position: 'bottom',
             labels: {
-              boxWidth: 18,
-              boxHeight: 18,
+              boxWidth: 16,
+              boxHeight: 16,
+              usePointStyle: true,
               color: '#0f172a'
             }
           },
@@ -927,14 +1151,19 @@
             callbacks: {
               label(context) {
                 const label = context.label || '';
-                const value = context.parsed || 0;
-                return `${label}: ${formatCurrency(value)}`;
+                const value = Number(context.parsed) || 0;
+                const dataset = context.chart.data.datasets?.[context.datasetIndex];
+                const sum = Array.isArray(dataset?.data)
+                  ? dataset.data.reduce((accumulator, entry) => accumulator + (Number(entry) || 0), 0)
+                  : 0;
+                const percent = sum ? ((value / sum) * 100).toFixed(1) : '0.0';
+                return `${label}: ${formatCurrency(value)} (${percent}% of monthly)`;
               }
             }
           }
         },
         animation: {
-          duration: reduceMotion ? 0 : 600
+          duration: reduceMotion ? 0 : 500
         }
       }
     });
@@ -943,17 +1172,24 @@
   function updateEmptyStates(filteredRows) {
     const hasRows = state.rows.length > 0;
     elements.tableEmpty.hidden = hasRows;
-    elements.noMatches.hidden = filteredRows.length > 0 || !hasRows;
-    if (!hasRows) {
+    elements.tableEmpty.setAttribute('aria-hidden', hasRows ? 'true' : 'false');
+    const hasMatches = filteredRows.length > 0;
+    const showNoMatches = !hasMatches && hasRows;
+    elements.noMatches.hidden = !showNoMatches;
+    elements.noMatches.setAttribute('aria-hidden', showNoMatches ? 'false' : 'true');
+    if (!hasMatches) {
       elements.mobileList.hidden = true;
+      elements.mobileList.setAttribute('aria-hidden', 'true');
     }
   }
 
   function updateFilterControls() {
     elements.search.value = state.filters.query;
-    elements.frequencyFilter.value = state.filters.frequency;
-    Array.from(elements.categoryFilter.options).forEach((option) => {
-      option.selected = state.filters.categories.includes(option.value);
+    elements.frequencyRadios.forEach((radio) => {
+      radio.checked = radio.value === state.filters.frequency;
+    });
+    elements.categoryCheckboxes.forEach((checkbox) => {
+      checkbox.checked = state.filters.categories.includes(checkbox.value);
     });
   }
 
@@ -1009,6 +1245,7 @@
     elements.frequencyMonthly.checked = true;
     elements.priceError.textContent = '';
     updateFilterControls();
+    pendingFocus = { fallback: elements.search };
     render();
   }
 

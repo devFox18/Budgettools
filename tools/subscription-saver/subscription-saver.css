@@ -1,0 +1,573 @@
+:root {
+  --card-gap: clamp(1.5rem, 3vw, 2rem);
+  --border-subtle: rgba(203, 213, 225, 0.6);
+  --text-muted: #475569;
+  --text-soft: #64748b;
+  --surface-muted: #f8fafc;
+}
+
+body {
+  color: #0f172a;
+}
+
+.page-header {
+  margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
+  display: grid;
+  gap: 0.75rem;
+}
+
+.subscription-form {
+  margin-bottom: var(--card-gap);
+}
+
+.subscription-form__grid {
+  display: grid;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+}
+
+.form-header {
+  margin-bottom: clamp(1.25rem, 3vw, 1.5rem);
+  display: grid;
+  gap: 0.4rem;
+}
+
+.form-header p {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.form-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.form-field label,
+.form-field legend {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  font: inherit;
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-field textarea {
+  resize: vertical;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: 0;
+  border-color: rgba(34, 197, 94, 0.6);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+}
+
+.form-field--frequency {
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 14px;
+  background: var(--surface-muted);
+  gap: 0.75rem;
+}
+
+.radio-group {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+.radio-group label {
+  margin-left: 0.35rem;
+}
+
+.form-field--price .input-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.currency-prefix {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.75rem;
+  color: var(--text-soft);
+  border-right: 1px solid rgba(148, 163, 184, 0.4);
+}
+
+.form-field--price input {
+  flex: 1;
+  border: 0;
+  padding: 0.65rem 0.75rem;
+  min-width: 0;
+}
+
+.form-field--price input:focus {
+  box-shadow: none;
+}
+
+.input-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.input-error {
+  min-height: 1.25rem;
+  font-size: 0.85rem;
+  color: #dc2626;
+  margin: 0;
+}
+
+.form-field--notes {
+  grid-column: span 2;
+}
+
+.form-actions {
+  grid-column: span 2;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.summary-section {
+  margin-bottom: var(--card-gap);
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.summary-card h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.summary-value {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  margin: 0.35rem 0 0;
+}
+
+.summary-caption {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+
+.summary-card.savings {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(16, 185, 129, 0.22));
+  border-color: rgba(45, 212, 191, 0.3);
+}
+
+.chart-card {
+  margin-bottom: var(--card-gap);
+  display: grid;
+  gap: 1.25rem;
+}
+
+.chart-card__header {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.chart-card__caption {
+  margin: 0;
+  color: var(--text-soft);
+}
+
+.chart-card__canvas {
+  display: grid;
+  place-items: center;
+  min-height: 320px;
+  position: relative;
+}
+
+.chart-card__canvas canvas {
+  max-width: 100%;
+  max-height: 360px;
+}
+
+.chart-empty {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.table-card {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.table-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.table-card__caption {
+  margin: 0.35rem 0 0;
+  color: var(--text-soft);
+}
+
+.actions-bar {
+  display: grid;
+  gap: 1rem;
+  justify-items: end;
+}
+
+.actions-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.filters-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.filters-group input[type="search"],
+.filters-group select {
+  padding: 0.6rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: #fff;
+  font: inherit;
+  min-width: 160px;
+}
+
+.filters-group select[multiple] {
+  min-width: 220px;
+  height: auto;
+}
+
+.table-responsive {
+  border-radius: 14px;
+  border: 1px solid rgba(219, 228, 243, 0.8);
+  overflow: hidden;
+  overflow-x: auto;
+  background: #fff;
+}
+
+.mobile-card-list {
+  display: none;
+}
+
+.subscription-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.subscription-table th,
+.subscription-table td {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  vertical-align: top;
+}
+
+.subscription-table thead th {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #475569;
+}
+
+.subscription-table tbody tr:last-of-type td {
+  border-bottom: 0;
+}
+
+.subscription-table tbody tr[data-editing="true"] {
+  background: rgba(226, 232, 240, 0.4);
+}
+
+.subscription-table tbody tr[data-included="false"] {
+  opacity: 0.6;
+}
+
+.subscription-table .col-include {
+  width: 52px;
+  position: sticky;
+  left: 0;
+  background: #fff;
+  z-index: 1;
+}
+
+.subscription-table td:first-child {
+  position: sticky;
+  left: 0;
+  background: #fff;
+  z-index: 1;
+}
+
+.subscription-table .col-actions {
+  min-width: 140px;
+  text-align: right;
+}
+
+.sort-button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.sort-button::after {
+  content: "";
+  border: 0.35rem solid transparent;
+  border-top-color: rgba(100, 116, 139, 0.7);
+  transform: translateY(0.15rem);
+  opacity: 0.65;
+}
+
+.sort-button[data-direction="desc"]::after {
+  border-top-color: transparent;
+  border-bottom-color: rgba(100, 116, 139, 0.7);
+  transform: translateY(-0.15rem);
+}
+
+.sort-button:not([data-direction])::after {
+  opacity: 0.3;
+}
+
+.sort-button:focus-visible {
+  outline: 2px solid rgba(34, 197, 94, 0.55);
+  outline-offset: 4px;
+  border-radius: 10px;
+}
+
+.include-checkbox {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.table-empty {
+  padding: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-soft);
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.row-actions {
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+.row-actions button {
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: #fff;
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0f172a;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.row-actions button:hover,
+.row-actions button:focus-visible {
+  border-color: rgba(34, 197, 94, 0.6);
+  background: rgba(34, 197, 94, 0.12);
+  outline: none;
+}
+
+.subscription-name {
+  font-weight: 600;
+}
+
+.subscription-notes {
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+.edit-field input,
+.edit-field select,
+.edit-field textarea {
+  width: 100%;
+  font: inherit;
+  padding: 0.45rem 0.5rem;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: #fff;
+}
+
+.edit-field textarea {
+  resize: vertical;
+}
+
+.prefers-reduced-motion * {
+  transition-duration: 0.01ms !important;
+  animation-duration: 0.01ms !important;
+}
+
+@media (max-width: 960px) {
+  .subscription-form__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-field--notes,
+  .form-actions {
+    grid-column: auto;
+  }
+
+  .actions-bar {
+    justify-items: stretch;
+  }
+
+  .actions-group {
+    justify-content: flex-start;
+  }
+
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filters-group select[multiple] {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .table-responsive {
+    border: 0;
+    overflow: visible;
+  }
+
+  .subscription-table {
+    display: none;
+  }
+
+  .table-empty {
+    border: 0;
+  }
+
+  #subscriptionTableBody {
+    display: none;
+  }
+
+  .mobile-card-list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .subscription-card {
+    border: 1px solid rgba(219, 228, 243, 0.9);
+    border-radius: 16px;
+    padding: 1rem 1.1rem;
+    background: #fff;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .subscription-card[data-included="false"] {
+    opacity: 0.6;
+  }
+
+  .subscription-card[data-editing="true"] {
+    border-color: rgba(148, 163, 184, 0.6);
+    background: rgba(226, 232, 240, 0.35);
+  }
+
+  .subscription-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .subscription-card__header .edit-field {
+    flex: 1;
+  }
+
+  .subscription-card__meta {
+    display: grid;
+    gap: 0.35rem;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+  }
+
+  .subscription-card__amounts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    font-weight: 600;
+  }
+
+.subscription-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.subscription-card__actions button {
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  background: #fff;
+  border-radius: 999px;
+  padding: 0.45rem 1rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.subscription-card__actions button:hover,
+.subscription-card__actions button:focus-visible {
+  border-color: rgba(34, 197, 94, 0.6);
+  background: rgba(34, 197, 94, 0.12);
+  outline: none;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

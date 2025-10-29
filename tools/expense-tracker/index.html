@@ -3,21 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BudgetTools Terms of Use</title>
-  <meta name="description" content="Read the official Terms of Use for BudgetTools — covering data privacy, browser-based calculations, licensing, and security." />
-  <link rel="canonical" href="https://budgettools.netlify.app/terms.html" />
+  <title>Expense Tracker | BudgetTools</title>
+  <meta name="description" content="Track monthly spending with a privacy-first expense tracker. Everything runs locally in your browser and stores data on your device only." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://budgettools.netlify.app/tools/expense-tracker/" />
+  <meta property="og:title" content="Expense Tracker — BudgetTools" />
+  <meta property="og:description" content="Log expenses, monitor categories, and keep everything on-device with the BudgetTools Expense Tracker." />
+  <meta property="og:url" content="https://budgettools.netlify.app/tools/expense-tracker/" />
+  <meta property="og:type" content="website" />
+  <meta property="twitter:card" content="summary" />
+  <meta property="twitter:title" content="Expense Tracker — BudgetTools" />
+  <meta property="twitter:description" content="Stay on top of spending with a fast, private tracker that never leaves your browser." />
   <meta name="theme-color" content="#f6f8fb" />
   <link rel="preload" href="/assets/css/style.css" as="style" data-preload-style />
-  <noscript><link rel="stylesheet" href="/assets/css/style.css" /></noscript>
+  <link rel="preload" href="/tools/expense-tracker/styles.css" as="style" data-preload-style />
+  <noscript>
+    <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/tools/expense-tracker/styles.css" />
+  </noscript>
   <style>
-    :root { --color-bg: #f6f8fb; --color-text: #0f172a; --color-accent: #22c55e; --color-accent-ink: #062a12; }
+    :root { --color-bg: #f6f8fb; --color-text: #0f172a; --color-accent: #22c55e; }
     html { background: var(--color-bg); font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
     body { margin: 0; background: var(--color-bg); color: var(--color-text); line-height: 1.65; }
-    .skip-link { position: absolute; left: 0.75rem; top: 0.75rem; padding: 0.75rem 1.25rem; background: var(--color-accent); color: var(--color-accent-ink); border-radius: 12px; transform: translateY(-150%); transition: transform 0.2s ease; }
+    .skip-link { position: absolute; left: 0.75rem; top: 0.75rem; padding: 0.75rem 1.25rem; background: var(--color-accent); color: #062a12; border-radius: 12px; transform: translateY(-150%); transition: transform 0.2s ease; }
     .skip-link:focus { transform: translateY(0); }
     .site-header { position: sticky; top: 0; z-index: 9; backdrop-filter: blur(18px); background: rgba(246, 248, 251, 0.9); border-bottom: 1px solid rgba(219, 228, 243, 0.6); box-shadow: 0 18px 30px -24px rgba(15, 23, 42, 0.32); }
     .site-header__inner { width: min(1080px, 100% - 3.5rem); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; position: relative; }
-    .site-logo { display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 700; font-size: 1.15rem; letter-spacing: -0.01em; text-decoration: none; color: inherit; }
+    .site-logo { font-weight: 700; letter-spacing: -0.01em; text-decoration: none; display: inline-flex; gap: 0.5rem; align-items: center; font-size: 1.15rem; color: inherit; }
     .site-nav { display: flex; align-items: center; gap: clamp(1rem, 3vw, 1.75rem); }
     .site-nav__toggle { background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(219, 228, 243, 0.9); border-radius: 12px; color: #0f172a; display: none; align-items: center; gap: 0.5rem; padding: 0.55rem 0.75rem; font-size: 0.95rem; font-weight: 600; letter-spacing: 0.01em; line-height: 1; transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease; }
     .site-nav__toggle:hover, .site-nav__toggle:focus-visible { background: rgba(255, 255, 255, 0.95); border-color: rgba(148, 163, 184, 0.6); color: #0f172a; }
@@ -46,7 +58,7 @@
     .site-nav__sub-link[data-disabled="true"] { color: #94a3b8; cursor: not-allowed; pointer-events: none; }
     .site-nav__sub-link[data-disabled="true"]:hover, .site-nav__sub-link[data-disabled="true"]:focus-visible { background: transparent; color: #94a3b8; }
     .site-nav__item--cta { margin-left: clamp(1rem, 2vw, 2.25rem); }
-    .site-nav__cta { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border-radius: 999px; background: var(--color-accent); color: var(--color-accent-ink); font-size: 0.95rem; font-weight: 700; text-decoration: none; box-shadow: 0 14px 32px rgba(34, 197, 94, 0.28); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .site-nav__cta { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border-radius: 999px; background: var(--color-accent); color: #062a12; font-size: 0.95rem; font-weight: 700; text-decoration: none; box-shadow: 0 14px 32px rgba(34, 197, 94, 0.28); transition: transform 0.2s ease, box-shadow 0.2s ease; }
     .site-nav__cta:hover, .site-nav__cta:focus-visible { transform: translateY(-1px); box-shadow: 0 18px 40px rgba(34, 197, 94, 0.36); outline: none; }
     .has-nav-open, .has-nav-open body { overflow: hidden; }
     .no-js .site-nav { position: static; padding: 0; background: transparent; opacity: 1; pointer-events: auto; display: flex; }
@@ -55,10 +67,8 @@
     .no-js .site-nav__sub-list { position: static; opacity: 1; visibility: visible; pointer-events: auto; transform: none; box-shadow: none; border: 0; background: transparent; padding: 0.35rem 0 0 0; display: grid; gap: 0.35rem; }
     .no-js .site-nav__sub-link { padding: 0.35rem 0; color: #0f172a; }
     main { display: block; }
-    .section { width: min(1080px, 100% - 3.5rem); margin-inline: auto; padding-block: clamp(2.8rem, 6vw, 4.5rem); }
-    .card { background: #ffffff; border-radius: 18px; border: 1px solid rgba(219,228,243,0.9); padding: clamp(1.5rem, 4vw, 2.25rem); box-shadow: 0 10px 30px rgba(15,23,42,0.08); }
     @media (max-width: 900px) {
-      .site-header__inner, .section { width: min(100% - 2rem, 100%); }
+      .site-header__inner { width: min(100% - 2rem, 100%); }
     }
     @media (max-width: 720px) {
       .site-header__inner { padding-block: 0.85rem; }
@@ -109,7 +119,7 @@
         <ul class="site-nav__list" id="site-menu">
           <li class="site-nav__item"><a class="site-nav__link" href="/">Home</a></li>
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
-            <button class="site-nav__link" type="button" id="nav-tools" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-tools-menu">
+            <button class="site-nav__link" type="button" id="nav-tools" data-nav-parent data-active="true" aria-expanded="false" aria-haspopup="true" aria-controls="nav-tools-menu">
               <span>Tools</span>
               <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
                 <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
@@ -118,7 +128,7 @@
             <ul class="site-nav__sub-list" id="nav-tools-menu" aria-labelledby="nav-tools" data-nav-submenu>
               <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/budget-calculator/">Budget Calculator</a></li>
               <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/savings-goal-calculator/">Savings Goal Calculator</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/expense-tracker/">Expense Tracker</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/expense-tracker/" aria-current="page">Expense Tracker</a></li>
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Budget Planner · Coming soon</span></li>
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Tax Estimator · Coming soon</span></li>
             </ul>
@@ -152,7 +162,7 @@
             </ul>
           </li>
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
-            <button class="site-nav__link" type="button" id="nav-privacy" data-nav-parent data-active="true" aria-expanded="false" aria-haspopup="true" aria-controls="nav-privacy-menu">
+            <button class="site-nav__link" type="button" id="nav-privacy" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-privacy-menu">
               <span>Privacy &amp; Terms</span>
               <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
                 <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
@@ -160,7 +170,7 @@
             </button>
             <ul class="site-nav__sub-list" id="nav-privacy-menu" aria-labelledby="nav-privacy" data-nav-submenu>
               <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/privacy.html">Privacy policy</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/terms.html" aria-current="page">Terms of use</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/terms.html">Terms of use</a></li>
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Cookie policy · Coming soon</span></li>
             </ul>
           </li>
@@ -182,88 +192,82 @@
       </nav>
     </div>
   </header>
-
   <main id="main-content">
-    <section class="section">
-      <article class="card" aria-labelledby="terms-heading">
-        <header>
-          <h1 id="terms-heading">Terms of Use</h1>
-          <p><strong>Effective Date:</strong> October 28, 2025</p>
-          <p>Welcome to <strong>BudgetTools</strong>. By accessing or using our website, tools, or downloadable resources, you agree to comply with and be bound by the following Terms of Use. Please read these terms carefully before using any BudgetTools products.</p>
-        </header>
-
-        <section aria-labelledby="local-processing-heading">
-          <h2 id="local-processing-heading">1. Local Processing and Technical Design</h2>
-          <p>BudgetTools operates on a <strong>client-side architecture</strong>. All calculations, simulations, and financial logic are executed directly inside your web browser using JavaScript, WebAssembly, and browser-based storage APIs. This ensures that all computations happen entirely on your device.</p>
-          <ul>
-            <li>No financial or personal data is transmitted to BudgetTools servers.</li>
-            <li>Inputs and results exist only within your device’s memory and are cleared upon refresh or page exit.</li>
-            <li>Optional localStorage or IndexedDB data is stored solely on your device and can be deleted via your browser settings.</li>
-            <li>Our servers only deliver static assets (HTML, CSS, JS) securely via CDN, without dynamic data exchange.</li>
-          </ul>
-        </section>
-
-        <section aria-labelledby="free-tools-heading">
-          <h2 id="free-tools-heading">2. Free Tools and Calculators</h2>
-          <p>All free calculators and planners are provided “as is” without any warranties. BudgetTools makes no guarantees about the accuracy, completeness, or suitability of results. Users are encouraged to verify outputs before making financial or business decisions.</p>
-        </section>
-
-        <section aria-labelledby="premium-downloads-heading">
-          <h2 id="premium-downloads-heading">3. Premium Downloads and Licensing</h2>
-          <p>Premium downloads, including spreadsheets, templates, and automation tools, are licensed for <strong>personal and client-facing use</strong> only.</p>
-          <p>You may not resell, redistribute, or publicly host these materials without explicit written permission. White-label and commercial licenses are available upon request via <a href="mailto:support@budgettools.com">support@budgettools.com</a>.</p>
-        </section>
-
-        <section aria-labelledby="affiliate-links-heading">
-          <h2 id="affiliate-links-heading">4. Affiliate Links and Recommendations</h2>
-          <p>Some BudgetTools pages may include affiliate links. These may generate a small commission at no cost to you. Cookies associated with these links are managed solely by third-party vendors, not BudgetTools.</p>
-          <p>If you embed or share BudgetTools tools, you are responsible for disclosing any affiliate relationships in compliance with local regulations.</p>
-        </section>
-
-        <section aria-labelledby="data-privacy-heading">
-          <h2 id="data-privacy-heading">5. Data Privacy and Security</h2>
-          <p>BudgetTools is built with privacy-by-design principles:</p>
-          <ul>
-            <li>All financial data stays within your browser; no calculators transmit or log inputs to our servers.</li>
-            <li>We do not use tracking pixels, analytics scripts, or data collection frameworks for personal data.</li>
-          </ul>
-          <h3>Newsletter and Voluntary Submissions</h3>
-          <p>If you subscribe to our newsletter, we securely store your <strong>email address</strong> in encrypted databases managed by certified cloud providers (e.g., AWS, SOC 2 compliant). This information is used solely for sending updates, new releases, and educational content.</p>
-          <p>Your email data is never sold or shared and can be permanently removed via the unsubscribe link in every email.</p>
-          <h3>Optional Premium Features</h3>
-          <p>For optional services such as email summaries, PDF exports, or account-based features, data may be temporarily processed through secure encrypted connections and deleted after fulfillment. See our <a href="/privacy.html">Privacy Policy</a> for details.</p>
-        </section>
-
-        <section aria-labelledby="liability-heading">
-          <h2 id="liability-heading">6. Limitation of Liability</h2>
-          <p>BudgetTools and its affiliates are not liable for any direct, indirect, incidental, or consequential damages resulting from your use or inability to use our tools, including loss of data or financial outcomes.</p>
-        </section>
-
-        <section aria-labelledby="updates-heading">
-          <h2 id="updates-heading">7. Updates and Modifications</h2>
-          <p>BudgetTools may modify these terms or the structure of its website at any time. Revised versions become effective immediately upon posting. Continued use constitutes acceptance of those updates.</p>
-        </section>
-
-        <section aria-labelledby="contact-heading">
-          <h2 id="contact-heading">8. Contact</h2>
-          <p>For licensing, partnerships, or privacy inquiries, contact us at: <a href="mailto:support@budgettools.com">support@budgettools.com</a>.</p>
-        </section>
-
-        <p>By continuing to use BudgetTools, you confirm that you have read, understood, and agree to these Terms of Use.</p>
-      </article>
+    <section class="tool-hero" aria-labelledby="expense-tracker-heading">
+      <div class="tool-hero__inner">
+        <h1 id="expense-tracker-heading">Expense Tracker</h1>
+        <p class="tool-hero__subtitle">All calculations run locally in your browser — we never collect or store your data.</p>
+        <div class="button-row">
+          <button class="btn" type="button" data-start-tracking aria-label="Jump to the tracker">Start tracking</button>
+        </div>
+      </div>
+    </section>
+    <section class="tracker" id="tracker" aria-label="Expense tracker interface" data-tracker>
+      <div class="tracker__controls">
+        <label class="tracker__month" for="month-select">
+          <span>Month</span>
+          <input id="month-select" type="month" data-month-selector aria-label="Select month" />
+        </label>
+        <div class="tracker__chips" role="group" aria-label="Quick add categories">
+          <button type="button" class="chip" data-category-chip="Housing">Housing</button>
+          <button type="button" class="chip" data-category-chip="Food">Food</button>
+          <button type="button" class="chip" data-category-chip="Transport">Transport</button>
+          <button type="button" class="chip" data-category-chip="Subscriptions">Subscriptions</button>
+          <button type="button" class="chip" data-category-chip="Leisure">Leisure</button>
+          <div class="chip chip--custom">
+            <label class="chip__label" for="custom-category">Custom category</label>
+            <input id="custom-category" type="text" value="Other" maxlength="30" data-custom-category-input aria-label="Custom category name" />
+            <button type="button" class="chip__button" data-custom-category-apply aria-label="Apply custom category">Use</button>
+          </div>
+        </div>
+      </div>
+      <div class="tracker__grid">
+        <div class="tracker__table" data-table-region>
+          <div class="tracker__empty" data-empty-state hidden>
+            <p>No expenses yet. Add your first expense to get started.</p>
+            <button type="button" class="btn btn--ghost" data-empty-add aria-label="Add first expense">Add your first expense</button>
+          </div>
+          <div class="tracker__tip" data-tip hidden>Tip: use quick-add chips to speed up category selection.</div>
+          <div class="tracker__row-limit" data-row-limit hidden role="status" aria-live="polite"></div>
+          <div class="table-scroll">
+            <table class="entry-table" aria-describedby="summary-heading">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Note <span class="entry-table__optional">(optional)</span></th>
+                  <th scope="col">Amount</th>
+                </tr>
+              </thead>
+              <tbody data-entries></tbody>
+            </table>
+          </div>
+          <div class="tracker__actions">
+            <div class="tracker__action-group">
+              <button type="button" class="btn" data-add-row aria-label="Add expense row">Add row</button>
+              <button type="button" class="btn btn--ghost" data-delete-selected aria-label="Delete selected expense" disabled>Delete selected</button>
+              <button type="button" class="btn btn--danger" data-clear-month aria-label="Clear all expenses for this month">Clear month</button>
+            </div>
+            <div class="tracker__import-export">
+              <button type="button" class="btn btn--ghost" data-download aria-label="Download month as JSON">Download JSON</button>
+              <button type="button" class="btn btn--ghost" data-import aria-label="Import month from JSON">Import JSON</button>
+              <input type="file" accept="application/json" data-import-input hidden aria-hidden="true" />
+            </div>
+          </div>
+        </div>
+        <aside class="tracker__summary" aria-live="polite">
+          <h2 id="summary-heading">Summary</h2>
+          <p class="tracker__summary-total" data-total>Total spent: <span data-total-amount>$0.00</span></p>
+          <div class="tracker__summary-chart" role="img" aria-label="Category spending distribution" data-chart></div>
+          <dl class="tracker__summary-list" data-category-totals></dl>
+        </aside>
+      </div>
+      <footer class="tracker__footer">
+        <p class="tracker__privacy-note">BudgetTools is a static site. This tool stores data only on your device using localStorage. You can clear it anytime.</p>
+      </footer>
     </section>
   </main>
-
-  <footer role="contentinfo">
-    <div class="footer-inner">
-      <p>© <span data-year></span> BudgetTools. Built for transparent personal finance.</p>
-      <nav aria-label="Footer">
-        <a href="/privacy.html">Privacy</a>
-        <a href="/contact.html">Contact</a>
-      </nav>
-    </div>
-  </footer>
-
   <script defer src="/assets/js/main.js"></script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>

@@ -35,6 +35,38 @@ if (incomeInput) {
   incomeInput.step = "1";
 }
 
+// -------- Persistence (localStorage) ----------
+const STORAGE_KEY = "budget-calculator-state-v1";
+
+function saveState() {
+  try {
+    const state = {
+      rows,
+      income: incomeInput.value || "",
+      currency: currencySelect.value || "€",
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    // silent fail (storage might be blocked)
+  }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const state = JSON.parse(raw);
+    if (!state || !Array.isArray(state.rows)) return null;
+    return state;
+  } catch (e) {
+    return null;
+  }
+}
+
+function clearState() {
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+}
+
 // Helpers
 function fmt(v){
   const cur = currencySelect.value || "€";
@@ -96,14 +128,15 @@ function renderRows(){
     row.appendChild(notesEl);
     row.appendChild(removeBtn);
 
-    catEl.addEventListener("input", e => { rows[i].category = e.target.value; draw(); });
-    amountEl.addEventListener("input", e => { rows[i].amount = parseFloat(e.target.value||0); draw(); });
-    notesEl.addEventListener("input", e => { rows[i].notes = e.target.value; });
+    catEl.addEventListener("input", e => { rows[i].category = e.target.value; draw(); saveState(); });
+    amountEl.addEventListener("input", e => { rows[i].amount = parseFloat(e.target.value||0); draw(); saveState(); });
+    notesEl.addEventListener("input", e => { rows[i].notes = e.target.value; saveState(); });
 
     removeBtn.addEventListener("click", ()=>{
       rows.splice(i,1);
       renderRows();
       draw();
+      saveState();
     });
 
     rowsContainer.appendChild(row);
@@ -191,10 +224,12 @@ function draw(){
   drawChart();
 }
 
+// Public API
 function addRow(category="", amount=0, notes=""){
   rows.push({category, amount, notes});
   renderRows();
   draw();
+  saveState();
 }
 
 // Events
@@ -203,6 +238,7 @@ if (addRowBtn) {
 }
 
 if (resetBtn) {
+  // Reset = laad voorbeelddata en wis lokale opslag
   resetBtn.addEventListener("click", () => {
     rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
     incomeInput.value = 2500;
@@ -210,6 +246,7 @@ if (resetBtn) {
     currencySelect.value = "€";
     renderRows();
     draw();
+    clearState(); // voorkom dat oude persoonlijke data weer terugkomt
   });
 }
 
@@ -248,10 +285,32 @@ if (printBtn) {
   printBtn.addEventListener("click", () => window.print());
 }
 
-incomeInput.addEventListener("input", draw);
-currencySelect.addEventListener("change", ()=>{ renderRows(); draw(); });
+// Live updates + save
+incomeInput.addEventListener("input", () => { draw(); saveState(); });
+currencySelect.addEventListener("change", ()=>{ renderRows(); draw(); saveState(); });
 
-// Init
-rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
-renderRows();
-draw();
+// -------- Init --------
+(function init(){
+  // 1) Probeer te laden uit localStorage
+  const state = loadState();
+
+  if (state) {
+    rows = state.rows.map(r => ({
+      category: r.category || "",
+      amount: Number(r.amount)||0,
+      notes: r.notes || ""
+    }));
+    incomeInput.value = state.income || "";
+    if (state.currency) currencySelect.value = state.currency;
+  } else {
+    // 2) Eerste bezoek: start LEGE staat (geen voorbeeldwaarden)
+    rows = [];               // geen rijen vooraf
+    incomeInput.value = "";  // leeg inkomen
+    currencySelect.value = "€";
+    // (optioneel) 1 lege rij toevoegen voor betere UX:
+    rows.push({ category: "", amount: 0, notes: "" });
+  }
+
+  renderRows();
+  draw();
+})();

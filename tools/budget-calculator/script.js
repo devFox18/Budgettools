@@ -30,6 +30,11 @@ const legend = document.getElementById("legend");
 
 let rows = [];
 
+// Make the income field step per €1 via spinner
+if (incomeInput) {
+  incomeInput.step = "1";
+}
+
 // Helpers
 function fmt(v){
   const cur = currencySelect.value || "€";
@@ -67,7 +72,7 @@ function renderRows(){
     amountEl.type = "number";
     amountEl.value = r.amount;
     amountEl.min = "0";
-    amountEl.step = "0.01";
+    amountEl.step = "1"; // step per €1 with the arrow keys/spinner
     amountEl.setAttribute("aria-label", "Amount");
 
     group.appendChild(prefix);
@@ -201,6 +206,7 @@ if (resetBtn) {
   resetBtn.addEventListener("click", () => {
     rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
     incomeInput.value = 2500;
+    incomeInput.step = "1"; // keep reset consistent
     currencySelect.value = "€";
     renderRows();
     draw();
@@ -209,32 +215,32 @@ if (resetBtn) {
 
 if (exportBtn) {
   exportBtn.addEventListener("click", () => {
-  const cur = currencySelect.value;
-  const income = Number(incomeInput.value||0);
-  const header = ["Category","Amount("+cur+")","Notes"].map(sanitizeCsvField);
-  const lines = [header.join(",")];
-  rows.forEach(r=>{
-    lines.push([
-      sanitizeCsvField(r.category),
-      sanitizeCsvField(r.amount),
-      sanitizeCsvField(r.notes)
-    ].join(","));
-  });
-  lines.push("");
-  lines.push([sanitizeCsvField("Income"), sanitizeCsvField(income)].join(","));
-  const expenses = totalExpenses();
-  lines.push([sanitizeCsvField("Total Expenses"), sanitizeCsvField(expenses)].join(","));
-  lines.push([sanitizeCsvField("Savings"), sanitizeCsvField(income - expenses)].join(","));
+    const cur = currencySelect.value;
+    const income = Number(incomeInput.value||0);
+    const header = ["Category","Amount("+cur+")","Notes"].map(sanitizeCsvField);
+    const lines = [header.join(",")];
+    rows.forEach(r=>{
+      lines.push([
+        sanitizeCsvField(r.category),
+        sanitizeCsvField(r.amount),
+        sanitizeCsvField(r.notes)
+      ].join(","));
+    });
+    lines.push("");
+    lines.push([sanitizeCsvField("Income"), sanitizeCsvField(income)].join(","));
+    const expenses = totalExpenses();
+    lines.push([sanitizeCsvField("Total Expenses"), sanitizeCsvField(expenses)].join(","));
+    lines.push([sanitizeCsvField("Savings"), sanitizeCsvField(income - expenses)].join(","));
 
-  const blob = new Blob([lines.join("\n")], {type:"text/csv"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "budget-summary.csv";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
+    const blob = new Blob([lines.join("\n")], {type:"text/csv"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "budget-summary.csv";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   });
 }
 

@@ -2,13 +2,13 @@
 
 // Default categories (you can edit these names below)
 const DEFAULT_ROWS = [
-  { category: "Rent / Mortgage", amount: 0, notes: "" },
-  { category: "Utilities", amount: 0, notes: "" },
-  { category: "Groceries", amount: 0, notes: "" },
-  { category: "Transport", amount: 0, notes: "" },
-  { category: "Insurance", amount: 0, notes: "" },
-  { category: "Entertainment", amount: 0, notes: "" },
-  { category: "Savings", amount: 0, notes: "" }
+  { category: "Rent / Mortgage", amount: 900, notes: "" },
+  { category: "Utilities", amount: 150, notes: "" },
+  { category: "Groceries", amount: 350, notes: "" },
+  { category: "Transport", amount: 120, notes: "" },
+  { category: "Insurance", amount: 120, notes: "" },
+  { category: "Entertainment", amount: 100, notes: "" },
+  { category: "Savings", amount: 200, notes: "" }
 ];
 
 const rowsContainer = document.getElementById("rows");

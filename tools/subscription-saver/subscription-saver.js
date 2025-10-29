@@ -6,7 +6,7 @@
  */
 (() => {
   /** Redesign Notes
-   * IA: Savings-style hero leads into totals, then manage controls, the subscription list, and chart for a top-down narrative.
+   * IA: Totals surface first, followed by manage controls, the subscription list, then the chart for a top-down narrative.
    * Components: Summary cards, manage controls (filters/actions + add form), responsive table/mobile cards, and Chart.js donut.
    * Extension points: Drop in new filters/actions or additional summary tiles without rewriting persistence or render loops.
    */

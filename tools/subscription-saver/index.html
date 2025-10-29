@@ -201,64 +201,56 @@
     </div>
   </header>
   <main id="main-content">
-    <section class="page-hero" aria-labelledby="subscription-heading">
-      <div class="page-hero__inner">
-        <p class="page-hero__eyebrow">Subscription Saver</p>
-        <h1 id="subscription-heading">Keep recurring costs in check</h1>
-        <p class="page-hero__lede">Track every streaming, productivity, and utility charge in one view so you can spot quick wins to pause or cancel.</p>
-        <p class="page-hero__meta">Everything stays on this device. Filters, totals, and charts update instantly as you edit or exclude subscriptions.</p>
-      </div>
-    </section>
-    <div class="subscription-wrap">
+    <div class="wrap">
       <!-- /** Redesign Notes */
-           Hero and metrics mirror the Savings Goal layout, followed by an aside of filters/actions and the add form for quick tweaks.
-           Table and chart live in the main column so future modules (e.g., insights) can swap in without disturbing data plumbing.
+           Totals now lead, controls sit beside the add form, and the list precedes the chart for quicker insight scanning.
+           Summary cards, manage controls, responsive table/cards, and chart are isolated for future feature swaps.
       -->
-      <section class="subscription-summary" aria-labelledby="summary-heading">
-        <div class="subscription-summary__header">
-          <h2 id="summary-heading">Totals at a glance</h2>
-          <p class="subscription-summary__lede">Numbers reflect your current filters and include/exclude selections.</p>
-        </div>
-        <div class="subscription-summary__grid">
-          <article class="subscription-summary__card" aria-live="polite">
-            <h3 class="subscription-summary__title">Monthly total</h3>
-            <p class="subscription-summary__value" id="totalMonthly">$0.00</p>
-            <p class="subscription-summary__meta" id="monthlyDelta">Showing all included subscriptions.</p>
+      <header class="page-header">
+        <h1>Subscription Saver</h1>
+        <p class="subtitle">List every subscription you pay for, see your true monthly and yearly totals, and find easy wins to pause or cancel when budgets tighten.</p>
+      </header>
+      <section class="summary-section" aria-label="Subscription totals">
+        <div class="summary-grid">
+          <article class="card summary-card" aria-live="polite">
+            <h2 class="summary-card__title">Monthly total</h2>
+            <p class="summary-card__value" id="totalMonthly">$0.00</p>
+            <p class="summary-card__meta" id="monthlyDelta">Showing all included subscriptions.</p>
           </article>
-          <article class="subscription-summary__card" aria-live="polite">
-            <h3 class="subscription-summary__title">Yearly total</h3>
-            <p class="subscription-summary__value" id="totalYearly">$0.00</p>
-            <p class="subscription-summary__meta" id="yearlyDelta">Showing all included subscriptions.</p>
+          <article class="card summary-card" aria-live="polite">
+            <h2 class="summary-card__title">Yearly total</h2>
+            <p class="summary-card__value" id="totalYearly">$0.00</p>
+            <p class="summary-card__meta" id="yearlyDelta">Showing all included subscriptions.</p>
           </article>
-          <article class="subscription-summary__card subscription-summary__card--accent" aria-live="polite">
-            <h3 class="subscription-summary__title">Potential savings</h3>
-            <p class="subscription-summary__value" id="potentialSavings">$0.00</p>
-            <p class="subscription-summary__meta" id="savingsHelper">All tracked subscriptions are currently included in totals.</p>
+          <article class="card summary-card summary-card--savings" aria-live="polite">
+            <h2 class="summary-card__title">Potential savings</h2>
+            <p class="summary-card__value" id="potentialSavings">$0.00</p>
+            <p class="summary-card__meta" id="savingsHelper">All tracked subscriptions are currently included in totals.</p>
           </article>
         </div>
       </section>
-      <div class="subscription-layout">
-        <div class="subscription-layout__aside">
-          <section class="card card--subtle subscription-manage" aria-labelledby="manage-heading">
-            <div class="subscription-manage__intro">
-              <h2 id="manage-heading">Filters &amp; actions</h2>
-              <p>Search, focus on key categories, or export a quick snapshot.</p>
+      <section class="controls-section" aria-labelledby="manage-heading">
+        <div class="card controls-card">
+          <div class="controls-card__col controls-card__col--filters">
+            <div class="controls-card__header">
+              <h2 id="manage-heading">Manage subscriptions</h2>
+              <p>Filter the list, export a snapshot, or load demo data to explore.</p>
             </div>
-            <div class="subscription-field subscription-field--search">
+            <div class="controls-field controls-field--search">
               <label for="searchInput">Search</label>
               <input type="search" id="searchInput" name="searchInput" placeholder="Search name or category" autocomplete="off" />
             </div>
-            <fieldset class="subscription-field subscription-field--frequency">
+            <fieldset class="controls-field controls-field--frequency">
               <legend>Billing frequency</legend>
-              <div class="subscription-options subscription-options--radios">
+              <div class="controls-options controls-options--radios">
                 <label><input type="radio" name="frequencyFilter" value="all" checked />All</label>
                 <label><input type="radio" name="frequencyFilter" value="monthly" />Monthly</label>
                 <label><input type="radio" name="frequencyFilter" value="yearly" />Yearly</label>
               </div>
             </fieldset>
-            <fieldset class="subscription-field subscription-field--categories">
+            <fieldset class="controls-field controls-field--categories">
               <legend>Categories</legend>
-              <div class="subscription-options subscription-options--checkboxes">
+              <div class="controls-options controls-options--checkboxes">
                 <label><input type="checkbox" value="Streaming" data-category-filter />Streaming</label>
                 <label><input type="checkbox" value="Music" data-category-filter />Music</label>
                 <label><input type="checkbox" value="Gaming" data-category-filter />Gaming</label>
@@ -269,117 +261,116 @@
                 <label><input type="checkbox" value="Other" data-category-filter />Other</label>
               </div>
             </fieldset>
-            <div class="subscription-actions button-row" role="group" aria-label="Table actions">
+            <div class="controls-actions" role="group" aria-label="Table actions">
               <button type="button" class="btn btn--ghost" id="exportCsvButton">Export CSV</button>
               <button type="button" class="btn btn--ghost" id="demoDataButton">Demo data</button>
               <button type="button" class="btn btn--ghost" id="resetButton">Reset all</button>
             </div>
-          </section>
-          <section class="card card--subtle subscription-form" aria-labelledby="add-subscription-heading">
-            <div class="subscription-form__intro">
+          </div>
+          <div class="controls-card__divider" aria-hidden="true"></div>
+          <div class="controls-card__col controls-card__col--form" aria-labelledby="add-subscription-heading">
+            <div class="controls-form">
               <h2 id="add-subscription-heading">Add a subscription</h2>
-              <p>Log each recurring charge so totals stay accurate.</p>
-            </div>
-            <form id="subscriptionForm" novalidate>
-              <div class="subscription-form__grid">
-                <div class="subscription-form__field">
-                  <label for="subscriptionName">Name</label>
-                  <input type="text" id="subscriptionName" name="subscriptionName" required autocomplete="off" />
-                </div>
-                <div class="subscription-form__field">
-                  <label for="subscriptionCategory">Category</label>
-                  <select id="subscriptionCategory" name="subscriptionCategory" required>
-                    <option value="">Select a category</option>
-                    <option value="Streaming">Streaming</option>
-                    <option value="Music">Music</option>
-                    <option value="Gaming">Gaming</option>
-                    <option value="Productivity">Productivity</option>
-                    <option value="Phone">Phone</option>
-                    <option value="Internet">Internet</option>
-                    <option value="Fitness">Fitness</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <fieldset class="subscription-form__field subscription-form__field--frequency">
-                  <legend>Billing frequency</legend>
-                  <div class="subscription-form__radios">
-                    <div>
-                      <input type="radio" id="frequencyMonthly" name="subscriptionFrequency" value="monthly" checked />
-                      <label for="frequencyMonthly">Monthly</label>
-                    </div>
-                    <div>
-                      <input type="radio" id="frequencyYearly" name="subscriptionFrequency" value="yearly" />
-                      <label for="frequencyYearly">Yearly</label>
-                    </div>
+              <p class="controls-form__helper">Keep totals accurate by logging each recurring charge.</p>
+              <form id="subscriptionForm" novalidate>
+                <div class="form-grid">
+                  <div class="form-field">
+                    <label for="subscriptionName">Name</label>
+                    <input type="text" id="subscriptionName" name="subscriptionName" required autocomplete="off" />
                   </div>
-                </fieldset>
-                <div class="subscription-form__field subscription-form__field--price">
-                  <label for="subscriptionPrice">Price</label>
-                  <div class="subscription-form__input-group">
-                    <span aria-hidden="true" class="currency-prefix">$</span>
-                    <input type="number" id="subscriptionPrice" name="subscriptionPrice" inputmode="decimal" min="0" step="0.01" aria-describedby="priceHint priceError" required />
+                  <div class="form-field">
+                    <label for="subscriptionCategory">Category</label>
+                    <select id="subscriptionCategory" name="subscriptionCategory" required>
+                      <option value="">Select a category</option>
+                      <option value="Streaming">Streaming</option>
+                      <option value="Music">Music</option>
+                      <option value="Gaming">Gaming</option>
+                      <option value="Productivity">Productivity</option>
+                      <option value="Phone">Phone</option>
+                      <option value="Internet">Internet</option>
+                      <option value="Fitness">Fitness</option>
+                      <option value="Other">Other</option>
+                    </select>
                   </div>
-                  <p class="input-hint" id="priceHint">Enter the amount you pay per billing cycle.</p>
-                  <p class="input-error" id="priceError" role="alert" aria-live="polite"></p>
+                  <fieldset class="form-field form-field--frequency">
+                    <legend>Billing frequency</legend>
+                    <div class="radio-group">
+                      <div>
+                        <input type="radio" id="frequencyMonthly" name="subscriptionFrequency" value="monthly" checked />
+                        <label for="frequencyMonthly">Monthly</label>
+                      </div>
+                      <div>
+                        <input type="radio" id="frequencyYearly" name="subscriptionFrequency" value="yearly" />
+                        <label for="frequencyYearly">Yearly</label>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <div class="form-field form-field--price">
+                    <label for="subscriptionPrice">Price</label>
+                    <div class="input-group">
+                      <span aria-hidden="true" class="currency-prefix">$</span>
+                      <input type="number" id="subscriptionPrice" name="subscriptionPrice" inputmode="decimal" min="0" step="0.01" aria-describedby="priceHint priceError" required />
+                    </div>
+                    <p class="input-hint" id="priceHint">Enter the amount you pay per billing cycle.</p>
+                    <p class="input-error" id="priceError" role="alert" aria-live="polite"></p>
+                  </div>
+                  <div class="form-field">
+                    <label for="subscriptionNextBilling">Next billing date <span class="optional">(optional)</span></label>
+                    <input type="date" id="subscriptionNextBilling" name="subscriptionNextBilling" />
+                  </div>
+                  <div class="form-field form-field--notes">
+                    <label for="subscriptionNotes">Notes <span class="optional">(optional)</span></label>
+                    <textarea id="subscriptionNotes" name="subscriptionNotes" rows="2" placeholder="Plan details, promo codes, or reminders"></textarea>
+                  </div>
                 </div>
-                <div class="subscription-form__field">
-                  <label for="subscriptionNextBilling">Next billing date <span class="optional">(optional)</span></label>
-                  <input type="date" id="subscriptionNextBilling" name="subscriptionNextBilling" />
+                <div class="form-footer">
+                  <button type="submit" class="btn" id="addSubscriptionButton">Add subscription</button>
                 </div>
-                <div class="subscription-form__field subscription-form__field--notes">
-                  <label for="subscriptionNotes">Notes <span class="optional">(optional)</span></label>
-                  <textarea id="subscriptionNotes" name="subscriptionNotes" rows="2" placeholder="Plan details, promo codes, or reminders"></textarea>
-                </div>
-              </div>
-              <div class="subscription-form__footer">
-                <button type="submit" class="btn" id="addSubscriptionButton">Add subscription</button>
-              </div>
-            </form>
-          </section>
+              </form>
+            </div>
+          </div>
         </div>
-        <div class="subscription-layout__main">
-          <section class="subscription-table-card card" aria-labelledby="subscriptions-heading">
-            <div class="subscription-table-card__header">
-              <div>
-                <h2 id="subscriptions-heading">Subscriptions</h2>
-                <p class="subscription-table-card__caption" id="tableDescription">Results refresh as you edit, filter, or reorder.</p>
-              </div>
-              <p class="subscription-table-card__count" id="tableCount" aria-live="polite">0 subscriptions</p>
-            </div>
-            <div class="table-responsive" role="region" aria-live="polite">
-              <table class="subscription-table" aria-describedby="tableDescription">
-                <thead>
-                  <tr>
-                    <th scope="col" class="col-include"><span class="sr-only">Include in totals</span></th>
-                    <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort="name">Name</button></th>
-                    <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort="category">Category</button></th>
-                    <th scope="col">Frequency</th>
-                    <th scope="col" class="numeric">Price</th>
-                    <th scope="col" class="numeric" aria-sort="none"><button type="button" class="sort-button" data-sort="monthly">Monthly cost</button></th>
-                    <th scope="col" class="numeric" aria-sort="none"><button type="button" class="sort-button" data-sort="yearly">Yearly cost</button></th>
-                    <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort="nextBilling">Next billing</button></th>
-                    <th scope="col" class="col-actions">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="subscriptionTableBody"></tbody>
-              </table>
-              <div class="mobile-card-list" id="mobileCardList" hidden aria-live="polite"></div>
-              <div class="table-empty" id="tableEmpty" role="status">No subscriptions yet. Add your first one to start tracking.</div>
-              <div class="table-empty" id="noMatches" role="status" hidden>No subscriptions match your filters. Try adjusting search or categories.</div>
-            </div>
-          </section>
-          <section class="subscription-chart-card card" aria-labelledby="chart-heading">
-            <div class="subscription-chart-card__header">
-              <h2 id="chart-heading">Monthly cost by category</h2>
-              <p class="subscription-chart-card__caption">Click legend items to focus on a few categories at a time.</p>
-            </div>
-            <div class="subscription-chart-card__canvas">
-              <canvas id="subscriptionChart" width="420" height="420" role="img" aria-label="Donut chart of monthly subscription cost by category"></canvas>
-            </div>
-            <p class="chart-empty" id="chartEmpty">Add a subscription to see where your money goes.</p>
-          </section>
+      </section>
+      <section class="card table-card" aria-labelledby="subscriptions-heading">
+        <div class="table-card__header">
+          <div>
+            <h2 id="subscriptions-heading">Subscriptions</h2>
+            <p class="table-card__caption" id="tableDescription">Results update instantly as you edit, filter, or reorder.</p>
+          </div>
+          <p class="table-card__count" id="tableCount" aria-live="polite">0 subscriptions</p>
         </div>
-      </div>
+        <div class="table-responsive" role="region" aria-live="polite">
+          <table class="subscription-table" aria-describedby="tableDescription">
+            <thead>
+              <tr>
+                <th scope="col" class="col-include"><span class="sr-only">Include in totals</span></th>
+                <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort="name">Name</button></th>
+                <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort="category">Category</button></th>
+                <th scope="col">Frequency</th>
+                <th scope="col" class="numeric">Price</th>
+                <th scope="col" class="numeric" aria-sort="none"><button type="button" class="sort-button" data-sort="monthly">Monthly cost</button></th>
+                <th scope="col" class="numeric" aria-sort="none"><button type="button" class="sort-button" data-sort="yearly">Yearly cost</button></th>
+                <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort="nextBilling">Next billing</button></th>
+                <th scope="col" class="col-actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="subscriptionTableBody"></tbody>
+          </table>
+          <div class="mobile-card-list" id="mobileCardList" hidden aria-live="polite"></div>
+          <div class="table-empty" id="tableEmpty" role="status">No subscriptions yet. Add your first one to start tracking.</div>
+          <div class="table-empty" id="noMatches" role="status" hidden>No subscriptions match your filters. Try adjusting search or categories.</div>
+        </div>
+      </section>
+      <section class="card chart-card" aria-labelledby="chart-heading">
+        <div class="chart-card__header">
+          <h2 id="chart-heading">Monthly cost by category</h2>
+          <p class="chart-card__caption">Click legend items to focus on a few categories at a time.</p>
+        </div>
+        <div class="chart-card__canvas">
+          <canvas id="subscriptionChart" width="420" height="420" role="img" aria-label="Donut chart of monthly subscription cost by category"></canvas>
+        </div>
+        <p class="chart-empty" id="chartEmpty">Add a subscription to see where your money goes.</p>
+      </section>
     </div>
   </main>
   <footer class="site-footer" role="contentinfo">

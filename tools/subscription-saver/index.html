@@ -15,94 +15,84 @@
   <meta property="twitter:title" content="Subscription Saver Tool — BudgetTools" />
   <meta property="twitter:description" content="List your subscriptions, calculate monthly and yearly totals, and see where to pause or cancel." />
   <meta name="theme-color" content="#f6f8fb" />
-
-  <!-- Preloads for your existing shared CSS + tool CSS -->
   <link rel="preload" href="/assets/css/style.css" as="style" data-preload-style />
   <link rel="preload" href="/tools/subscription-saver/subscription-saver.css" as="style" data-preload-style />
-
   <noscript>
     <link rel="stylesheet" href="/assets/css/style.css" />
     <link rel="stylesheet" href="/tools/subscription-saver/subscription-saver.css" />
   </noscript>
-
   <style>
-    /* ---------- Design tokens ---------- */
-    :root {
-      --color-bg: #f6f8fb;
-      --color-surface: #ffffff;
-      --color-text: #0f172a;
-      --color-muted: #64748b;
-      --color-subtle: #94a3b8;
-      --color-border: rgba(219, 228, 243, 0.9);
-      --color-accent: #22c55e;
-      --color-accent-ink: #062a12;
-      --radius-md: 12px;
-      --radius-lg: 18px;
-      --shadow-sm: 0 10px 30px rgba(15, 23, 42, 0.08);
-      --shadow-md: 0 24px 45px -24px rgba(15, 23, 42, 0.32);
-      --wrap: min(1040px, 100% - 3rem);
-    }
-
-    @media (max-width: 900px) { :root { --wrap: min(100% - 2rem, 100%); } }
-
+    :root { --color-bg: #f6f8fb; --color-text: #0f172a; --color-accent: #22c55e; }
     html { background: var(--color-bg); font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
-    body { margin: 0; color: var(--color-text); line-height: 1.65; }
-
-    /* ---------- A11y utilities ---------- */
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-    .skip-link { position: absolute; left: 0.75rem; top: 0.75rem; padding: 0.75rem 1.25rem; background: var(--color-accent); color: var(--color-accent-ink); border-radius: var(--radius-md); transform: translateY(-150%); transition: transform .2s ease; z-index: 999; }
+    body { margin: 0; background: var(--color-bg); color: var(--color-text); line-height: 1.65; }
+    .skip-link { position: absolute; left: 0.75rem; top: 0.75rem; padding: 0.75rem 1.25rem; background: var(--color-accent); color: #062a12; border-radius: 12px; transform: translateY(-150%); transition: transform 0.2s ease; }
     .skip-link:focus { transform: translateY(0); }
-
-    /* ---------- Site header & nav ---------- */
-    .site-header { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(18px); background: rgba(246,248,251,.9); border-bottom: 1px solid rgba(219,228,243,.6); box-shadow: 0 18px 30px -24px rgba(15,23,42,.32); }
-    .site-header__inner { width: var(--wrap); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; }
-    .site-logo { font-weight: 700; letter-spacing: -0.01em; text-decoration: none; display: inline-flex; gap: .5rem; align-items: center; font-size: 1.15rem; color: inherit; }
-
+    .site-header { position: sticky; top: 0; z-index: 9; backdrop-filter: blur(18px); background: rgba(246, 248, 251, 0.9); border-bottom: 1px solid rgba(219, 228, 243, 0.6); box-shadow: 0 18px 30px -24px rgba(15, 23, 42, 0.32); }
+    .site-header__inner { width: min(1080px, 100% - 3.5rem); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 0; position: relative; }
+    .site-logo { font-weight: 700; letter-spacing: -0.01em; text-decoration: none; display: inline-flex; gap: 0.5rem; align-items: center; font-size: 1.15rem; color: inherit; }
     .site-nav { display: flex; align-items: center; gap: clamp(1rem, 3vw, 1.75rem); }
-    .site-nav__toggle { background: rgba(255,255,255,.7); border: 1px solid rgba(219,228,243,.9); border-radius: var(--radius-md); color: var(--color-text); display: none; align-items: center; gap: .5rem; padding: .55rem .75rem; font-size: .95rem; font-weight: 600; letter-spacing: .01em; line-height: 1; }
-    .site-nav__toggle:hover, .site-nav__toggle:focus-visible { background: rgba(255,255,255,.95); border-color: rgba(148,163,184,.6); }
-    .site-nav__toggle-box { display: inline-flex; flex-direction: column; gap: .25rem; }
-    .site-nav__toggle-line { width: 1.25rem; height: 2px; border-radius: 999px; background: currentColor; transition: transform .25s ease, opacity .25s ease; }
+    .site-nav__toggle { background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(219, 228, 243, 0.9); border-radius: 12px; color: #0f172a; display: none; align-items: center; gap: 0.5rem; padding: 0.55rem 0.75rem; font-size: 0.95rem; font-weight: 600; letter-spacing: 0.01em; line-height: 1; transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease; }
+    .site-nav__toggle:hover, .site-nav__toggle:focus-visible { background: rgba(255, 255, 255, 0.95); border-color: rgba(148, 163, 184, 0.6); color: #0f172a; }
+    .site-nav__toggle-box { display: inline-flex; flex-direction: column; gap: 0.25rem; }
+    .site-nav__toggle-line { width: 1.25rem; height: 2px; border-radius: 999px; background: currentColor; transition: transform 0.25s ease, opacity 0.25s ease; }
     .site-nav__toggle[aria-expanded="true"] .site-nav__toggle-line:nth-child(1) { transform: translateY(6px) rotate(45deg); }
     .site-nav__toggle[aria-expanded="true"] .site-nav__toggle-line:nth-child(2) { opacity: 0; }
     .site-nav__toggle[aria-expanded="true"] .site-nav__toggle-line:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-
+    .site-nav__toggle-label { display: inline-flex; align-items: center; gap: 0.25rem; }
     .site-nav__list { display: flex; list-style: none; gap: clamp(1rem, 2.6vw, 1.75rem); padding: 0; margin: 0; align-items: center; }
-    .site-nav__item { position: relative; }
-    .site-nav__link { appearance: none; background: none; border: 0; display: inline-flex; align-items: center; gap: .4rem; padding: .45rem 0; font-weight: 600; font-size: .97rem; color: var(--color-muted); text-decoration: none; position: relative; cursor: pointer; }
-    .site-nav__link::after { content: ""; position: absolute; left: 0; bottom: -.45rem; width: 100%; height: 3px; border-radius: 999px; background: var(--color-accent); transform: scaleX(0); transform-origin: left; opacity: 0; transition: transform .25s ease, opacity .25s ease; }
-    .site-nav__link:hover, .site-nav__link:focus-visible { color: var(--color-text); }
-    .site-nav__link:hover::after, .site-nav__link:focus-visible::after { transform: scaleX(1); opacity: .6; }
-    .site-nav__link[aria-current="page"], .site-nav__link[data-active="true"] { color: var(--color-text); font-weight: 700; }
+    .site-nav__item { margin: 0; position: relative; }
+    .site-nav__link { appearance: none; background: none; border: 0; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0; font-weight: 600; font-size: 0.97rem; color: #64748b; text-decoration: none; position: relative; transition: color 0.2s ease; cursor: pointer; border-radius: 0; }
+    .site-nav__link::after { content: ""; position: absolute; left: 0; bottom: -0.45rem; width: 100%; height: 3px; border-radius: 999px; background: var(--color-accent); transform: scaleX(0); transform-origin: left; opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease; }
+    .site-nav__link:hover, .site-nav__link:focus-visible { color: #0f172a; }
+    .site-nav__link:hover::after, .site-nav__link:focus-visible::after { transform: scaleX(1); opacity: 0.6; }
+    .site-nav__link[aria-current="page"], .site-nav__link[data-active="true"] { color: #0f172a; font-weight: 700; }
     .site-nav__link[aria-current="page"]::after, .site-nav__link[data-active="true"]::after { transform: scaleX(1); opacity: 1; }
-    .site-nav__link:focus-visible { outline: 2px solid rgba(34,197,94,.55); outline-offset: 4px; border-radius: var(--radius-md); }
-    .site-nav__caret { width: .75rem; height: .75rem; display: inline-flex; color: currentColor; transition: transform .25s ease; }
-
+    .site-nav__link:focus-visible { outline: 2px solid rgba(34, 197, 94, 0.55); outline-offset: 4px; border-radius: 12px; }
+    .site-nav__caret { width: 0.75rem; height: 0.75rem; display: inline-flex; color: currentColor; transition: transform 0.25s ease; }
     .site-nav__item[data-open="true"] > .site-nav__link .site-nav__caret { transform: rotate(180deg); }
-    .site-nav__sub-list { list-style: none; padding: .75rem; margin: 0; position: absolute; top: calc(100% + .65rem); left: 0; min-width: 220px; border-radius: 16px; background: #fff; box-shadow: var(--shadow-md); border: 1px solid var(--color-border); opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-.4rem); transition: opacity .25s ease, transform .25s ease, visibility .25s ease; z-index: 10; display: grid; gap: .15rem; }
+    .site-nav__sub-list { list-style: none; padding: 0.75rem; margin: 0; position: absolute; top: calc(100% + 0.65rem); left: 0; min-width: 220px; border-radius: 16px; background: #ffffff; box-shadow: 0 26px 45px -25px rgba(15, 23, 42, 0.35); border: 1px solid rgba(219, 228, 243, 0.85); opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-0.4rem); transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease; z-index: 10; display: grid; gap: 0.15rem; }
     .site-nav__item[data-open="true"] > .site-nav__sub-list { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); }
-    .site-nav__sub-link { display: block; padding: .6rem .75rem; border-radius: 12px; color: var(--color-text); text-decoration: none; font-weight: 600; font-size: .92rem; }
-    .site-nav__sub-link:hover, .site-nav__sub-link:focus-visible { background: rgba(34,197,94,.12); color: #052e16; outline: none; }
+    .site-nav__sub-item { margin: 0; }
+    .site-nav__sub-link { display: block; padding: 0.6rem 0.75rem; border-radius: 12px; color: #0f172a; text-decoration: none; font-weight: 600; font-size: 0.92rem; transition: background-color 0.2s ease, color 0.2s ease; }
+    .site-nav__sub-link:hover, .site-nav__sub-link:focus-visible { background: rgba(34, 197, 94, 0.12); color: #052e16; outline: none; }
     .site-nav__sub-link[data-disabled="true"] { color: #94a3b8; cursor: not-allowed; pointer-events: none; }
-
+    .site-nav__sub-link[data-disabled="true"]:hover, .site-nav__sub-link[data-disabled="true"]:focus-visible { background: transparent; color: #94a3b8; }
     .site-nav__item--cta { margin-left: clamp(1rem, 2vw, 2.25rem); }
-    .site-nav__cta { display: inline-flex; align-items: center; gap: .4rem; padding: .55rem 1.1rem; border-radius: 999px; background: var(--color-accent); color: var(--color-accent-ink); font-size: .95rem; font-weight: 700; text-decoration: none; box-shadow: 0 14px 32px rgba(34,197,94,.28); transition: transform .2s ease, box-shadow .2s ease; }
-    .site-nav__cta:hover, .site-nav__cta:focus-visible { transform: translateY(-1px); box-shadow: 0 18px 40px rgba(34,197,94,.36); outline: none; }
-
-    /* Mobile nav */
+    .site-nav__cta { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 1.1rem; border-radius: 999px; background: var(--color-accent); color: #062a12; font-size: 0.95rem; font-weight: 700; text-decoration: none; box-shadow: 0 14px 32px rgba(34, 197, 94, 0.28); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .site-nav__cta:hover, .site-nav__cta:focus-visible { transform: translateY(-1px); box-shadow: 0 18px 40px rgba(34, 197, 94, 0.36); outline: none; }
+    .has-nav-open, .has-nav-open body { overflow: hidden; }
+    .no-js .site-nav { position: static; padding: 0; background: transparent; opacity: 1; pointer-events: auto; display: flex; }
+    .no-js .site-nav__list { display: flex; flex-wrap: wrap; gap: clamp(0.75rem, 2.6vw, 1.5rem); background: transparent; border: 0; box-shadow: none; padding: 0; }
+    .no-js .site-nav__item { position: static; }
+    .no-js .site-nav__sub-list { position: static; opacity: 1; visibility: visible; pointer-events: auto; transform: none; box-shadow: none; border: 0; background: transparent; padding: 0.35rem 0 0 0; display: grid; gap: 0.35rem; }
+    .no-js .site-nav__sub-link { padding: 0.35rem 0; color: #0f172a; }
+    main { display: block; }
+    .wrap { width: min(1040px, 100% - 3rem); margin-inline: auto; padding-block: clamp(2.5rem, 6vw, 4.25rem); }
+    header h1 { margin: 0; font-size: clamp(2.1rem, 4vw, 2.9rem); }
+    .subtitle { margin: 0.35rem 0 0; color: #475569; max-width: 640px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; padding: 0.65rem 1.25rem; border-radius: 12px; border: 1px solid transparent; background: var(--color-accent); color: #062a12; font-weight: 700; text-decoration: none; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12); cursor: pointer; }
+    .btn:hover, .btn:focus-visible { filter: brightness(1.02); outline: none; }
+    .btn--ghost { background: rgba(34, 197, 94, 0.16); color: #065f46; border: 1px solid rgba(34, 197, 94, 0.35); box-shadow: none; }
+    .card { border-radius: 18px; border: 1px solid rgba(219, 228, 243, 0.9); padding: clamp(1.5rem, 3vw, 1.9rem); background: #ffffff; box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); }
+    .grid { display: grid; gap: clamp(1.25rem, 2.5vw, 1.75rem); }
+    @media (max-width: 900px) {
+      .site-header__inner, .wrap { width: min(100% - 2rem, 100%); }
+    }
     @media (max-width: 720px) {
-      .site-header__inner { padding-block: .85rem; width: var(--wrap); }
-      .site-nav { position: fixed; inset: 0; padding: 5.5rem 1.5rem 2rem; background: rgba(246,248,251,.92); backdrop-filter: blur(18px); pointer-events: none; opacity: 0; transition: opacity .25s ease; display: grid; place-items: start end; }
-      .site-nav__list { width: min(360px, 100%); background: #fff; border-radius: var(--radius-lg); border: 1px solid var(--color-border); box-shadow: var(--shadow-md); padding: 1.1rem; display: grid; gap: .4rem; transform: translateY(-.75rem); transition: transform .24s ease; }
+      .site-header__inner { padding-block: 0.85rem; }
+      .site-nav { position: fixed; inset: 0; padding: 5.5rem 1.5rem 2rem; background: rgba(246, 248, 251, 0.92); backdrop-filter: blur(18px); pointer-events: none; opacity: 0; transition: opacity 0.25s ease; display: grid; place-items: start end; }
+      .site-nav__list { width: min(360px, 100%); background: #ffffff; border-radius: 18px; border: 1px solid rgba(219, 228, 243, 0.9); box-shadow: 0 24px 45px -24px rgba(15, 23, 42, 0.32); padding: 1.1rem; display: grid; gap: 0.4rem; transform: translateY(-0.75rem); transition: transform 0.24s ease; }
       .site-nav__item { width: 100%; }
-      .site-nav__item--cta { margin-left: 0; padding-top: .65rem; margin-top: .35rem; border-top: 1px solid rgba(226,232,240,.9); }
-      .site-nav__link { width: 100%; justify-content: space-between; font-size: 1rem; color: var(--color-text); padding: .7rem .85rem; border-radius: 12px; }
+      .site-nav__item--cta { margin-left: 0; padding-top: 0.65rem; margin-top: 0.35rem; border-top: 1px solid rgba(226, 232, 240, 0.9); }
+      .site-nav__link { width: 100%; justify-content: space-between; font-size: 1rem; color: #0f172a; padding: 0.7rem 0.85rem; border-radius: 12px; }
       .site-nav__link::after { display: none; }
-      .site-nav__link:hover, .site-nav__link:focus-visible { background: rgba(34,197,94,.14); }
-      .site-nav__link[aria-current="page"], .site-nav__link[data-active="true"] { background: rgba(34,197,94,.22); }
-      .site-nav__sub-list { position: static; opacity: 1; visibility: visible; pointer-events: auto; transform: none; padding: 0; margin: 0; border: 0; box-shadow: none; background: transparent; max-height: 0; overflow: hidden; transition: max-height .3s ease; }
-      .site-nav__item[data-open="true"] > .site-nav__sub-list { max-height: 520px; padding-bottom: .25rem; }
-      .site-nav__sub-link { padding: .55rem .85rem .55rem 2.35rem; border-radius: 10px; font-size: .96rem; }
+      .site-nav__link:hover, .site-nav__link:focus-visible { background: rgba(34, 197, 94, 0.14); color: #0f172a; }
+      .site-nav__link[aria-current="page"], .site-nav__link[data-active="true"] { background: rgba(34, 197, 94, 0.22); }
+      .site-nav__caret { margin-left: auto; }
+      .site-nav__sub-list { position: static; opacity: 1; visibility: visible; pointer-events: auto; transform: none; padding: 0; margin: 0; border: 0; box-shadow: none; background: transparent; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+      .site-nav__item[data-open="true"] > .site-nav__sub-list { max-height: 520px; padding-bottom: 0.25rem; }
+      .site-nav__sub-link { padding: 0.55rem 0.85rem 0.55rem 2.35rem; border-radius: 10px; font-size: 0.96rem; }
+      .site-nav__sub-link:hover, .site-nav__sub-link:focus-visible { background: rgba(34, 197, 94, 0.14); color: #052e16; }
       .site-nav__cta { width: 100%; justify-content: center; }
       .site-nav[data-open="true"] { pointer-events: auto; opacity: 1; }
       .site-nav[data-open="true"] .site-nav__list { transform: translateY(0); }
@@ -110,134 +100,21 @@
       .site-nav__toggle-line { width: 1.35rem; }
       .site-nav__toggle[aria-expanded="true"] .site-nav__toggle-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
       .site-nav__toggle[aria-expanded="true"] .site-nav__toggle-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    }
-
-    /* ---------- Layout ---------- */
-    main { display: block; }
-    .wrap { width: var(--wrap); margin-inline: auto; padding-block: clamp(2.5rem, 6vw, 4.25rem); }
-    header h1 { margin: 0; font-size: clamp(2.1rem, 4vw, 2.9rem); letter-spacing: -.02em; }
-    .subtitle { margin: .35rem 0 0; color: #475569; max-width: 640px; }
-
-    .grid { display: grid; gap: clamp(1.25rem, 2.5vw, 1.75rem); }
-
-    .card { border-radius: var(--radius-lg); border: 1px solid var(--color-border); padding: clamp(1.5rem, 3vw, 1.9rem); background: var(--color-surface); box-shadow: var(--shadow-sm); }
-
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; padding: .65rem 1.25rem; border-radius: var(--radius-md); border: 1px solid transparent; background: var(--color-accent); color: var(--color-accent-ink); font-weight: 700; text-decoration: none; box-shadow: 0 12px 30px rgba(15,23,42,.12); cursor: pointer; }
-    .btn:hover, .btn:focus-visible { filter: brightness(1.02); outline: none; }
-    .btn--ghost { background: rgba(34,197,94,.16); color: #065f46; border: 1px solid rgba(34,197,94,.35); box-shadow: none; }
-
-    /* ---------- Summary section ---------- */
-    .summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: clamp(1rem, 2vw, 1.25rem); }
-    @media (max-width: 820px) { .summary-grid { grid-template-columns: 1fr; } }
-    .summary-card { position: relative; overflow: clip; }
-    .summary-card__title { margin: 0 0 .35rem; font-size: .95rem; text-transform: uppercase; letter-spacing: .06em; color: var(--color-subtle); font-weight: 800; }
-    .summary-card__value { margin: .15rem 0 .35rem; font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -.02em; }
-    .summary-card__meta { margin: 0; color: var(--color-muted); font-size: .95rem; }
-    .summary-card--savings { background: linear-gradient(180deg, rgba(34,197,94,.08), rgba(34,197,94,.02)); border-color: rgba(34,197,94,.35); }
-
-    /* ---------- Controls section ---------- */
-    .controls-card { display: grid; grid-template-columns: 380px 1px minmax(0, 1fr); gap: 1.25rem; align-items: start; }
-    .controls-card__col { display: grid; gap: 1rem; align-content: start; }
-    .controls-card__divider { width: 1px; background: var(--color-border); height: 100%; }
-    .controls-card__header h2 { margin: 0; font-size: 1.2rem; }
-    .controls-card__header p { margin: .35rem 0 0; color: var(--color-muted); }
-
-    .controls-field label, .controls-field legend { font-weight: 700; font-size: .95rem; color: var(--color-text); }
-    .controls-field input[type="search"],
-    .controls-field input[type="text"],
-    .controls-field input[type="date"],
-    .controls-field input[type="number"],
-    .controls-field select,
-    .controls-form input[type="text"],
-    .controls-form input[type="date"],
-    .controls-form input[type="number"],
-    .controls-form select,
-    .controls-form textarea { width: 100%; padding: .7rem .9rem; border-radius: var(--radius-md); border: 1px solid var(--color-border); background: #fff; font: inherit; }
-    .controls-field input:focus,
-    .controls-field select:focus,
-    .controls-form input:focus,
-    .controls-form textarea:focus { outline: 2px solid rgba(34,197,94,.45); outline-offset: 2px; }
-
-    .controls-options { display: flex; flex-wrap: wrap; gap: .65rem 1rem; margin-top: .5rem; }
-    .controls-options--radios label, .controls-options--checkboxes label { display: inline-flex; align-items: center; gap: .5rem; font-weight: 600; color: var(--color-muted); }
-
-    .controls-actions { display: flex; flex-wrap: wrap; gap: .6rem; }
-
-    .controls-form .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; }
-    .form-field { display: grid; gap: .45rem; }
-    .form-field--frequency .radio-group { display: flex; gap: 1.25rem; }
-    .form-field--price .input-group { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: .4rem; }
-    .currency-prefix { display: inline-flex; align-items: center; justify-content: center; min-width: 2.2rem; height: 2.7rem; border-radius: var(--radius-md); background: #f1f5f9; color: var(--color-muted); font-weight: 800; }
-    .input-hint { margin: 0; color: var(--color-subtle); font-size: .9rem; }
-    .input-error { margin: 0; color: #b91c1c; font-weight: 700; font-size: .9rem; }
-    .optional { color: var(--color-subtle); font-weight: 600; }
-    .form-footer { display: flex; gap: .75rem; justify-content: flex-end; }
-
-    @media (max-width: 980px) {
-      .controls-card { grid-template-columns: 1fr; }
-      .controls-card__divider { display: none; }
-      .controls-form .form-grid { grid-template-columns: 1fr; }
-    }
-
-    /* ---------- Table ---------- */
-    .table-card__header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
-    .table-card__caption { margin: .25rem 0 0; color: var(--color-muted); }
-    .table-card__count { margin: 0; font-weight: 800; color: var(--color-muted); }
-
-    .table-responsive { overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
-    .subscription-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 780px; }
-    .subscription-table thead th { text-align: left; padding: .9rem 1rem; font-size: .9rem; color: var(--color-subtle); background: #f8fafc; position: sticky; top: 0; z-index: 1; border-bottom: 1px solid var(--color-border); }
-    .subscription-table tbody td { padding: .85rem 1rem; border-bottom: 1px solid rgba(226,232,240,.7); }
-    .subscription-table tbody tr:last-child td { border-bottom: 0; }
-    .subscription-table .numeric { text-align: right; }
-
-    .sort-button { appearance: none; background: none; border: 0; color: inherit; font: inherit; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: .35rem; }
-    .sort-button:focus-visible { outline: 2px solid rgba(34,197,94,.45); border-radius: 8px; }
-
-    .col-include { width: 50px; }
-    .col-actions { width: 160px; }
-
-    .table-empty { padding: 1rem; text-align: center; color: var(--color-muted); }
-
-    /* Mobile card list */
-    @media (max-width: 720px) {
-      .table-responsive { border: 0; }
-      .subscription-table { display: none; }
-      .mobile-card-list[hidden] { display: none !important; }
-      .mobile-card-item { border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 1rem; background: #fff; box-shadow: var(--shadow-sm); display: grid; gap: .5rem; }
-      .mobile-card-item + .mobile-card-item { margin-top: .8rem; }
-      .mobile-card-row { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
-      .mobile-card-title { font-weight: 800; letter-spacing: -.01em; }
-      .mobile-card-meta { color: var(--color-muted); font-size: .95rem; }
-      .mobile-card-amounts { text-align: right; font-weight: 800; }
-      .mobile-card-actions { display: flex; gap: .35rem; justify-content: flex-end; }
-    }
-
-    /* ---------- Chart ---------- */
-    .chart-card__header { margin-bottom: 1rem; }
-    .chart-card__caption { margin: .25rem 0 0; color: var(--color-muted); }
-    .chart-card__canvas { display: grid; place-items: center; padding: 1rem; }
-    .chart-empty { margin: .5rem 0 0; color: var(--color-muted); text-align: center; }
-
-    /* ---------- Footer ---------- */
-    .site-footer__inner { width: var(--wrap); margin-inline: auto; padding: 2rem 0; color: var(--color-muted); }
-
-    /* ---------- Motion preferences ---------- */
-    @media (prefers-reduced-motion: reduce) {
-      * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+      .no-js .site-nav { position: static; padding: 0; background: transparent; opacity: 1; pointer-events: auto; display: flex; }
+      .no-js .site-nav__list { transform: none; background: transparent; border: 0; box-shadow: none; padding: 0; display: flex; gap: clamp(0.75rem, 2.6vw, 1.5rem); }
+      .no-js .site-nav__link { border-radius: 0; padding: 0.35rem 0; }
+      .no-js .site-nav__sub-list { max-height: none; padding-bottom: 0; }
     }
   </style>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
-
   <header class="site-header" role="banner">
     <div class="site-header__inner">
       <a class="site-logo" href="/">
         <span aria-hidden="true">💸</span>
         <span>BudgetTools</span>
       </a>
-
       <button class="site-nav__toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-menu">
         <span class="site-nav__toggle-box" aria-hidden="true">
           <span class="site-nav__toggle-line"></span>
@@ -246,7 +123,6 @@
         </span>
         <span class="site-nav__toggle-label">Menu</span>
       </button>
-
       <nav class="site-nav" aria-label="Main navigation" data-site-nav>
         <ul class="site-nav__list" id="site-menu">
           <li class="site-nav__item"><a class="site-nav__link" href="/">Home</a></li>
@@ -265,7 +141,6 @@
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Tax Estimator · Coming soon</span></li>
             </ul>
           </li>
-
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
             <button class="site-nav__link" type="button" id="nav-premium" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-premium-menu">
               Premium
@@ -280,7 +155,6 @@
               <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/premium.html#faq">Premium FAQ</a></li>
             </ul>
           </li>
-
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
             <button class="site-nav__link" type="button" id="nav-resources" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-resources-menu">
               Resources
@@ -295,7 +169,6 @@
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Updates &amp; changelog · Coming soon</span></li>
             </ul>
           </li>
-
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
             <button class="site-nav__link" type="button" id="nav-privacy" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-privacy-menu">
               Privacy
@@ -309,7 +182,6 @@
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Cookie policy · Coming soon</span></li>
             </ul>
           </li>
-
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
             <button class="site-nav__link" type="button" id="nav-contact" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-contact-menu">
               Contact
@@ -323,22 +195,21 @@
               <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/contact.html#feedback">Feedback</a></li>
             </ul>
           </li>
-
           <li class="site-nav__item site-nav__item--cta"><a class="site-nav__cta" href="/premium.html">Get Premium</a></li>
         </ul>
       </nav>
     </div>
   </header>
-
   <main id="main-content">
     <div class="wrap">
-      <!-- Lead with a clear header & subtitle -->
+      <!-- /** Redesign Notes */
+           Totals now lead, controls sit beside the add form, and the list precedes the chart for quicker insight scanning.
+           Summary cards, manage controls, responsive table/cards, and chart are isolated for future feature swaps.
+      -->
       <header class="page-header">
         <h1>Subscription Saver</h1>
         <p class="subtitle">List every subscription you pay for, see your true monthly and yearly totals, and find easy wins to pause or cancel when budgets tighten.</p>
       </header>
-
-      <!-- Summary totals -->
       <section class="summary-section" aria-label="Subscription totals">
         <div class="summary-grid">
           <article class="card summary-card" aria-live="polite">
@@ -358,8 +229,6 @@
           </article>
         </div>
       </section>
-
-      <!-- Controls + Add form -->
       <section class="controls-section" aria-labelledby="manage-heading">
         <div class="card controls-card">
           <div class="controls-card__col controls-card__col--filters">
@@ -367,12 +236,10 @@
               <h2 id="manage-heading">Manage subscriptions</h2>
               <p>Filter the list, export a snapshot, or load demo data to explore.</p>
             </div>
-
             <div class="controls-field controls-field--search">
               <label for="searchInput">Search</label>
               <input type="search" id="searchInput" name="searchInput" placeholder="Search name or category" autocomplete="off" />
             </div>
-
             <fieldset class="controls-field controls-field--frequency">
               <legend>Billing frequency</legend>
               <div class="controls-options controls-options--radios">
@@ -381,7 +248,6 @@
                 <label><input type="radio" name="frequencyFilter" value="yearly" />Yearly</label>
               </div>
             </fieldset>
-
             <fieldset class="controls-field controls-field--categories">
               <legend>Categories</legend>
               <div class="controls-options controls-options--checkboxes">
@@ -395,28 +261,23 @@
                 <label><input type="checkbox" value="Other" data-category-filter />Other</label>
               </div>
             </fieldset>
-
             <div class="controls-actions" role="group" aria-label="Table actions">
               <button type="button" class="btn btn--ghost" id="exportCsvButton">Export CSV</button>
               <button type="button" class="btn btn--ghost" id="demoDataButton">Demo data</button>
               <button type="button" class="btn btn--ghost" id="resetButton">Reset all</button>
             </div>
           </div>
-
           <div class="controls-card__divider" aria-hidden="true"></div>
-
           <div class="controls-card__col controls-card__col--form" aria-labelledby="add-subscription-heading">
             <div class="controls-form">
               <h2 id="add-subscription-heading">Add a subscription</h2>
               <p class="controls-form__helper">Keep totals accurate by logging each recurring charge.</p>
-
               <form id="subscriptionForm" novalidate>
                 <div class="form-grid">
                   <div class="form-field">
                     <label for="subscriptionName">Name</label>
                     <input type="text" id="subscriptionName" name="subscriptionName" required autocomplete="off" />
                   </div>
-
                   <div class="form-field">
                     <label for="subscriptionCategory">Category</label>
                     <select id="subscriptionCategory" name="subscriptionCategory" required>
@@ -431,7 +292,6 @@
                       <option value="Other">Other</option>
                     </select>
                   </div>
-
                   <fieldset class="form-field form-field--frequency">
                     <legend>Billing frequency</legend>
                     <div class="radio-group">
@@ -445,7 +305,6 @@
                       </div>
                     </div>
                   </fieldset>
-
                   <div class="form-field form-field--price">
                     <label for="subscriptionPrice">Price</label>
                     <div class="input-group">
@@ -455,18 +314,15 @@
                     <p class="input-hint" id="priceHint">Enter the amount you pay per billing cycle.</p>
                     <p class="input-error" id="priceError" role="alert" aria-live="polite"></p>
                   </div>
-
                   <div class="form-field">
                     <label for="subscriptionNextBilling">Next billing date <span class="optional">(optional)</span></label>
                     <input type="date" id="subscriptionNextBilling" name="subscriptionNextBilling" />
                   </div>
-
                   <div class="form-field form-field--notes">
                     <label for="subscriptionNotes">Notes <span class="optional">(optional)</span></label>
                     <textarea id="subscriptionNotes" name="subscriptionNotes" rows="2" placeholder="Plan details, promo codes, or reminders"></textarea>
                   </div>
                 </div>
-
                 <div class="form-footer">
                   <button type="submit" class="btn" id="addSubscriptionButton">Add subscription</button>
                 </div>
@@ -475,8 +331,6 @@
           </div>
         </div>
       </section>
-
-      <!-- Table/list -->
       <section class="card table-card" aria-labelledby="subscriptions-heading">
         <div class="table-card__header">
           <div>
@@ -485,7 +339,6 @@
           </div>
           <p class="table-card__count" id="tableCount" aria-live="polite">0 subscriptions</p>
         </div>
-
         <div class="table-responsive" role="region" aria-live="polite">
           <table class="subscription-table" aria-describedby="tableDescription">
             <thead>
@@ -503,14 +356,11 @@
             </thead>
             <tbody id="subscriptionTableBody"></tbody>
           </table>
-
           <div class="mobile-card-list" id="mobileCardList" hidden aria-live="polite"></div>
           <div class="table-empty" id="tableEmpty" role="status">No subscriptions yet. Add your first one to start tracking.</div>
           <div class="table-empty" id="noMatches" role="status" hidden>No subscriptions match your filters. Try adjusting search or categories.</div>
         </div>
       </section>
-
-      <!-- Chart -->
       <section class="card chart-card" aria-labelledby="chart-heading">
         <div class="chart-card__header">
           <h2 id="chart-heading">Monthly cost by category</h2>
@@ -523,25 +373,14 @@
       </section>
     </div>
   </main>
-
   <footer class="site-footer" role="contentinfo">
     <div class="wrap site-footer__inner">
       <p>&copy; <span data-year></span> BudgetTools. Built for people who want calm, predictable money habits.</p>
     </div>
   </footer>
-
-  <!-- Scripts -->
-  <script>
-    // Remove no-js class for progressive enhancement hooks
-    document.documentElement.classList.remove('no-js');
-
-    // Small enhancement: auto-set year in footer
-    document.querySelector('[data-year]').textContent = new Date().getFullYear();
-  </script>
   <script defer src="/assets/js/main.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" integrity="sha384-tBt+FI0X58F3RrgPf63eNbUsVTNff7kwh28ykVfoCEN0z7dxyzKDn5XxhxL7sRKq" crossorigin="anonymous"></script>
   <script defer src="/tools/subscription-saver/subscription-saver.js"></script>
-
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",

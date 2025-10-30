@@ -704,3 +704,221 @@
     scroll-behavior: auto !important;
   }
 }
+
+.quick-add-popover {
+  min-width: 220px;
+  background: #ffffff;
+  border: 1px solid rgba(203, 213, 225, 0.7);
+  border-radius: 16px;
+  box-shadow: 0 24px 42px -20px rgba(15, 23, 42, 0.35);
+  padding: 0.5rem;
+  z-index: 50;
+  display: none;
+}
+
+.quick-add-popover[data-open="true"] {
+  display: block;
+}
+
+.quick-add-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.quick-add-item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-radius: 12px;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.quick-add-item:hover,
+.quick-add-item:focus-visible {
+  background: rgba(34, 197, 94, 0.12);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.toast-region {
+  position: fixed;
+  inset-inline: clamp(1rem, 4vw, 2.5rem);
+  bottom: clamp(1rem, 4vw, 2rem);
+  display: grid;
+  gap: 0.5rem;
+  z-index: 60;
+  pointer-events: none;
+}
+
+.toast {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 0.75rem 1.1rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  box-shadow: 0 18px 32px -20px rgba(15, 23, 42, 0.4);
+  opacity: 0.98;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast--exit {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.mini-summary {
+  position: sticky;
+  top: 5.5rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(203, 213, 225, 0.7);
+  border-radius: 16px;
+  box-shadow: 0 18px 40px -30px rgba(15, 23, 42, 0.4);
+  padding: 0.9rem 1.1rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.mini-summary__grid {
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.mini-summary__value {
+  font-weight: 600;
+}
+
+.suggestions-empty {
+  margin: 0;
+  padding: 0.75rem;
+  color: var(--text-soft);
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: 12px;
+}
+
+.suggestion-item {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(203, 213, 225, 0.4);
+}
+
+.suggestion-item:last-child {
+  border-bottom: 0;
+}
+
+.suggestion-item__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.suggestion-item__name {
+  font-weight: 600;
+}
+
+.suggestion-item__cost {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.suggestion-item__reason {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+}
+
+.suggestion-item__action {
+  justify-self: start;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  background: rgba(34, 197, 94, 0.12);
+  color: #047857;
+  border-radius: 999px;
+  padding: 0.4rem 0.8rem;
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.suggestion-item__action:hover,
+.suggestion-item__action:focus-visible {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: rgba(34, 197, 94, 0.6);
+  outline: none;
+}
+
+.optimize-list__item + .optimize-list__item {
+  margin-top: 0.5rem;
+}
+
+.optimize-toggle {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  background: #fff;
+  border-radius: 14px;
+  padding: 0.7rem 0.85rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  align-items: center;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.optimize-toggle__name {
+  font-weight: 600;
+  grid-column: span 2;
+}
+
+.optimize-toggle__meta {
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.optimize-toggle__cost {
+  font-weight: 600;
+  text-align: right;
+}
+
+.optimize-toggle__reason {
+  grid-column: span 4;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.optimize-toggle[aria-pressed="true"] {
+  border-color: rgba(34, 197, 94, 0.55);
+  background: rgba(34, 197, 94, 0.12);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.18);
+}
+
+tr[data-optimize-selected="true"] {
+  background: rgba(34, 197, 94, 0.08);
+}
+
+.subscription-card[data-optimize-selected="true"] {
+  border-color: rgba(34, 197, 94, 0.4);
+  box-shadow: 0 14px 30px -24px rgba(34, 197, 94, 0.6);
+}
+
+.optimize-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.optimize-actions button {
+  border-radius: 12px;
+}
+

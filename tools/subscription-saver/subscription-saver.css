@@ -141,6 +141,19 @@
   color: var(--text-muted);
 }
 
+@media (min-width: 960px) {
+  .controls-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .controls-field--frequency,
+  .controls-field--categories,
+  .controls-actions {
+    grid-column: 1 / -1;
+  }
+}
+
 .summary-section {
   margin: 0;
 }
@@ -234,11 +247,33 @@
   .controls-card__divider {
     display: none;
   }
+
+  .controls-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .controls-card__col {
   display: grid;
   gap: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.controls-grid {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.controls-field--search,
+.controls-field--currency {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.controls-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
 }
 
 .controls-card__header {
@@ -303,6 +338,18 @@
   gap: 0.65rem;
 }
 
+.controls-options--radios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.controls-options--checkboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.5rem 1rem;
+}
+
 .controls-options--radios label,
 .controls-options--checkboxes label {
   display: inline-flex;
@@ -322,21 +369,11 @@
   accent-color: #22c55e;
 }
 
-.controls-options--checkboxes label {
-  min-width: calc(50% - 0.65rem);
-}
-
 .controls-options label:hover,
 .controls-options label:focus-visible {
   border-color: rgba(34, 197, 94, 0.6);
   background: rgba(34, 197, 94, 0.12);
   outline: none;
-}
-
-.controls-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
 }
 
 .controls-form {
@@ -1193,21 +1230,9 @@ kbd {
   .form-grid {
     grid-template-columns: 1fr;
   }
-
-  .controls-options--checkboxes label {
-    min-width: calc(50% - 0.65rem);
-  }
-
-  .tool-hero {
-    padding: 2rem;
-  }
 }
 
 @media (max-width: 720px) {
-  .controls-options--checkboxes label {
-    min-width: 100%;
-  }
-
   .subscription-table {
     display: none;
   }
@@ -1225,25 +1250,9 @@ kbd {
     display: grid;
     gap: 1rem;
   }
-
-  .tool-hero {
-    padding: 1.75rem;
-  }
-
-  .tool-hero__actions {
-    gap: var(--space-2);
-  }
-
-  .tool-hero__panel {
-    padding: 1.5rem;
-  }
 }
 
 @media (max-width: 520px) {
-  .tool-hero {
-    gap: var(--space-4);
-  }
-
   .controls-actions {
     gap: 0.5rem;
   }

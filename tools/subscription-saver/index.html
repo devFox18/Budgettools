@@ -251,52 +251,54 @@
       <section class="tool-body">
         <div class="tool-body__primary">
           <section class="controls-section" aria-labelledby="manage-heading">
-            <div class="card controls-card">
-              <div class="controls-card__col controls-card__col--filters">
-                <div class="controls-card__header">
-                  <h2 id="manage-heading">Manage subscriptions</h2>
-                  <p>Filter the list, export a snapshot, or load demo data to explore ideas.</p>
-                </div>
-                <div class="controls-field controls-field--search">
-                  <label for="searchInput">Search</label>
-                  <input type="search" id="searchInput" name="searchInput" placeholder="Search name or category" autocomplete="off" />
-                </div>
-                <div class="controls-field controls-field--currency">
-                  <label for="currencySelect">Currency</label>
-                  <select id="currencySelect" name="currencySelect">
-                    <option value="USD">USD - United States dollar</option>
-                    <option value="EUR">EUR - Euro</option>
-                    <option value="GBP">GBP - Pound sterling</option>
-                  </select>
-                </div>
-                <fieldset class="controls-field controls-field--frequency">
-                  <legend>Billing frequency</legend>
-                  <div class="controls-options controls-options--radios">
-                    <label><input type="radio" name="frequencyFilter" value="all" checked />All</label>
-                    <label><input type="radio" name="frequencyFilter" value="monthly" />Monthly</label>
-                    <label><input type="radio" name="frequencyFilter" value="yearly" />Yearly</label>
+              <div class="card controls-card">
+                <div class="controls-card__col controls-card__col--filters">
+                  <div class="controls-card__header">
+                    <h2 id="manage-heading">Manage subscriptions</h2>
+                    <p>Filter the list, export a snapshot, or load demo data to explore ideas.</p>
                   </div>
-                </fieldset>
-                <fieldset class="controls-field controls-field--categories">
-                  <legend>Categories</legend>
-                  <div class="controls-options controls-options--checkboxes">
-                    <label><input type="checkbox" value="Streaming" data-category-filter />Streaming</label>
-                    <label><input type="checkbox" value="Music" data-category-filter />Music</label>
-                    <label><input type="checkbox" value="Gaming" data-category-filter />Gaming</label>
-                    <label><input type="checkbox" value="Productivity" data-category-filter />Productivity</label>
-                    <label><input type="checkbox" value="Phone" data-category-filter />Phone</label>
-                    <label><input type="checkbox" value="Internet" data-category-filter />Internet</label>
-                    <label><input type="checkbox" value="Fitness" data-category-filter />Fitness</label>
-                    <label><input type="checkbox" value="Other" data-category-filter />Other</label>
+                  <div class="controls-grid">
+                    <div class="controls-field controls-field--search">
+                      <label for="searchInput">Search</label>
+                      <input type="search" id="searchInput" name="searchInput" placeholder="Search name or category" autocomplete="off" />
+                    </div>
+                    <div class="controls-field controls-field--currency">
+                      <label for="currencySelect">Currency</label>
+                      <select id="currencySelect" name="currencySelect">
+                        <option value="USD">USD - United States dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                        <option value="GBP">GBP - Pound sterling</option>
+                      </select>
+                    </div>
+                    <fieldset class="controls-field controls-field--frequency">
+                      <legend>Billing frequency</legend>
+                      <div class="controls-options controls-options--radios">
+                        <label><input type="radio" name="frequencyFilter" value="all" checked />All</label>
+                        <label><input type="radio" name="frequencyFilter" value="monthly" />Monthly</label>
+                        <label><input type="radio" name="frequencyFilter" value="yearly" />Yearly</label>
+                      </div>
+                    </fieldset>
+                    <fieldset class="controls-field controls-field--categories">
+                      <legend>Categories</legend>
+                      <div class="controls-options controls-options--checkboxes">
+                        <label><input type="checkbox" value="Streaming" data-category-filter />Streaming</label>
+                        <label><input type="checkbox" value="Music" data-category-filter />Music</label>
+                        <label><input type="checkbox" value="Gaming" data-category-filter />Gaming</label>
+                        <label><input type="checkbox" value="Productivity" data-category-filter />Productivity</label>
+                        <label><input type="checkbox" value="Phone" data-category-filter />Phone</label>
+                        <label><input type="checkbox" value="Internet" data-category-filter />Internet</label>
+                        <label><input type="checkbox" value="Fitness" data-category-filter />Fitness</label>
+                        <label><input type="checkbox" value="Other" data-category-filter />Other</label>
+                      </div>
+                    </fieldset>
+                    <div class="controls-actions" role="group" aria-label="Table actions">
+                      <button type="button" class="btn btn--ghost" id="exportCsvButton">Export CSV</button>
+                      <button type="button" class="btn btn--ghost" id="demoDataButton">Demo data</button>
+                      <button type="button" class="btn btn--ghost" id="resetButton">Reset all</button>
+                    </div>
                   </div>
-                </fieldset>
-                <div class="controls-actions" role="group" aria-label="Table actions">
-                  <button type="button" class="btn btn--ghost" id="exportCsvButton">Export CSV</button>
-                  <button type="button" class="btn btn--ghost" id="demoDataButton">Demo data</button>
-                  <button type="button" class="btn btn--ghost" id="resetButton">Reset all</button>
+                  <p class="controls-card__note">Your subscriptions stay private - everything saves to this device only.</p>
                 </div>
-                <p class="controls-card__note">Your subscriptions stay private - everything saves to this device only.</p>
-              </div>
               <div class="controls-card__divider" aria-hidden="true"></div>
               <div class="controls-card__col controls-card__col--form" aria-labelledby="add-subscription-heading">
                 <div class="controls-form">

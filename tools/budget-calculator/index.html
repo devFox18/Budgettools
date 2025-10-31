@@ -207,107 +207,103 @@
           <p class="subtitle">Enter your monthly income, add expense categories, and watch the balance update instantly - export or print whenever you’re done.</p>
       </header>
 
-      <section class="calculator-layout" aria-label="Budget calculator layout">
-        <div class="calculator-layout__app">
-          <section class="card" aria-labelledby="income-section">
-            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
-              <div>
-                <label for="income" id="income-section">Total monthly income</label>
-                <div class="input-group">
-                  <span class="prefix" aria-hidden="true">€</span>
-                  <input type="number" id="income" placeholder="e.g. 3600" min="0" step="0.01" inputmode="decimal" aria-describedby="income-hint" />
-                </div>
-              </div>
-              <div>
-                <label for="currency">Currency</label>
-                <select id="currency" aria-label="Currency">
-                  <option value="€" selected>Euro (€)</option>
-                  <option value="$">US Dollar ($)</option>
-                  <option value="£">Pound (£)</option>
-                </select>
+      <section aria-label="Budget calculator">
+        <section class="card" aria-labelledby="income-section">
+          <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+            <div>
+              <label for="income" id="income-section">Total monthly income</label>
+              <div class="input-group">
+                <span class="prefix" aria-hidden="true">€</span>
+                <input type="number" id="income" placeholder="e.g. 3600" min="0" step="0.01" inputmode="decimal" aria-describedby="income-hint" />
               </div>
             </div>
-          </section>
+            <div>
+              <label for="currency">Currency</label>
+              <select id="currency" aria-label="Currency">
+                <option value="€" selected>Euro (€)</option>
+                <option value="$">US Dollar ($)</option>
+                <option value="£">Pound (£)</option>
+              </select>
+            </div>
+          </div>
+        </section>
 
-          <section class="card" aria-labelledby="expenses-heading">
-            <div class="section-header">
-              <h2 id="expenses-heading">Expenses</h2>
-              <div class="actions" role="group" aria-label="Expense actions">
-                <div class="actions__primary">
-                  <button class="btn" id="addRow" type="button">Add item</button>
-                </div>
-                <div class="actions__secondary">
-                  <button class="btn btn--ghost" id="reset" type="button">Reset</button>
-                  <button class="btn btn--ghost" id="loadSample" type="button">Load sample data</button>
-                  <button class="btn btn--ghost" id="export" type="button">Export CSV</button>
-                  <button class="btn btn--ghost" id="print" type="button">Print</button>
-                </div>
+        <section class="card" aria-labelledby="expenses-heading">
+          <div class="section-header">
+            <h2 id="expenses-heading">Expenses</h2>
+            <div class="actions" role="group" aria-label="Expense actions">
+              <div class="actions__primary">
+                <button class="btn" id="addRow" type="button">Add item</button>
+              </div>
+              <div class="actions__secondary">
+                <button class="btn btn--ghost" id="reset" type="button">Reset</button>
+                <button class="btn btn--ghost" id="loadSample" type="button">Load sample data</button>
+                <button class="btn btn--ghost" id="export" type="button">Export CSV</button>
+                <button class="btn btn--ghost" id="print" type="button">Print</button>
               </div>
             </div>
-            <div class="table" role="table" aria-label="Expense categories">
-              <div class="t-head" role="row">
-                <div role="columnheader">Category</div>
-                <div role="columnheader">Amount</div>
-                <div role="columnheader">Notes</div>
-                <div role="columnheader" aria-hidden="true"></div>
-              </div>
-              <div id="rows" class="t-body" role="rowgroup" aria-live="polite"></div>
-              <div class="t-foot" role="row">
-                <div class="muted" role="cell">Totals</div>
-                <div id="totalExpenses" class="strong" role="cell">€0.00</div>
-                <div role="cell"></div>
-                <div role="cell"></div>
-              </div>
+          </div>
+          <div class="table" role="table" aria-label="Expense categories">
+            <div class="t-head" role="row">
+              <div role="columnheader">Category</div>
+              <div role="columnheader">Amount</div>
+              <div role="columnheader">Notes</div>
+              <div role="columnheader" aria-hidden="true"></div>
             </div>
-          </section>
+            <div id="rows" class="t-body" role="rowgroup" aria-live="polite"></div>
+            <div class="t-foot" role="row">
+              <div class="muted" role="cell">Totals</div>
+              <div id="totalExpenses" class="strong" role="cell">€0.00</div>
+              <div role="cell"></div>
+              <div role="cell"></div>
+            </div>
+          </div>
+        </section>
 
-          <section class="analytics-grid">
-            <article class="card" aria-labelledby="summary-heading">
-              <h2 id="summary-heading">Overview</h2>
-              <div class="summary" aria-live="polite">
-                <div>
-                  <span class="label">Income</span>
-                  <span id="sumIncome" class="value">€0.00</span>
-                </div>
-                <div>
-                  <span class="label">Expenses</span>
-                  <span id="sumExpenses" class="value">€0.00</span>
-                </div>
-                <div>
-                  <span class="label">Savings</span>
-                  <span id="sumSavings" class="value positive">€0.00</span>
-                </div>
-                <div>
-                  <span class="label">Savings rate</span>
-                  <span id="savingsRate" class="value">0%</span>
-                </div>
-              </div>
-            </article>
-            <article class="card" aria-labelledby="chart-heading">
-              <h2 id="chart-heading">Expense breakdown</h2>
-              <canvas id="chart" width="400" height="300" role="img" aria-label="Pie chart of expense categories"></canvas>
-              <div id="legend" class="legend" role="list" aria-live="polite"></div>
-            </article>
-          </section>
-        </div>
-        <aside class="calculator-layout__aside" aria-label="Helpful extras">
-          <section class="card card--subtle card--tips" aria-labelledby="tips-heading">
-            <h2 id="tips-heading">Quick tips</h2>
-            <ul class="tip-list">
-              <li>Log your monthly income, then add categories with <em>Add item</em>.</li>
-              <li>Watch income, expenses, and savings update instantly.</li>
-              <li>Load sample data for ideas, or export/print your totals.</li>
-            </ul>
-          </section>
-          <section class="card site-aside" aria-labelledby="premium-upsell">
-            <h2 id="premium-upsell">Want BudgetTools Premium?</h2>
-            <p>Upgrade to save multiple scenarios, download offline spreadsheets, and access early features.</p>
-            <div class="button-row" style="margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
-              <button type="button" class="btn" data-checkout-button data-url="https://checkout-placeholder.example"><span>Start premium trial</span></button>
-              <a class="btn btn--ghost" href="/premium.html"><span>See plan details</span></a>
+        <section class="card card--subtle card--tips" aria-labelledby="tips-heading">
+          <h2 id="tips-heading">Quick tips</h2>
+          <ul class="tip-list">
+            <li>Log your monthly income, then add categories with <em>Add item</em>.</li>
+            <li>Watch income, expenses, and savings update instantly.</li>
+            <li>Load sample data for ideas, or export/print your totals.</li>
+          </ul>
+        </section>
+
+        <article class="card" aria-labelledby="summary-heading">
+          <h2 id="summary-heading">Overview</h2>
+          <div class="summary" aria-live="polite">
+            <div>
+              <span class="label">Income</span>
+              <span id="sumIncome" class="value">€0.00</span>
             </div>
-          </section>
-        </aside>
+            <div>
+              <span class="label">Expenses</span>
+              <span id="sumExpenses" class="value">€0.00</span>
+            </div>
+            <div>
+              <span class="label">Savings</span>
+              <span id="sumSavings" class="value positive">€0.00</span>
+            </div>
+            <div>
+              <span class="label">Savings rate</span>
+              <span id="savingsRate" class="value">0%</span>
+            </div>
+          </div>
+        </article>
+        <article class="card" aria-labelledby="chart-heading">
+          <h2 id="chart-heading">Expense breakdown</h2>
+          <canvas id="chart" width="400" height="300" role="img" aria-label="Pie chart of expense categories"></canvas>
+          <div id="legend" class="legend" role="list" aria-live="polite"></div>
+        </article>
+
+        <section class="card site-aside" aria-labelledby="premium-upsell">
+          <h2 id="premium-upsell">Want BudgetTools Premium?</h2>
+          <p>Upgrade to save multiple scenarios, download offline spreadsheets, and access early features.</p>
+          <div class="button-row" style="margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <button type="button" class="btn" data-checkout-button data-url="https://checkout-placeholder.example"><span>Start premium trial</span></button>
+            <a class="btn btn--ghost" href="/premium.html"><span>See plan details</span></a>
+          </div>
+        </section>
       </section>
 
     </article>

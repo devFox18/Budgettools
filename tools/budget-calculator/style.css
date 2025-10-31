@@ -218,6 +218,40 @@ canvas {
   color: var(--color-muted);
 }
 
+.card--tips {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.card--tips h2 {
+  margin: 0;
+  font-size: clamp(1.15rem, 2.6vw, 1.4rem);
+}
+
+.tip-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+  color: var(--color-muted);
+}
+
+.tip-list li {
+  position: relative;
+  padding-left: 1.4rem;
+  line-height: 1.5;
+}
+
+.tip-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
 .explainer h2 {
   margin: 0;
   font-size: clamp(1.45rem, 3vw, 1.75rem);

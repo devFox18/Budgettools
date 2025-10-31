@@ -194,13 +194,29 @@ function drawChart(){
     const it = document.createElement("div");
     it.className = "item";
     it.setAttribute("role", "listitem");
+
+    const labelLine = document.createElement("span");
+    labelLine.className = "legend__label";
+
     const dot = document.createElement("span");
     dot.className = "dot";
     dot.style.background = randomColor(i);
-    it.appendChild(dot);
-    const label = document.createElement("span");
-    label.textContent = `${r.category} (${fmt(val)})${r.notes ? ` – ${r.notes}` : ""}`;
-    it.appendChild(label);
+    labelLine.appendChild(dot);
+
+    const labelText = document.createElement("span");
+    labelText.textContent = `${r.category} (${fmt(val)})`;
+    labelLine.appendChild(labelText);
+
+    it.appendChild(labelLine);
+
+    const detailText = (r.notes && r.notes.trim()) || r.noteHint || "";
+    if (detailText) {
+      const detail = document.createElement("span");
+      detail.className = "legend__note";
+      detail.textContent = `Note: ${detailText}`;
+      it.appendChild(detail);
+    }
+
     legend.appendChild(it);
 
     start = end;
@@ -213,7 +229,7 @@ function draw(){
 }
 
 function addRow(category="", amount="", notes=""){
-  rows.push({category, amount, notes});
+  rows.push({category, amount, notes, noteHint: ""});
   renderRows();
   draw();
 }

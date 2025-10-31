@@ -119,7 +119,7 @@ function renderRows(){
       rows[i].amount = value === "" ? "" : parseFloat(value);
       draw();
     });
-    notesEl.addEventListener("input", e => { rows[i].notes = e.target.value; });
+    notesEl.addEventListener("input", e => { rows[i].notes = e.target.value; draw(); });
 
     removeBtn.addEventListener("click", ()=>{
       rows.splice(i,1);
@@ -199,7 +199,7 @@ function drawChart(){
     dot.style.background = randomColor(i);
     it.appendChild(dot);
     const label = document.createElement("span");
-    label.textContent = `${r.category} (${fmt(val)})`;
+    label.textContent = `${r.category} (${fmt(val)})${r.notes ? ` – ${r.notes}` : ""}`;
     it.appendChild(label);
     legend.appendChild(it);
 

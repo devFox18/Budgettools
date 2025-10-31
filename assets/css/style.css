@@ -143,6 +143,89 @@ a:focus-visible {
   color: var(--color-accent);
 }
 
+.empty-state {
+  margin-top: var(--space-3);
+  padding: var(--space-4);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  text-align: center;
+  color: var(--color-muted);
+  background: color-mix(in srgb, var(--color-surface) 65%, transparent);
+  font-size: 0.95rem;
+}
+
+.empty-state[hidden],
+.empty-state.is-hidden {
+  display: none;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: var(--space-2);
+}
+
+.tooltip__trigger {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.tooltip__trigger:hover,
+.tooltip__trigger:focus-visible {
+  background: color-mix(in srgb, var(--color-accent) 18%, var(--color-surface));
+  border-color: color-mix(in srgb, var(--color-accent) 35%, var(--color-border));
+  color: var(--color-accent-ink);
+}
+
+.tooltip__bubble {
+  position: absolute;
+  bottom: calc(100% + 0.45rem);
+  left: 50%;
+  transform: translate(-50%, 6px);
+  background: var(--color-text);
+  color: #ffffff;
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  font-size: 0.8rem;
+  line-height: 1.35;
+  max-width: 220px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 4;
+}
+
+.tooltip:focus-within .tooltip__bubble,
+.tooltip:hover .tooltip__bubble {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+}
+
+@media (hover: none) {
+  .tooltip:hover .tooltip__bubble {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate(-50%, 6px);
+  }
+}
+
 :where(.btn) {
   font: inherit;
 }

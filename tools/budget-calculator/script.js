@@ -2,13 +2,17 @@
 
 // Default categories (you can edit these names below)
 const DEFAULT_ROWS = [
-  { category: "Rent / Mortgage", amount: 900, notes: "" },
-  { category: "Utilities", amount: 150, notes: "" },
-  { category: "Groceries", amount: 350, notes: "" },
-  { category: "Transport", amount: 120, notes: "" },
-  { category: "Insurance", amount: 120, notes: "" },
-  { category: "Entertainment", amount: 100, notes: "" },
-  { category: "Savings", amount: 200, notes: "" }
+  { category: "Rent / Mortgage", amount: 1250, notes: "Two-bedroom apartment" },
+  { category: "Utilities & Internet", amount: 180, notes: "" },
+  { category: "Groceries", amount: 420, notes: "Family of three" },
+  { category: "Transport & Fuel", amount: 160, notes: "Train pass + fuel" },
+  { category: "Insurance & Healthcare", amount: 180, notes: "Health and car coverage" },
+  { category: "Childcare & School", amount: 220, notes: "After-school club" },
+  { category: "Debt Repayments", amount: 200, notes: "Student loan" },
+  { category: "Fun & Dining Out", amount: 150, notes: "" },
+  { category: "Subscriptions & Streaming", amount: 50, notes: "" },
+  { category: "Emergency Fund", amount: 250, notes: "Separate savings account" },
+  { category: "Retirement & Investments", amount: 300, notes: "Automatic transfer" }
 ];
 
 const rowsContainer = document.getElementById("rows");
@@ -205,7 +209,7 @@ if (addRowBtn) {
 if (resetBtn) {
   resetBtn.addEventListener("click", () => {
     rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
-    incomeInput.value = 2500;
+    incomeInput.value = 3600;
     incomeInput.step = "1"; // keep reset consistent
     currencySelect.value = "€";
     renderRows();

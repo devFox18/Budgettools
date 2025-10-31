@@ -142,38 +142,6 @@ canvas {
   color: var(--color-good);
 }
 
-.analytics-card__grid {
-  display: grid;
-  gap: clamp(1.5rem, 4vw, 2.5rem);
-}
-
-.analytics-card__summary,
-.analytics-card__chart {
-  display: grid;
-  gap: var(--space-3);
-}
-
-.analytics-card__chart {
-  border-top: 1px solid var(--color-border);
-  padding-top: var(--space-4);
-}
-
-@media (min-width: 880px) {
-  .analytics-card__grid {
-    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr);
-    align-items: start;
-    gap: clamp(1.75rem, 4vw, 3rem);
-  }
-
-  .analytics-card__chart {
-    border-top: 0;
-    border-left: 1px solid var(--color-border);
-    padding-top: 0;
-    padding-left: clamp(1.5rem, 3vw, 2rem);
-    margin-left: clamp(1.2rem, 3vw, 1.8rem);
-  }
-}
-
 .legend {
   gap: 0.75rem;
 }

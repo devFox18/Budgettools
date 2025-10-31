@@ -268,36 +268,33 @@
           </div>
         </section>
 
-        <article class="card analytics-card" aria-labelledby="summary-heading">
-          <div class="analytics-card__grid">
-            <section class="analytics-card__summary" aria-labelledby="summary-heading">
-              <h2 id="summary-heading">Overview</h2>
-              <div class="summary" aria-live="polite">
-                <div>
-                  <span class="label">Income</span>
-                  <span id="sumIncome" class="value">€0.00</span>
-                </div>
-                <div>
-                  <span class="label">Expenses</span>
-                  <span id="sumExpenses" class="value">€0.00</span>
-                </div>
-                <div>
-                  <span class="label">Savings</span>
-                  <span id="sumSavings" class="value positive">€0.00</span>
-                </div>
-                <div>
-                  <span class="label">Savings rate</span>
-                  <span id="savingsRate" class="value">0%</span>
-                </div>
-              </div>
-            </section>
-            <section class="analytics-card__chart" aria-labelledby="chart-heading">
-              <h2 id="chart-heading">Expense breakdown</h2>
-              <canvas id="chart" width="400" height="300" role="img" aria-label="Pie chart of expense categories"></canvas>
-              <div id="legend" class="legend" role="list" aria-live="polite"></div>
-            </section>
+        <article class="card" aria-labelledby="summary-heading">
+          <h2 id="summary-heading">Overview</h2>
+          <div class="summary" aria-live="polite">
+            <div>
+              <span class="label">Income</span>
+              <span id="sumIncome" class="value">€0.00</span>
+            </div>
+            <div>
+              <span class="label">Expenses</span>
+              <span id="sumExpenses" class="value">€0.00</span>
+            </div>
+            <div>
+              <span class="label">Savings</span>
+              <span id="sumSavings" class="value positive">€0.00</span>
+            </div>
+            <div>
+              <span class="label">Savings rate</span>
+              <span id="savingsRate" class="value">0%</span>
+            </div>
           </div>
         </article>
+        <article class="card" aria-labelledby="chart-heading">
+          <h2 id="chart-heading">Expense breakdown</h2>
+          <canvas id="chart" width="400" height="300" role="img" aria-label="Pie chart of expense categories"></canvas>
+          <div id="legend" class="legend" role="list" aria-live="polite"></div>
+        </article>
+
         <section class="card site-aside" aria-labelledby="premium-upsell">
           <h2 id="premium-upsell">Want BudgetTools Premium?</h2>
           <p>Upgrade to save multiple scenarios, download offline spreadsheets, and access early features.</p>

@@ -152,6 +152,11 @@
   .controls-actions {
     grid-column: 1 / -1;
   }
+
+  .controls-actions {
+    justify-content: flex-end;
+    justify-self: end;
+  }
 }
 
 .summary-section {
@@ -261,6 +266,8 @@
 .controls-grid {
   display: grid;
   gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: start;
 }
 
 .controls-field--search,
@@ -269,11 +276,22 @@
   gap: 0.45rem;
 }
 
+.controls-field--frequency,
+.controls-field--categories {
+  grid-column: 1 / -1;
+}
+
 .controls-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
   align-items: center;
+  justify-content: flex-start;
+  justify-self: start;
+}
+
+.controls-actions .btn {
+  flex: 0 0 auto;
 }
 
 .controls-card__header {
@@ -333,9 +351,7 @@
 }
 
 .controls-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
+  display: contents;
 }
 
 .controls-options--radios {
@@ -347,7 +363,11 @@
 .controls-options--checkboxes {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 0.5rem 1rem;
+  gap: 0.55rem 1rem;
+}
+
+.controls-options--checkboxes label {
+  justify-content: flex-start;
 }
 
 .controls-options--radios label,
@@ -355,7 +375,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  padding: 0.4rem 0.75rem;
+  padding: 0.45rem 0.85rem;
   border-radius: 999px;
   border: 1px solid rgba(148, 163, 184, 0.5);
   background: #fff;
@@ -367,10 +387,19 @@
 .controls-options--radios input,
 .controls-options--checkboxes input {
   accent-color: #22c55e;
+  margin: 0;
 }
 
-.controls-options label:hover,
-.controls-options label:focus-visible {
+.controls-options--radios input:checked + span,
+.controls-options--checkboxes input:checked + span {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.controls-options--radios label:hover,
+.controls-options--radios label:focus-within,
+.controls-options--checkboxes label:hover,
+.controls-options--checkboxes label:focus-within {
   border-color: rgba(34, 197, 94, 0.6);
   background: rgba(34, 197, 94, 0.12);
   outline: none;
@@ -1255,6 +1284,10 @@ kbd {
 @media (max-width: 520px) {
   .controls-actions {
     gap: 0.5rem;
+  }
+
+  .controls-options--checkboxes {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -201,33 +201,27 @@
     </div>
   </header>
     <main id="main-content">
-    <div class="wrap tool-shell">
-      <header class="tool-hero card">
-        <div class="tool-hero__content">
-          <p class="tool-hero__eyebrow">Budget clarity</p>
-          <h1>Subscription Saver</h1>
-          <p class="subtitle">Track every recurring charge, see true monthly and yearly totals, and uncover quick wins before the next renewal hits.</p>
-          <ul class="tool-hero__benefits">
-            <li>See monthly and yearly commitments at a glance.</li>
-            <li>Filter by category or frequency to surface duplicates.</li>
-            <li>Run optimization ideas to decide what to pause.</li>
-          </ul>
-          <div class="tool-hero__actions button-row">
-            <button type="button" class="btn" id="demoDataButtonTop">Load demo data</button>
-            <button type="button" class="btn btn--ghost" id="exportCsvButtonTop">Export CSV</button>
-            <button type="button" class="btn btn--inline" data-open-shortcuts>Keyboard shortcuts</button>
-          </div>
+    <section class="page-hero">
+      <div class="page-hero__inner">
+        <p class="page-hero__eyebrow">Budget clarity</p>
+        <h1>Subscription Saver</h1>
+        <p class="page-hero__lede">Track every recurring charge, see true monthly and yearly totals, and uncover quick wins before the next renewal hits.</p>
+        <p class="page-hero__meta">Everything stays on this device—load demo data to explore or export a snapshot when you're finished.</p>
+        <div class="hero-actions button-row">
+          <button type="button" class="btn" id="demoDataButtonTop">Load demo data</button>
+          <button type="button" class="btn btn--ghost" id="exportCsvButtonTop">Export CSV</button>
+          <button type="button" class="btn btn--inline" data-open-shortcuts>Keyboard shortcuts</button>
         </div>
-        <div class="tool-hero__panel">
-          <h2>Quick start</h2>
-          <ol class="tool-hero__steps">
-            <li>Add your subscriptions with price and billing cadence.</li>
-            <li>Use filters to compare categories and highlight overlaps.</li>
-            <li>Switch to optimization view to queue items to pause.</li>
-          </ol>
-          <p class="tool-hero__note">Everything saves locally in your browser. No account required.</p>
-        </div>
-      </header>
+        <ul class="checklist">
+          <li>See monthly and yearly commitments at a glance.</li>
+          <li>Filter by category or frequency to surface duplicates.</li>
+          <li>Queue subscriptions for optimization before you cancel.</li>
+        </ul>
+      </div>
+    </section>
+    <section class="calculator-wrap" aria-label="Subscription saver">
+      <div class="calculator-layout">
+        <div class="calculator-layout__app">
       <section class="summary-section" aria-label="Subscription totals">
         <div class="summary-grid">
           <article class="card summary-card" aria-live="polite">
@@ -446,7 +440,21 @@
           </section>
         </aside>
       </section>
-    </div>
+        </div>
+        <aside class="calculator-layout__aside" aria-label="Quick start">
+          <div class="card card--subtle quick-start-card">
+            <h2>Quick start</h2>
+            <ol class="quick-start">
+              <li>Add your subscriptions with price and billing cadence.</li>
+              <li>Use filters to compare categories and highlight overlaps.</li>
+              <li>Switch to optimization view to queue items to pause.</li>
+            </ol>
+            <p class="quick-start__note">Totals update instantly and stay local to your browser.</p>
+          </div>
+        </aside>
+      </div>
+      <p class="calculator-footnote">Totals update instantly and stay on this device—export or print whenever you're ready.</p>
+    </section>
   </main>
 
   
@@ -484,9 +492,13 @@
       </div>
     </div>
   </div>
-<footer class="site-footer" role="contentinfo">
-    <div class="wrap site-footer__inner">
-      <p>&copy; <span data-year></span> BudgetTools. Built for people who want calm, predictable money habits.</p>
+  <footer role="contentinfo">
+    <div class="footer-inner">
+      <p>© <span data-year></span> BudgetTools. Built for transparent personal finance.</p>
+      <nav aria-label="Footer">
+        <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
+      </nav>
     </div>
   </footer>
   <script defer src="/assets/js/main.js"></script>

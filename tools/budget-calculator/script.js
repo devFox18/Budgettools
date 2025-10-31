@@ -9,6 +9,23 @@ const DEFAULT_ROWS = [
   { category: "Savings & Investments", amount: "", notes: "", noteHint: "Pay yourself first" }
 ];
 
+const SAMPLE_DATA = {
+  income: 3600,
+  currency: "€",
+  rows: [
+    { category: "Housing", amount: 1350, notes: "Rent incl. service costs", noteHint: "Rent or mortgage" },
+    { category: "Utilities & Internet", amount: 180, notes: "Electricity, water, fibre", noteHint: "Energy, water, wifi" },
+    { category: "Groceries & Household", amount: 420, notes: "Family of three", noteHint: "Supermarket, toiletries" },
+    { category: "Transport", amount: 190, notes: "Train pass + fuel", noteHint: "Fuel, transit passes" },
+    { category: "Insurance & Healthcare", amount: 220, notes: "Health + car insurance", noteHint: "Monthly premiums" },
+    { category: "Childcare & School", amount: 250, notes: "After-school care", noteHint: "Daycare, tuition" },
+    { category: "Subscriptions & Media", amount: 65, notes: "Streaming + news", noteHint: "Recurring services" },
+    { category: "Eating Out & Fun", amount: 160, notes: "Weekends out", noteHint: "Restaurants, hobbies" },
+    { category: "Emergency Fund", amount: 200, notes: "Separate savings account", noteHint: "Savings buffer" },
+    { category: "Retirement & Investments", amount: 300, notes: "Automatic transfer", noteHint: "Pension, ETF" }
+  ]
+};
+
 const rowsContainer = document.getElementById("rows");
 const incomeInput = document.getElementById("income");
 const currencySelect = document.getElementById("currency");
@@ -19,6 +36,7 @@ const sumSavingsEl = document.getElementById("sumSavings");
 const savingsRateEl = document.getElementById("savingsRate");
 const addRowBtn = document.getElementById("addRow");
 const resetBtn = document.getElementById("reset");
+const loadSampleBtn = document.getElementById("loadSample");
 const exportBtn = document.getElementById("export");
 const printBtn = document.getElementById("print");
 
@@ -211,6 +229,17 @@ if (resetBtn) {
     incomeInput.value = "";
     incomeInput.step = "1"; // keep reset consistent
     currencySelect.value = "€";
+    renderRows();
+    draw();
+  });
+}
+
+if (loadSampleBtn) {
+  loadSampleBtn.addEventListener("click", () => {
+    rows = JSON.parse(JSON.stringify(SAMPLE_DATA.rows));
+    incomeInput.value = SAMPLE_DATA.income;
+    incomeInput.step = "1";
+    currencySelect.value = SAMPLE_DATA.currency;
     renderRows();
     draw();
   });

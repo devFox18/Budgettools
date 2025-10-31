@@ -182,6 +182,28 @@ canvas {
   font-size: clamp(1.15rem, 2.6vw, 1.4rem);
 }
 
+@media (min-width: 960px) {
+  .tips-placeholder {
+    float: right;
+    width: min(320px, 32%);
+    margin: 0 0 var(--space-5) var(--space-5);
+    position: sticky;
+    top: 6.5rem;
+  }
+
+  .tips-placeholder + section {
+    clear: none;
+  }
+}
+
+.tips-placeholder {
+  margin-bottom: var(--space-4);
+}
+
+section[aria-label="Budget calculator"] {
+  clear: both;
+}
+
 .tip-list {
   list-style: none;
   margin: 0;

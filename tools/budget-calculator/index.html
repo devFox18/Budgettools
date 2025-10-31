@@ -207,95 +207,64 @@
         <p class="subtitle">Simple, private, and ready to export. Adjust categories, print reports, and upgrade to premium templates when you need a deeper dive.</p>
       </header>
 
-      <div class="calculator-grid">
-        <section class="card intro-card" id="intro-card" aria-labelledby="intro-heading" hidden>
-          <div class="intro-card__content">
-            <h2 id="intro-heading">Get started in minutes</h2>
-            <p>Enter your take-home income, add expenses, and watch the overview update instantly. Nothing leaves your browser.</p>
-            <p>Need inspiration? Load sample categories or build your own list from scratch.</p>
-          </div>
-          <div class="intro-card__actions">
-            <button type="button" class="btn" id="intro-start">Start now</button>
-            <button type="button" class="btn btn--ghost" id="intro-dismiss">Got it</button>
-          </div>
-        </section>
-
-        <section class="card quick-start-card" aria-labelledby="quick-start-heading">
-          <div class="section-header">
-            <h2 id="quick-start-heading">Quick start</h2>
-            <div class="button-group" role="group" aria-label="Quick start actions">
-              <button type="button" class="btn" id="loadSample">Load sample data</button>
-              <button type="button" class="btn btn--ghost" id="startScratch">Start from scratch</button>
+      <section class="card" aria-labelledby="income-section">
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+          <div>
+            <label for="income" id="income-section">Total monthly income</label>
+            <div class="input-group">
+              <span class="prefix" aria-hidden="true">€</span>
+              <input type="number" id="income" placeholder="e.g. 3600" min="0" step="0.01" inputmode="decimal" aria-describedby="income-hint" />
             </div>
+            <p id="income-hint" class="small-print">All calculations stay in your browser.</p>
           </div>
-        </section>
-
-        <section class="card income-card" aria-labelledby="income-section">
-          <div class="income-grid">
-            <div>
-              <label for="income" id="income-section" class="label-with-tip">
-                <span>Total monthly income</span>
-                <span class="tooltip">
-                  <button type="button" class="tooltip__trigger" aria-describedby="income-tip">
-                    <span aria-hidden="true">i</span>
-                    <span class="sr-only">Income tip</span>
-                  </button>
-                  <span class="tooltip__bubble" role="tooltip" id="income-tip">Tip: enter your net, take-home amount.</span>
-                </span>
-              </label>
-              <div class="input-group">
-                <span class="prefix" aria-hidden="true" data-income-prefix>€</span>
-                <input type="number" id="income" placeholder="€ 3600 (example)" min="0" step="0.01" inputmode="decimal" aria-describedby="income-hint" />
-              </div>
-              <p id="income-hint" class="small-print">All calculations stay in your browser.</p>
-            </div>
-            <div>
-              <label for="currency">Currency</label>
-              <select id="currency" aria-label="Currency">
-                <option value="€" selected>Euro (€)</option>
-                <option value="$">US Dollar ($)</option>
-                <option value="£">Pound (£)</option>
-              </select>
-            </div>
+          <div>
+            <label for="currency">Currency</label>
+            <select id="currency" aria-label="Currency">
+              <option value="€" selected>Euro (€)</option>
+              <option value="$">US Dollar ($)</option>
+              <option value="£">Pound (£)</option>
+            </select>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <article class="card overview-card" aria-labelledby="summary-heading">
-          <h2 id="summary-heading" class="label-with-tip">
-            <span>Overview</span>
-            <span class="tooltip">
-              <button type="button" class="tooltip__trigger" aria-describedby="overview-tip">
-                <span aria-hidden="true">i</span>
-                <span class="sr-only">Overview tip</span>
-              </button>
-              <span class="tooltip__bubble" role="tooltip" id="overview-tip">Figures update live while you type.</span>
-            </span>
-          </h2>
+      <section class="card" aria-labelledby="expenses-heading">
+        <div class="section-header">
+          <h2 id="expenses-heading">Expenses</h2>
+          <div class="actions" role="group" aria-label="Expense actions">
+            <button class="btn" id="addRow" type="button">+ Add item</button>
+            <button class="btn btn--ghost" id="reset" type="button">Reset</button>
+            <button class="btn btn--ghost" id="export" type="button">Export CSV</button>
+            <button class="btn btn--ghost" id="print" type="button">Print</button>
+          </div>
+        </div>
+        <div class="table" role="table" aria-label="Expense categories">
+          <div class="t-head" role="row">
+            <div role="columnheader">Category</div>
+            <div role="columnheader">Amount</div>
+            <div role="columnheader">Notes</div>
+            <div role="columnheader" aria-hidden="true"></div>
+          </div>
+          <div id="rows" class="t-body" role="rowgroup" aria-live="polite"></div>
+          <div class="t-foot" role="row">
+            <div class="muted" role="cell">Totals</div>
+            <div id="totalExpenses" class="strong" role="cell">€0.00</div>
+            <div role="cell"></div>
+            <div role="cell"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="card" aria-labelledby="summary-heading">
+          <h2 id="summary-heading">Overview</h2>
           <div class="summary" aria-live="polite">
             <div>
-              <span class="label label-with-tip">
-                <span>Income</span>
-                <span class="tooltip">
-                  <button type="button" class="tooltip__trigger" aria-describedby="income-overview-tip">
-                    <span aria-hidden="true">i</span>
-                    <span class="sr-only">Income tip</span>
-                  </button>
-                  <span class="tooltip__bubble" role="tooltip" id="income-overview-tip">Tip: use your take-home pay after tax.</span>
-                </span>
-              </span>
+              <span class="label">Income</span>
               <span id="sumIncome" class="value">€0.00</span>
             </div>
             <div>
-              <span class="label label-with-tip">
-                <span>Expenses</span>
-                <span class="tooltip">
-                  <button type="button" class="tooltip__trigger" aria-describedby="expenses-tip">
-                    <span aria-hidden="true">i</span>
-                    <span class="sr-only">Expenses tip</span>
-                  </button>
-                  <span class="tooltip__bubble" role="tooltip" id="expenses-tip">Add fixed costs and recurring bills here.</span>
-                </span>
-              </span>
+              <span class="label">Expenses</span>
               <span id="sumExpenses" class="value">€0.00</span>
             </div>
             <div>
@@ -303,76 +272,27 @@
               <span id="sumSavings" class="value positive">€0.00</span>
             </div>
             <div>
-              <span class="label label-with-tip">
-                <span>Savings rate</span>
-                <span class="tooltip">
-                  <button type="button" class="tooltip__trigger" aria-describedby="savings-rate-tip">
-                    <span aria-hidden="true">i</span>
-                    <span class="sr-only">Savings rate tip</span>
-                  </button>
-                  <span class="tooltip__bubble" role="tooltip" id="savings-rate-tip">Aim for a steady percentage each month.</span>
-                </span>
-              </span>
+              <span class="label">Savings rate</span>
               <span id="savingsRate" class="value">0%</span>
             </div>
           </div>
         </article>
-
-        <section class="card expenses-card" aria-labelledby="expenses-heading">
-          <div class="section-header">
-            <h2 id="expenses-heading" class="label-with-tip">
-              <span>Expenses</span>
-              <span class="tooltip">
-                <button type="button" class="tooltip__trigger" aria-describedby="expenses-section-tip">
-                  <span aria-hidden="true">i</span>
-                  <span class="sr-only">Expenses tip</span>
-                </button>
-                <span class="tooltip__bubble" role="tooltip" id="expenses-section-tip">Include recurring and discretionary spending.</span>
-              </span>
-            </h2>
-            <div class="actions" role="group" aria-label="Expense actions">
-              <button class="btn" id="addRow" type="button">+ Add item</button>
-              <div class="button-group">
-                <button class="btn btn--ghost" id="reset" type="button">Reset</button>
-                <button class="btn btn--ghost" id="export" type="button">Export CSV</button>
-                <button class="btn btn--ghost" id="print" type="button">Print</button>
-              </div>
-            </div>
-          </div>
-          <div class="table" role="table" aria-label="Expense categories">
-            <div class="t-head" role="row">
-              <div role="columnheader">Category</div>
-              <div role="columnheader">Amount</div>
-              <div role="columnheader">Notes</div>
-              <div role="columnheader" aria-hidden="true"></div>
-            </div>
-            <div id="rows" class="t-body" role="rowgroup" aria-live="polite"></div>
-            <div id="expensesEmptyState" class="empty-state" role="status" aria-live="polite">No expenses yet — click “+ Add item” or “Load sample data”.</div>
-            <div class="t-foot" role="row">
-              <div class="muted" role="cell">Totals</div>
-              <div id="totalExpenses" class="strong" role="cell">€0.00</div>
-              <div role="cell"></div>
-              <div role="cell"></div>
-            </div>
-          </div>
-        </section>
-
-        <article class="card chart-card" aria-labelledby="chart-heading">
+        <article class="card" aria-labelledby="chart-heading">
           <h2 id="chart-heading">Expense breakdown</h2>
           <canvas id="chart" width="400" height="300" role="img" aria-label="Pie chart of expense categories"></canvas>
-          <div id="chartEmptyState" class="empty-state" role="status" aria-live="polite">Add some expenses to see your breakdown.</div>
           <div id="legend" class="legend" role="list" aria-live="polite"></div>
         </article>
+      </section>
 
-        <section class="card site-aside" aria-labelledby="premium-upsell">
-          <h2 id="premium-upsell">Need offline spreadsheets?</h2>
-          <p>Download the premium bundle for Google Sheets, Excel, and Numbers. Each template includes dashboards, historical tracking, and client-ready exports.</p>
-          <div class="button-row" style="margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
-            <button type="button" class="btn" data-checkout-button data-url="https://checkout-placeholder.example"><span>Unlock premium (placeholder)</span></button>
-            <a class="btn btn--ghost" href="/premium.html"><span>Preview the templates</span></a>
-          </div>
-        </section>
-      </div>
+      <section class="card site-aside" aria-labelledby="premium-upsell">
+        <h2 id="premium-upsell">Need offline spreadsheets?</h2>
+        <p>Download the premium bundle for Google Sheets, Excel, and Numbers. Each template includes dashboards, historical tracking, and client-ready exports.</p>
+        <div class="button-row" style="margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <button type="button" class="btn" data-checkout-button data-url="https://checkout-placeholder.example"><span>Unlock premium (placeholder)</span></button>
+          <a class="btn btn--ghost" href="/premium.html"><span>Preview the templates</span></a>
+        </div>
+      </section>
+
       <footer>
         <p class="small-print">Tip: customise the default categories by editing <code>script.js</code>. No build process required.</p>
       </footer>

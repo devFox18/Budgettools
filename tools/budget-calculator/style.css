@@ -3,36 +3,11 @@
   padding-top: clamp(3rem, 6vw, 4.5rem);
 }
 
-.calculator-grid {
-  display: grid;
-  gap: var(--space-5);
-}
-
-.intro-card {
-  display: grid;
-  gap: var(--space-4);
-  background: color-mix(in srgb, var(--color-surface-soft) 55%, #fff 45%);
-}
-
-.intro-card[hidden] {
-  display: none;
-}
-
-.intro-card__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-}
-
-.quick-start-card {
-  background: color-mix(in srgb, var(--color-surface) 90%, transparent);
-}
-
 .section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
@@ -44,74 +19,11 @@
 .actions {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.actions .button-group {
-  align-items: center;
-}
-
-.button-group {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.income-grid {
-  display: grid;
-  gap: var(--space-4);
-}
-
-.label-with-tip {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.income-card .input-group {
-  margin-top: var(--space-2);
-}
-
-.input-group {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  width: 100%;
-}
-
-.input-group input[type="number"],
-.input-group input[type="text"] {
-  min-width: 0;
-}
-
-.summary {
-  display: grid;
-  gap: var(--space-3);
-  margin-top: var(--space-3);
-}
-
-.summary > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-}
-
-.summary .value {
-  font-size: clamp(1.2rem, 2vw, 1.5rem);
-}
-
-.summary .positive {
-  color: var(--color-good);
-}
-
-.summary .negative {
-  color: var(--color-bad);
+  gap: 0.6rem;
 }
 
 .table {
-  margin-top: var(--space-4);
+  margin-top: 1.1rem;
 }
 
 .t-head,
@@ -143,26 +55,36 @@
   border-top: 1px dashed var(--color-border);
 }
 
-.legend {
-  margin-top: var(--space-3);
-  display: grid;
-  gap: var(--space-2);
+.input-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+}
+
+.input-group input[type="number"] {
+  min-width: 0;
+}
+
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+.summary {
+  margin-top: 0.5rem;
+}
+
+.summary .value {
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+}
+
+.summary .positive {
+  color: var(--color-good);
 }
 
 .legend .item {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--space-2);
-  align-items: center;
-  font-size: 0.95rem;
-  color: var(--color-muted);
   transition: transform 0.2s ease;
-}
-
-.legend .item .dot {
-  width: 0.85rem;
-  height: 0.85rem;
-  border-radius: 999px;
 }
 
 .legend .item:hover,
@@ -173,30 +95,6 @@
 .remove {
   width: 2.2rem;
   height: 2.2rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-muted);
-  font-size: 1.2rem;
-  line-height: 1;
-  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-}
-
-.remove:hover,
-.remove:focus-visible {
-  background: color-mix(in srgb, var(--color-bad) 12%, var(--color-surface));
-  border-color: color-mix(in srgb, var(--color-bad) 28%, var(--color-border));
-  color: var(--color-bad);
-}
-
-canvas {
-  max-width: 100%;
-  height: auto;
-}
-
-.chart-card {
-  display: grid;
-  gap: var(--space-3);
 }
 
 @keyframes fade-in {
@@ -216,46 +114,6 @@ canvas {
   .t-foot {
     grid-template-columns: 1fr;
   }
-
-  .remove {
-    justify-self: end;
-  }
-}
-
-@media (min-width: 720px) {
-  .income-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1024px) {
-  .calculator-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
-    align-items: start;
-  }
-
-  .calculator-grid > .card {
-    width: 100%;
-  }
-
-  .calculator-grid > .overview-card,
-  .calculator-grid > .chart-card {
-    grid-column: 2;
-  }
-
-  .calculator-grid > .intro-card,
-  .calculator-grid > .quick-start-card,
-  .calculator-grid > .income-card,
-  .calculator-grid > .expenses-card,
-  .calculator-grid > .site-aside {
-    grid-column: 1;
-  }
-
-  .overview-card {
-    position: sticky;
-    top: clamp(5rem, 8vw, 6.5rem);
-    z-index: 2;
-  }
 }
 
 @media print {
@@ -263,9 +121,7 @@ canvas {
   footer,
   .site-aside,
   .button-row,
-  .actions,
-  .quick-start-card,
-  .intro-card {
+  .actions {
     display: none !important;
   }
 

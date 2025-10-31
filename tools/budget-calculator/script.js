@@ -1,18 +1,12 @@
 // ===== Monthly Budget Calculator (vanilla JS) =====
 
-// Default categories (you can edit these names below)
+// Default categories give structure but start empty so users can type without clearing values.
 const DEFAULT_ROWS = [
-  { category: "Rent / Mortgage", amount: 1250, notes: "Two-bedroom apartment" },
-  { category: "Utilities & Internet", amount: 180, notes: "" },
-  { category: "Groceries", amount: 420, notes: "Family of three" },
-  { category: "Transport & Fuel", amount: 160, notes: "Train pass + fuel" },
-  { category: "Insurance & Healthcare", amount: 180, notes: "Health and car coverage" },
-  { category: "Childcare & School", amount: 220, notes: "After-school club" },
-  { category: "Debt Repayments", amount: 200, notes: "Student loan" },
-  { category: "Fun & Dining Out", amount: 150, notes: "" },
-  { category: "Subscriptions & Streaming", amount: 50, notes: "" },
-  { category: "Emergency Fund", amount: 250, notes: "Separate savings account" },
-  { category: "Retirement & Investments", amount: 300, notes: "Automatic transfer" }
+  { category: "Housing", amount: "", notes: "", noteHint: "Rent or mortgage" },
+  { category: "Utilities & Internet", amount: "", notes: "", noteHint: "Energy, water, wifi" },
+  { category: "Groceries & Household", amount: "", notes: "", noteHint: "Supermarket, toiletries" },
+  { category: "Transport", amount: "", notes: "", noteHint: "Fuel, transit passes" },
+  { category: "Savings & Investments", amount: "", notes: "", noteHint: "Pay yourself first" }
 ];
 
 const rowsContainer = document.getElementById("rows");
@@ -74,10 +68,11 @@ function renderRows(){
 
     const amountEl = document.createElement("input");
     amountEl.type = "number";
-    amountEl.value = r.amount;
+    amountEl.value = r.amount === "" ? "" : r.amount;
     amountEl.min = "0";
     amountEl.step = "1"; // step per €1 with the arrow keys/spinner
     amountEl.setAttribute("aria-label", "Amount");
+    amountEl.placeholder = "0";
 
     group.appendChild(prefix);
     group.appendChild(amountEl);
@@ -85,7 +80,7 @@ function renderRows(){
     const notesEl = document.createElement("input");
     notesEl.type = "text";
     notesEl.value = r.notes;
-    notesEl.placeholder = "Notes (optional)";
+    notesEl.placeholder = r.noteHint || "Notes (optional)";
     notesEl.setAttribute("aria-label", "Notes");
 
     const removeBtn = document.createElement("button");
@@ -101,7 +96,11 @@ function renderRows(){
     row.appendChild(removeBtn);
 
     catEl.addEventListener("input", e => { rows[i].category = e.target.value; draw(); });
-    amountEl.addEventListener("input", e => { rows[i].amount = parseFloat(e.target.value||0); draw(); });
+    amountEl.addEventListener("input", e => {
+      const value = e.target.value;
+      rows[i].amount = value === "" ? "" : parseFloat(value);
+      draw();
+    });
     notesEl.addEventListener("input", e => { rows[i].notes = e.target.value; });
 
     removeBtn.addEventListener("click", ()=>{
@@ -195,7 +194,7 @@ function draw(){
   drawChart();
 }
 
-function addRow(category="", amount=0, notes=""){
+function addRow(category="", amount="", notes=""){
   rows.push({category, amount, notes});
   renderRows();
   draw();
@@ -209,7 +208,7 @@ if (addRowBtn) {
 if (resetBtn) {
   resetBtn.addEventListener("click", () => {
     rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
-    incomeInput.value = 3600;
+    incomeInput.value = "";
     incomeInput.step = "1"; // keep reset consistent
     currencySelect.value = "€";
     renderRows();
@@ -257,5 +256,6 @@ currencySelect.addEventListener("change", ()=>{ renderRows(); draw(); });
 
 // Init
 rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
+incomeInput.value = "";
 renderRows();
 draw();

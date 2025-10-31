@@ -291,35 +291,57 @@
       </form>
     </section>
 
-    <section class="section" id="testimonials" aria-labelledby="affiliate-heading">
-      <h2 id="affiliate-heading">What people say</h2>
-      <div class="affiliate-grid">
-        <article class="affiliate-card">
-          <span class="affiliate-card__badge">100K+ calculations completed this year</span>
-          <h3>Eva, financial coach</h3>
-          <p>“Finally understand my goals—without any account hassle.”</p>
-          <button type="button" class="btn btn--inline" data-affiliate-button data-href="https://example.com/savings">
-            <span>Read experience</span>
-          </button>
-        </article>
-        <article class="affiliate-card">
-          <span class="affiliate-card__badge">Review</span>
-          <h3>Tom &amp; Jamie</h3>
-          <p>“The splitter saves arguments—game changer.”</p>
-          <button type="button" class="btn btn--inline" data-affiliate-button data-href="https://example.com/receipts">
-            <span>Share feedback</span>
-          </button>
-        </article>
-        <article class="affiliate-card">
-          <span class="affiliate-card__badge">Review</span>
-          <h3>Sanne, founder</h3>
-          <p>“Minutes to insights and a clean summary in my inbox.”</p>
-          <button type="button" class="btn btn--inline" data-affiliate-button data-href="https://example.com/course">
-            <span>See example</span>
-          </button>
-        </article>
+<!-- Voeg dit toe in je <head> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<section class="section" id="testimonials" aria-labelledby="affiliate-heading">
+  <h2 id="affiliate-heading">What people say</h2>
+  <div class="affiliate-grid">
+
+    <article class="affiliate-card">
+      <span class="affiliate-card__badge">100K+ calculations completed this year</span>
+      <h3>Eva, financial coach</h3>
+      <p>“Finally understand my goals—without any account hassle.”</p>
+      <button type="button" class="btn btn--inline" data-affiliate-button data-href="https://example.com/savings">
+        <span>Read experience</span>
+      </button>
+    </article>
+
+    <article class="affiliate-card">
+      <span class="affiliate-card__badge">Review</span>
+      <h3>Tom &amp; Jamie</h3>
+      <div class="affiliate-card__stars" aria-label="Rating: 5 out of 5">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
       </div>
-    </section>
+      <p>“The splitter saves arguments—game changer.”</p>
+      <button type="button" class="btn btn--inline" data-affiliate-button data-href="https://example.com/receipts">
+        <span>Share feedback</span>
+      </button>
+    </article>
+
+    <article class="affiliate-card">
+      <span class="affiliate-card__badge">Review</span>
+      <h3>Sanne, founder</h3>
+      <div class="affiliate-card__stars" aria-label="Rating: 4 out of 5">
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+      </div>
+      <p>“Minutes to insights and a clean summary in my inbox.”</p>
+      <button type="button" class="btn btn--inline" data-affiliate-button data-href="https://example.com/course">
+        <span>See example</span>
+      </button>
+    </article>
+
+  </div>
+</section>
+
 
     <section class="section" aria-labelledby="crosslinks-heading">
       <h2 id="crosslinks-heading">Why BudgetTools</h2>

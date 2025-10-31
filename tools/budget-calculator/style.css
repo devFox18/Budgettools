@@ -171,6 +171,35 @@ canvas {
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 }
 
+.card--explainer {
+  margin-top: clamp(2rem, 6vw, 3rem);
+}
+
+.explainer {
+  display: grid;
+  gap: var(--space-3);
+  color: var(--color-muted);
+}
+
+.explainer h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 3vw, 1.75rem);
+  color: var(--color-text);
+}
+
+.explainer p {
+  margin: 0;
+  max-width: 68ch;
+}
+
+.explainer em {
+  font-style: italic;
+}
+
+.explainer strong {
+  color: var(--color-text);
+}
+
 .remove {
   width: 2.2rem;
   height: 2.2rem;

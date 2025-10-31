@@ -30,6 +30,7 @@
   display: grid;
   gap: var(--space-4);
   align-content: start;
+  padding-left: clamp(0.5rem, 3vw, 1.5rem);
 }
 
 @media (min-width: 1024px) {

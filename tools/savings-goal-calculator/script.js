@@ -439,7 +439,7 @@ class SavingsCalculatorUI {
         <div class="bt-savings-header__intro">
           <div>
             <h2>Savings goal calculator</h2>
-            <p class="bt-demo__lede">Switch between finding out how long it may take to reach your goal or the monthly amount needed by a target date.</p>
+            <p class="bt-demo__lede">Choose whether you want to see how long it takes to reach your goal or how much to save each month for a deadline.</p>
           </div>
           <div class="bt-mode-toggle" role="group" aria-label="Calculation mode">
             <button type="button" data-mode="time" aria-pressed="false">Time to reach goal</button>
@@ -451,7 +451,7 @@ class SavingsCalculatorUI {
         <div class="bt-form-column">
           <div class="bt-mobile-summary" id="bt-mobile-summary" aria-live="polite" data-has-results="false">
             <div class="bt-mobile-summary__card" tabindex="-1">
-              <p class="bt-mobile-summary__placeholder">Your results summary will appear here after you calculate.</p>
+              <p class="bt-mobile-summary__placeholder">Your results will appear here after you calculate.</p>
             </div>
           </div>
           <form class="bt-grid" novalidate>
@@ -499,7 +499,7 @@ class SavingsCalculatorUI {
             </div>
             <div class="bt-remember">
               <input type="checkbox" id="rememberInputs" />
-              <label for="rememberInputs">Remember my last inputs on this device</label>
+              <label for="rememberInputs">Save my last inputs on this device</label>
             </div>
             <div class="bt-form-actions">
               <button type="submit" class="bt-submit">Calculate</button>
@@ -518,8 +518,8 @@ class SavingsCalculatorUI {
         resultsCard.setAttribute('hidden', '');
         resultsCard.innerHTML = `
       <div class="bt-results-header">
-        <h3 id="bt-results-heading">Your Results Summary</h3>
-        <p class="bt-results-subtitle">We refresh your plan after each calculation.</p>
+        <h3 id="bt-results-heading">Your results</h3>
+        <p class="bt-results-subtitle">Results refresh each time you calculate.</p>
       </div>
       <div id="bt-summary-region" class="bt-summary" role="region" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
       <p class="sr-only" id="bt-summary-announcer" aria-live="polite"></p>
@@ -545,7 +545,7 @@ class SavingsCalculatorUI {
             <tbody id="bt-table-body"></tbody>
           </table>
         </div>
-        <button type="button" class="bt-button" data-action="toggle-rows" aria-expanded="false">View full schedule</button>
+        <button type="button" class="bt-button" data-action="toggle-rows" aria-expanded="false">Show full schedule</button>
         <p class="bt-footer">BudgetTools — calculations run in your browser. No data stored. Estimates only. Returns are not guaranteed.</p>
       </div>
     `;
@@ -814,7 +814,7 @@ class SavingsCalculatorUI {
     setSummaryPlaceholder(message) {
         if (!this.summaryRegion)
             return;
-        const text = message !== null && message !== void 0 ? message : 'Enter your details and press Calculate to view your results.';
+        const text = message !== null && message !== void 0 ? message : 'Add your info and press Calculate to see your results.';
         const paragraph = document.createElement('p');
         paragraph.className = 'bt-summary__placeholder';
         paragraph.textContent = text;
@@ -844,7 +844,7 @@ class SavingsCalculatorUI {
             return;
         if (!this.resultSummary) {
             this.mobileSummaryRegion.dataset.hasResults = 'false';
-            const placeholderText = ((_b = (_a = this.summaryRegion) === null || _a === void 0 ? void 0 : _a.textContent) === null || _b === void 0 ? void 0 : _b.trim()) || 'Your results summary will appear here after you calculate.';
+            const placeholderText = ((_b = (_a = this.summaryRegion) === null || _a === void 0 ? void 0 : _a.textContent) === null || _b === void 0 ? void 0 : _b.trim()) || 'Your results will appear here after you calculate.';
             this.mobileSummaryCard.innerHTML = `<p class="bt-mobile-summary__placeholder">${placeholderText}</p>`;
             return;
         }
@@ -913,7 +913,7 @@ class SavingsCalculatorUI {
         const lines = summariseProjection(projection, totalContributions, totalInterest, this.state.locale, this.state.currency, finishDate, requiredMonthlyContribution, mode, inflation);
         if (includeTableHint) {
             lines.push('');
-            lines.push('Projection preview shown in tool. Use "View full schedule" or download CSV for full history.');
+            lines.push('Projection preview shown in tool. Use "Show full schedule" or download CSV for full history.');
         }
         return lines;
     }
@@ -1123,7 +1123,7 @@ class SavingsCalculatorUI {
         const hasMoreRows = projection.length > PREVIEW_ROW_COUNT;
         this.showAllButton.style.display = hasMoreRows ? 'inline-flex' : 'none';
         if (hasMoreRows) {
-            this.showAllButton.textContent = this.showAllRows ? 'Show first 6 rows' : 'View full schedule';
+            this.showAllButton.textContent = this.showAllRows ? 'Show first 6 rows' : 'Show full schedule';
             this.showAllButton.setAttribute('aria-expanded', this.showAllRows ? 'true' : 'false');
         }
         else {

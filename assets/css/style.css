@@ -117,6 +117,8 @@ label {
   color: var(--color-muted);
 }
 
+
+
 input,
 select,
 textarea {
@@ -182,6 +184,13 @@ a:focus-visible {
 .skip-link:focus {
   transform: translateY(0);
 }
+
+.affiliate-card__stars {
+  color: #f5b301; /* goudkleur */
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
 
 .site-header {
   position: sticky;

@@ -172,36 +172,23 @@ canvas {
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
 }
 
-.card--tips {
+.callout {
   display: grid;
   gap: var(--space-3);
-}
-
-.card--tips h2 {
-  margin: 0;
-  font-size: clamp(1.15rem, 2.6vw, 1.4rem);
-}
-
-@media (min-width: 960px) {
-  .tips-placeholder {
-    float: right;
-    width: min(320px, 32%);
-    margin: 0 0 var(--space-5) var(--space-5);
-    position: sticky;
-    top: 6.5rem;
-  }
-
-  .tips-placeholder + section {
-    clear: none;
-  }
-}
-
-.tips-placeholder {
+  border: 1px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-accent) 12%, #ffffff);
+  padding: clamp(1rem, 3vw, 1.4rem);
   margin-bottom: var(--space-4);
 }
 
-section[aria-label="Budget calculator"] {
-  clear: both;
+.callout h2 {
+  margin: 0;
+  font-size: clamp(1.15rem, 2.6vw, 1.35rem);
+}
+
+.callout--tips {
+  color: var(--color-muted);
 }
 
 .tip-list {

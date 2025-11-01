@@ -170,6 +170,9 @@
 
       const anchorTarget = event.target.closest('a.site-nav__link, a.site-nav__sub-link, .site-nav__cta');
       if (anchorTarget) {
+        if (anchorTarget.getAttribute('aria-current') === 'page') {
+          event.preventDefault();
+        }
         closeNav();
         return;
       }

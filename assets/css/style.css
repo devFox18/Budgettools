@@ -372,6 +372,12 @@ a:focus-visible {
   transform: rotate(180deg);
 }
 
+.site-nav[data-nav-no-transition],
+.site-nav[data-nav-no-transition] .site-nav__list,
+.site-nav[data-nav-no-transition] .site-nav__sub-list {
+  transition: none !important;
+}
+
 .site-nav__sub-list {
   list-style: none;
   padding: 0.75rem;

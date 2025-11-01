@@ -59,6 +59,13 @@
     const nav = document.querySelector('[data-site-nav]');
     if (!toggle || !nav) return;
 
+    nav.setAttribute('data-nav-no-transition', 'true');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        nav.removeAttribute('data-nav-no-transition');
+      });
+    });
+
     const rootElement = document.documentElement;
     const mobileQuery = window.matchMedia('(min-width: 721px)');
 
@@ -326,13 +333,13 @@
   };
 
   const init = () => {
-    root.classList.remove('no-js');
     fillCurrentYear();
     enhanceOptInForm();
     enhanceAffiliateButtons();
     initCheckoutButtons();
     initSiteNavigation();
     hydratePreloadedStyles();
+    root.classList.remove('no-js');
   };
 
   if (document.readyState === 'loading') {

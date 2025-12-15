@@ -1,405 +1,154 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BudgetTools — Smart, privacy-first financial tools</title>
-  <meta name="description" content="Plan, compare, and calculate your finances with BudgetTools. Everything runs locally in your browser. No account required." />
-  <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://budgettools.netlify.app/" />
-  <meta property="og:title" content="BudgetTools — Smart, privacy-first financial tools" />
-  <meta property="og:description" content="Plan, compare, and calculate your finances with BudgetTools. Everything runs locally in your browser. No account required." />
-  <meta property="og:url" content="https://budgettools.netlify.app/" />
-  <meta property="og:type" content="website" />
-  <meta property="twitter:card" content="summary" />
-  <meta property="twitter:title" content="BudgetTools — Smart, privacy-first financial tools" />
-  <meta property="twitter:description" content="Plan, compare, and calculate your finances with BudgetTools. Everything runs locally in your browser. No account required." />
-  <meta name="theme-color" content="#f6f8fb" />
-  <script>
-    document.documentElement.classList.remove('no-js');
-    document.documentElement.classList.add('js');
-  </script>
-  <link rel="preload" href="/assets/css/style.css" as="style" data-preload-style />
-  <noscript><link rel="stylesheet" href="/assets/css/style.css" /></noscript>
-  <style>
-    :root { --color-bg: #ffffff; --color-text: #0f172a; --color-accent: #22c55e; --color-accent-ink: #062a12; --color-border: #dbe4f3; --color-surface-soft: #eef2ff; --section-gap: clamp(3rem, 6vw, 4.75rem); --container-width: min(1120px, 100% - 3rem); }
-    html { background: var(--color-bg); font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; }
-    body { margin: 0; color: var(--color-text); line-height: 1.7; background: var(--color-bg); }
-    a { color: inherit; }
-    .skip-link { position: absolute; left: 0.75rem; top: 0.75rem; padding: 0.75rem 1.2rem; background: var(--color-accent); color: var(--color-accent-ink); border-radius: 14px; transform: translateY(-150%); transition: transform 0.2s ease; }
-    .skip-link:focus { transform: translateY(0); }
-    .site-header { position: sticky; top: 0; z-index: 9; backdrop-filter: blur(14px); background: color-mix(in srgb, var(--color-bg) 92%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--color-border) 70%, transparent); box-shadow: 0 18px 40px -30px rgba(15, 23, 42, 0.28); }
-    .site-header__inner { width: var(--container-width); margin-inline: auto; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.9rem 0; position: relative; }
-    .site-logo { font-weight: 700; letter-spacing: -0.01em; text-decoration: none; display: inline-flex; gap: 0.5rem; align-items: center; font-size: 1.15rem; color: inherit; }
-    .site-nav { display: flex; align-items: center; gap: clamp(1rem, 3vw, 1.75rem); }
-    .site-nav__toggle { background: color-mix(in srgb, var(--color-surface-soft) 18%, #fff); border: 1px solid color-mix(in srgb, var(--color-border) 85%, transparent); border-radius: 14px; color: #0f172a; display: none; align-items: center; gap: 0.5rem; padding: 0.6rem 0.85rem; font-size: 0.96rem; font-weight: 600; letter-spacing: 0.01em; line-height: 1; transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease; }
-    .site-nav__toggle:hover, .site-nav__toggle:focus-visible { background: color-mix(in srgb, var(--color-surface-soft) 25%, #fff); border-color: color-mix(in srgb, var(--color-border) 85%, transparent); color: #0f172a; box-shadow: 0 10px 24px -18px rgba(15, 23, 42, 0.3); }
-    .site-nav__toggle-box { display: inline-flex; flex-direction: column; gap: 0.25rem; }
-    .site-nav__toggle-line { width: 1.25rem; height: 2px; border-radius: 999px; background: currentColor; transition: transform 0.25s ease, opacity 0.25s ease; }
-    .site-nav__toggle[aria-expanded="true"] .site-nav__toggle-line:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-    .site-nav__toggle[aria-expanded="true"] .site-nav__toggle-line:nth-child(2) { opacity: 0; }
-    .site-nav__toggle[aria-expanded="true"] .site-nav__toggle-line:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-    .site-nav__toggle-label { display: inline-flex; align-items: center; gap: 0.25rem; }
-    .site-nav__list { display: flex; list-style: none; gap: clamp(1rem, 2.6vw, 1.75rem); padding: 0; margin: 0; align-items: center; }
-    .site-nav__item { margin: 0; position: relative; }
-    .site-nav__link { appearance: none; background: none; border: 0; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0; font-weight: 600; font-size: 0.98rem; letter-spacing: 0.01em; color: #64748b; text-decoration: none; position: relative; transition: color 0.2s ease; cursor: pointer; border-radius: 0; }
-    .site-nav__link::after { content: ""; position: absolute; left: 0; bottom: -0.45rem; width: 100%; height: 3px; border-radius: 999px; background: color-mix(in srgb, var(--color-surface-soft) 55%, var(--color-accent) 45%); transform: scaleX(0); transform-origin: left; opacity: 0; transition: transform 0.25s ease, opacity 0.25s ease; }
-    .site-nav__link:hover, .site-nav__link:focus-visible { color: #0f172a; }
-    .site-nav__link:hover::after, .site-nav__link:focus-visible::after { transform: scaleX(1); opacity: 0.6; }
-    .site-nav__link[aria-current="page"], .site-nav__link[data-active="true"] { color: #0f172a; font-weight: 700; }
-    .site-nav__link[aria-current="page"]::after, .site-nav__link[data-active="true"]::after { transform: scaleX(1); opacity: 1; }
-    .site-nav__link:focus-visible { outline: 2px solid rgba(34, 197, 94, 0.55); outline-offset: 4px; border-radius: 14px; }
-    .site-nav__caret { width: 0.75rem; height: 0.75rem; display: inline-flex; color: currentColor; transition: transform 0.25s ease; }
-    .site-nav__item[data-open="true"] > .site-nav__link .site-nav__caret { transform: rotate(180deg); }
-    .site-nav__sub-list { list-style: none; padding: 0.75rem; margin: 0; position: absolute; top: calc(100% + 0.65rem); left: 0; min-width: 220px; border-radius: 20px; background: #ffffff; box-shadow: 0 28px 50px -34px rgba(15, 23, 42, 0.3); border: 1px solid color-mix(in srgb, var(--color-border) 85%, transparent); opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-0.4rem); transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease; z-index: 10; display: grid; gap: 0.2rem; }
-    .site-nav__item[data-open="true"] > .site-nav__sub-list { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); }
-    .site-nav__sub-item { margin: 0; }
-    .site-nav__sub-link { display: block; padding: 0.6rem 0.75rem; border-radius: 14px; color: #0f172a; text-decoration: none; font-weight: 600; font-size: 0.93rem; transition: background-color 0.2s ease, color 0.2s ease; }
-    .site-nav__sub-link:hover, .site-nav__sub-link:focus-visible { background: color-mix(in srgb, var(--color-surface-soft) 25%, #fff); color: #0f172a; outline: none; }
-    .site-nav__sub-link[data-disabled="true"] { color: #94a3b8; cursor: not-allowed; pointer-events: none; }
-    .site-nav__sub-link[data-disabled="true"]:hover, .site-nav__sub-link[data-disabled="true"]:focus-visible { background: transparent; color: #94a3b8; }
-    .site-nav__item--cta { margin-left: clamp(1rem, 2vw, 2.25rem); }
-    .site-nav__cta { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.65rem 1.2rem; border-radius: 999px; background: var(--color-accent); color: var(--color-accent-ink); font-size: 0.95rem; font-weight: 700; text-decoration: none; box-shadow: 0 16px 34px -16px color-mix(in srgb, var(--color-accent) 45%, transparent); transition: transform 0.2s ease, box-shadow 0.2s ease; }
-    .site-nav__cta:hover, .site-nav__cta:focus-visible { transform: translateY(-1px); box-shadow: 0 18px 44px -16px color-mix(in srgb, var(--color-accent) 52%, transparent); outline: none; }
-    .has-nav-open, .has-nav-open body { overflow: hidden; }
-    .no-js .site-nav { position: static; padding: 0; background: transparent; opacity: 1; pointer-events: auto; display: flex; }
-    .no-js .site-nav__list { display: flex; flex-wrap: wrap; gap: clamp(0.75rem, 2.6vw, 1.5rem); background: transparent; border: 0; box-shadow: none; padding: 0; }
-    .no-js .site-nav__item { position: static; }
-    .no-js .site-nav__sub-list { position: static; opacity: 1; visibility: visible; pointer-events: auto; transform: none; box-shadow: none; border: 0; background: transparent; padding: 0.35rem 0 0 0; display: grid; gap: 0.35rem; }
-    .no-js .site-nav__sub-link { padding: 0.35rem 0; color: #0f172a; }
-    main { display: block; }
-    .hero { width: var(--container-width); margin-inline: auto; padding: clamp(3.5rem, 9vw, 5.5rem) clamp(1.5rem, 4vw, 2.75rem); display: grid; gap: 1.6rem; background: color-mix(in srgb, var(--color-surface-soft) 30%, #fff); border: 1px solid color-mix(in srgb, var(--color-border) 85%, transparent); border-radius: clamp(1.5rem, 4vw, 2.25rem); box-shadow: 0 28px 64px -38px rgba(15, 23, 42, 0.36); }
-    .hero__eyebrow { display: inline-flex; gap: 0.45rem; align-items: center; background: color-mix(in srgb, var(--color-surface-soft) 55%, #fff); color: #0f172a; padding: 0.4rem 0.9rem; border-radius: 999px; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid color-mix(in srgb, var(--color-border) 88%, var(--color-surface-soft) 12%); }
-    .hero__title { margin: 0; font-size: clamp(2.65rem, 5.5vw, 3.9rem); line-height: 1.04; letter-spacing: -0.01em; max-width: 20ch; }
-    .hero__lede { margin: 0; color: #475569; font-size: clamp(1.05rem, 2.6vw, 1.25rem); max-width: 58ch; }
-    .button-row { display: flex; flex-wrap: wrap; gap: 0.85rem; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem; padding: 0.85rem 1.6rem; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent); background: var(--color-accent); color: var(--color-accent-ink); font-weight: 700; text-decoration: none; letter-spacing: 0.01em; box-shadow: 0 18px 38px -20px color-mix(in srgb, var(--color-accent) 52%, transparent); }
-    .btn--ghost { background: color-mix(in srgb, var(--color-surface-soft) 32%, #fff); color: #0f172a; border: 1px solid color-mix(in srgb, var(--color-border) 90%, var(--color-surface-soft) 10%); box-shadow: 0 12px 30px -22px rgba(15, 23, 42, 0.32); }
-    .section { width: var(--container-width); margin-inline: auto; padding-block: var(--section-gap); }
-    @media (max-width: 900px) {
-      .site-header__inner, .hero, .section { width: min(100% - 2rem, 100%); }
-      .button-row { justify-content: flex-start; }
-    }
-    @media (max-width: 720px) {
-      .site-header__inner { padding-block: 0.85rem; }
-      .site-nav { position: fixed; inset: 0; padding: 5.5rem 1.5rem 2rem; background: color-mix(in srgb, var(--color-bg) 92%, transparent); backdrop-filter: blur(18px); pointer-events: none; opacity: 0; transition: opacity 0.25s ease; display: grid; place-items: start end; }
-      .site-nav__list { width: min(360px, 100%); background: #ffffff; border-radius: 20px; border: 1px solid color-mix(in srgb, var(--color-border) 85%, transparent); box-shadow: 0 26px 58px -36px rgba(15, 23, 42, 0.32); padding: 1.1rem; display: grid; gap: 0.6rem; transform: translateY(-0.75rem); transition: transform 0.24s ease; }
-      .site-nav__item { width: 100%; }
-      .site-nav__item--cta { margin-left: 0; padding-top: 0.65rem; margin-top: 0.35rem; border-top: 1px solid rgba(226, 232, 240, 0.9); }
-      .site-nav__link { width: 100%; justify-content: space-between; font-size: 1rem; color: #0f172a; padding: 0.7rem 0.9rem; border-radius: 14px; }
-      .site-nav__link::after { display: none; }
-      .site-nav__link:hover, .site-nav__link:focus-visible { background: color-mix(in srgb, var(--color-surface-soft) 22%, #fff); color: #0f172a; }
-      .site-nav__link[aria-current="page"], .site-nav__link[data-active="true"] { background: color-mix(in srgb, var(--color-surface-soft) 28%, #fff); }
-      .site-nav__caret { margin-left: auto; }
-      .site-nav__sub-list { position: static; opacity: 1; visibility: visible; pointer-events: auto; transform: none; padding: 0; margin: 0; border: 0; box-shadow: none; background: transparent; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-      .site-nav__item[data-open="true"] > .site-nav__sub-list { max-height: 520px; padding-bottom: 0.25rem; }
-      .site-nav__sub-link { padding: 0.55rem 0.85rem 0.55rem 2.35rem; border-radius: 12px; font-size: 0.96rem; }
-      .site-nav__sub-link:hover, .site-nav__sub-link:focus-visible { background: color-mix(in srgb, var(--color-surface-soft) 22%, #fff); color: #0f172a; }
-      .site-nav__cta { width: 100%; justify-content: center; }
-      .site-nav[data-open="true"] { pointer-events: auto; opacity: 1; }
-      .site-nav[data-open="true"] .site-nav__list { transform: translateY(0); }
-      .site-nav__toggle { display: inline-flex; }
-      .site-nav__toggle-line { width: 1.35rem; }
-      .site-nav__toggle[aria-expanded="true"] .site-nav__toggle-line:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-      .site-nav__toggle[aria-expanded="true"] .site-nav__toggle-line:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-      .no-js .site-nav { position: static; padding: 0; background: transparent; opacity: 1; pointer-events: auto; display: flex; }
-      .no-js .site-nav__list { transform: none; background: transparent; border: 0; box-shadow: none; padding: 0; display: flex; gap: clamp(0.75rem, 2.6vw, 1.5rem); }
-      .no-js .site-nav__link { border-radius: 0; padding: 0.35rem 0; }
-      .no-js .site-nav__sub-list { max-height: none; padding-bottom: 0; }
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BudgetTools — Take Control of Your Money</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
-  <a class="skip-link" href="#main-content">Skip to content</a>
-  <header class="site-header" role="banner">
-    <div class="site-header__inner">
-      <a class="site-logo" href="/">
-        <span aria-hidden="true">💸</span>
-        <span>BudgetTools</span>
-      </a>
-      <button class="site-nav__toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-menu">
-        <span class="site-nav__toggle-box" aria-hidden="true">
-          <span class="site-nav__toggle-line"></span>
-          <span class="site-nav__toggle-line"></span>
-          <span class="site-nav__toggle-line"></span>
-        </span>
-        <span class="site-nav__toggle-label">Menu</span>
-      </button>
-      <nav class="site-nav" aria-label="Main navigation" data-site-nav>
-        <ul class="site-nav__list" id="site-menu">
-          <li class="site-nav__item"><a class="site-nav__link" href="/" aria-current="page">Home</a></li>
-          <li class="site-nav__item site-nav__item--has-children" data-nav-item>
-            <button class="site-nav__link" type="button" id="nav-tools" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-tools-menu">
-              <span>Tools</span>
-              <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
-                <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
-              </svg>
-            </button>
-            <ul class="site-nav__sub-list" id="nav-tools-menu" aria-labelledby="nav-tools" data-nav-submenu>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/budget-calculator/">Budget Calculator</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/savings-goal-calculator/">Savings Goal Calculator</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/subscription-saver/">Subscription Saver</a></li>
-              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Budget Planner · Coming soon</span></li>
-              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Tax Estimator · Coming soon</span></li>
-            </ul>
-          </li>
-          <li class="site-nav__item site-nav__item--has-children" data-nav-item>
-            <button class="site-nav__link" type="button" id="nav-resources" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-resources-menu">
-              <span>Resources</span>
-              <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
-                <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
-              </svg>
-            </button>
-            <ul class="site-nav__sub-list" id="nav-resources-menu" aria-labelledby="nav-resources" data-nav-submenu>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#guides">Blog &amp; articles</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#newsletter">Tips &amp; guides</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#testimonials">Customer stories</a></li>
-              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Updates &amp; changelog · Coming soon</span></li>
-            </ul>
-          </li>
-          <li class="site-nav__item site-nav__item--has-children" data-nav-item>
-            <button class="site-nav__link" type="button" id="nav-privacy" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-privacy-menu">
-              <span>Privacy &amp; Terms</span>
-              <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
-                <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
-              </svg>
-            </button>
-            <ul class="site-nav__sub-list" id="nav-privacy-menu" aria-labelledby="nav-privacy" data-nav-submenu>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/privacy.html">Privacy policy</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/terms.html">Terms of use</a></li>
-              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Cookie policy · Coming soon</span></li>
-            </ul>
-          </li>
-          <li class="site-nav__item site-nav__item--has-children" data-nav-item>
-            <button class="site-nav__link" type="button" id="nav-contact" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-contact-menu">
-              <span>Contact</span>
-              <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
-                <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
-              </svg>
-            </button>
-            <ul class="site-nav__sub-list" id="nav-contact-menu" aria-labelledby="nav-contact" data-nav-submenu>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/contact.html">Contact form</a></li>
-            </ul>
-          </li>
-
-        </ul>
-      </nav>
-    </div>
-  </header>
-  <main id="main-content">
-    <section class="hero">
-      <span class="hero__eyebrow">Privacy-first · No account required · Open source where possible</span>
-      <h1 class="hero__title">Smart, privacy-first money tools</h1>
-      <p class="hero__lede">Manage budgets, run comparisons, and decide with confidence—every calculation happens locally in your browser.</p>
-      <div class="button-row">
-        <a class="btn" href="/tools/budget-calculator/"><span>Start free</span></a>
-        <a class="btn btn--ghost" href="#guides"><span>Browse all tools</span></a>
-      </div>
-      <div class="notice" role="status">100K+ calculations completed this year. No tracking, no surprises.</div>
-    </section>
-
-    <section class="section section--tight" id="guides" aria-labelledby="features-heading">
-      <div class="feature-grid">
-        <article class="card">
-          <h2 id="features-heading">Tools for every money task</h2>
-          <p>Pick a scenario and get started in seconds. Savings Planner — Map monthly contributions for every goal. Open tool. Subscription Tracker — Spot recurring costs and decide what to cancel. Open tool.</p>
-        </article>
-        <article class="card">
-          <h3>Expense Splitter</h3>
-          <p>Divide shared costs fairly with smart rounding for every group. Open tool.</p>
-        </article>
-        <article class="card">
-          <h3>Mortgage Comparator</h3>
-          <p>Compare rates, monthly payments, and terms for new or existing mortgages. Open tool.</p>
-        </article>
-        <article class="card">
-          <h3>Index Fund Cost Calculator</h3>
-          <p>Project annual fund fees and see long-term impact instantly. Open tool.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="product-journey" aria-labelledby="metrics-heading">
-      <div class="card">
-        <h2 id="metrics-heading">How it works</h2>
-        <ul class="metrics-list" aria-label="Three steps">
-          <li>
-            <strong>Step 1: Choose a tool</strong>
-            <p>Select what you want to solve right now.</p>
-          </li>
-          <li>
-            <strong>Step 2: Add your details</strong>
-            <p>Everything stays local—we never see your data.</p>
-          </li>
-          <li>
-            <strong>Step 3: Get instant insights</strong>
-            <p>Download or email a summary to yourself.</p>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="section" id="newsletter" aria-labelledby="optin-heading">
-      <form class="optin" data-optin-form novalidate>
-        <div data-optin-fields>
-          <h2 id="optin-heading">Get BudgetTools release updates</h2>
-          <p class="subtitle">Stay in the loop when we launch fresh tools or major updates no weekly digests, just product news.</p>
-          <div class="optin__fields">
-            <label for="optin-name">Name
-              <input id="optin-name" name="name" type="text" autocomplete="name" placeholder="Alex" />
-            </label>
-            <label for="optin-email">Email
-              <input id="optin-email" name="email" type="email" autocomplete="email" placeholder="alex@example.com" required />
-            </label>
-          </div>
-          <button type="submit" class="btn btn--ghost"><span>Send updates</span></button>
-          <p class="optin__footnote">Expect a note every time we release a new BudgetTools feature or tool. Unsubscribe anytime.</p>
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="site-logo">BudgetTools</a>
+            <nav class="site-nav">
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How it works</a></li>
+                    <li><a href="#">Login</a></li>
+                </ul>
+            </nav>
         </div>
-        <div data-optin-success hidden>
-          <p class="notice notice--accent" role="status">You’re on the release list! We’ll email when the next tool launches.</p>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container hero__container">
+                <div class="hero__content">
+                    <h1>Take Control of Your Money</h1>
+                    <p>Track expenses, set budgets, and visualize your finances in one simple dashboard.</p>
+                    <div class="hero__buttons">
+                        <a href="#" class="btn btn-primary">Get Started Free</a>
+                        <a href="#how-it-works" class="btn btn-secondary">How it works</a>
+                    </div>
+                </div>
+                <div class="hero__image">
+                    <img src="https://placehold.co/500x350/E9F2FF/4A90E2?text=Dashboard+Preview" alt="Dashboard preview illustration">
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <div class="features__grid">
+                    <div class="card">
+                        <div class="card__icon">
+                            <img src="https://placehold.co/48x48/4A90E2/FFFFFF?text=📊" alt="Icon for tracking expenses">
+                        </div>
+                        <h3>Track Expenses</h3>
+                        <p>Easily log and categorize your daily, weekly, and monthly spending.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card__icon">
+                            <img src="https://placehold.co/48x48/4A90E2/FFFFFF?text=🎯" alt="Icon for setting budgets">
+                        </div>
+                        <h3>Set Budgets</h3>
+                        <p>Create custom budgets for different categories to stay on track.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card__icon">
+                            <img src="https://placehold.co/48x48/4A90E2/FFFFFF?text=📈" alt="Icon for insights and charts">
+                        </div>
+                        <h3>Insights & Charts</h3>
+                        <p>Visualize your financial habits with easy-to-understand charts.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-preview">
+            <div class="container dashboard-preview__container">
+                <div class="dashboard-preview__text">
+                    <h2>A Dashboard Built for Clarity</h2>
+                    <p>See your complete financial picture at a glance. Our dashboard helps you understand where your money is going, so you can make smarter decisions.</p>
+                    <ul>
+                        <li>Monthly spending chart</li>
+                        <li>Current balance overview</li>
+                        <li>Upcoming bills reminder</li>
+                    </ul>
+                </div>
+                <div class="dashboard-preview__image">
+                    <img src="https://placehold.co/550x400/E9F2FF/4A90E2?text=Analytics+Dashboard" alt="Mockup of the analytics dashboard">
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="how-it-works">
+            <div class="container">
+                <h2>How It Works</h2>
+                <div class="how-it-works__steps">
+                    <div class="step">
+                        <div class="step__number">1</div>
+                        <div class="step__content">
+                            <h3>Add income & expenses</h3>
+                            <p>Connect your accounts or add transactions manually in seconds.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step__number">2</div>
+                        <div class="step__content">
+                            <h3>Set budget limits</h3>
+                            <p>Define how much you want to spend in key categories.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step__number">3</div>
+                        <div class="step__content">
+                            <h3>Track progress visually</h3>
+                            <p>Watch your progress and get alerts when you’re near your limits.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="social-proof">
+            <div class="container">
+                <h2>Trusted by thousands of users</h2>
+                <div class="testimonials">
+                    <div class="testimonial-card">
+                        <div class="testimonial-card__rating">★★★★★</div>
+                        <p>"BudgetTools finally made budgeting simple. I feel more in control of my finances than ever before."</p>
+                        <div class="testimonial-card__author">- Alex R.</div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-card__rating">★★★★★</div>
+                        <p>"The visual dashboard is a game-changer. I can see exactly where my money is going."</p>
+                        <div class="testimonial-card__author">- Sarah L.</div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-card__rating">★★★★★</div>
+                        <p>"I love that it's private and doesn't require linking my bank accounts if I don't want to."</p>
+                        <div class="testimonial-card__author">- Michael B.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer-bottom">
+        <div class="container">
+            <p>&copy; 2025 BudgetTools. All rights reserved.</p>
+            <nav class="footer-nav">
+                <a href="#">About</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="terms.html">Terms</a>
+                <a href="contact.html">Contact</a>
+            </nav>
         </div>
-      </form>
-    </section>
+    </footer>
 
-<!-- Voeg dit toe in je <head> -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<section class="section" id="testimonials" aria-labelledby="affiliate-heading">
-  <h2 id="affiliate-heading">What people say</h2>
-  <div class="affiliate-grid">
-
-    <article class="affiliate-card">
-      <h3>Noah, small business owner</h3>
-      <div class="affiliate-card__stars" aria-label="Rating: 4 out of 5">
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-regular fa-star"></i>
-      </div>
-      <p>“Helps me stay on top of expenses and track growth—super useful!”</p>
-    </article>
-
-    <article class="affiliate-card">
-      <h3>Tom &amp; Jamie</h3>
-      <div class="affiliate-card__stars" aria-label="Rating: 5 out of 5">
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-      </div>
-      <p>“The splitter saves arguments—game changer.”</p>
-    </article>
-
-    <article class="affiliate-card">
-      <h3>Sanne, founder</h3>
-      <div class="affiliate-card__stars" aria-label="Rating: 4 out of 5">
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-regular fa-star"></i>
-      </div>
-      <p>“Minutes to insights and a clean summary in my inbox.”</p>
-    </article>
-
-  </div>
-</section>
-
-
-
-
-    <section class="section" aria-labelledby="crosslinks-heading">
-      <h2 id="crosslinks-heading">Why BudgetTools</h2>
-      <div class="crosslink-grid">
-        <article class="crosslink-card">
-          <h3 class="crosslink-card__title"><a href="/privacy.html">Fully private</a></h3>
-          <p class="crosslink-card__meta">Every calculation runs in your browser. No storage, no tracking.</p>
-          <a class="btn btn--inline" href="/privacy.html">Learn more</a>
-        </article>
-
-        <article class="crosslink-card">
-          <h3 class="crosslink-card__title"><a href="/contact.html">Fast &amp; simple</a></h3>
-          <p class="crosslink-card__meta">From question to answer in minutes. Built on best practices and open source whenever possible.</p>
-          <a class="btn btn--inline" href="/contact.html">Schedule a chat</a>
-        </article>
-      </div>
-    </section>
-
-    <aside class="section section--tight" aria-label="Partner banner">
-      <div id="ad-slot-1" class="card" role="complementary">
-        <p class="small-print">BudgetTools is a static site. Everything runs locally in your browser. We collect no personal data. <a href="/privacy.html">Learn more about privacy</a>.</p>
-      </div>
-    </aside>
-  </main>
-  <footer role="contentinfo">
-    <div class="footer-inner">
-      <p>© <span data-year></span> BudgetTools. Built for transparent finances.</p>
-      <nav aria-label="Footer">
-        <a href="/privacy.html">Privacy</a>
-        <a href="/terms.html">Terms</a>
-      </nav>
-    </div>
-  </footer>
-
-  <script defer src="/assets/js/main.js"></script>
-  <!-- Privacy-friendly analytics placeholder -->
-  <!-- <script defer data-domain="budgettools.netlify.app" src="https://plausible.io/js/script.js"></script> -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        "@id": "https://budgettools.netlify.app/#website",
-        "url": "https://budgettools.netlify.app/",
-        "name": "BudgetTools",
-        "description": "BudgetTools delivers smart, privacy-first tools to manage your finances locally.",
-        "inLanguage": "en",
-        "publisher": {
-          "@type": "Organization",
-          "name": "BudgetTools"
-        },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://budgettools.netlify.app/?s={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
-      },
-      {
-        "@type": "WebPage",
-        "@id": "https://budgettools.netlify.app/#webpage",
-        "url": "https://budgettools.netlify.app/",
-          "name": "BudgetTools — Smart, privacy-first financial tools",
-          "inLanguage": "en",
-        "isPartOf": { "@id": "https://budgettools.netlify.app/#website" },
-          "description": "Start free with BudgetTools, compare scenarios, and stay in full control of your data.",
-        "about": {
-          "@type": "Thing",
-          "name": "Budget planning software"
-        }
-      },
-      {
-        "@type": "SoftwareApplication",
-        "name": "BudgetTools Budget Planner",
-        "operatingSystem": "Web",
-        "applicationCategory": "FinanceApplication",
-        "offers": {
-          "@type": "Offer",
-          "price": "0.00",
-          "priceCurrency": "USD"
-        },
-        "url": "https://budgettools.netlify.app/tools/budget-calculator/",
-        "softwareVersion": "1.0.0",
-          "featureList": [
-          "Live visibility into income and expenses",
-          "Monthly savings goals planning",
-          "Export to CSV or PDF"
-        ]
-      }
-    ]
-  }
-  </script>
 </body>
 </html>

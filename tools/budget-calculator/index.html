@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Monthly Budget Calculator | BudgetTools</title>
-  <meta name="description" content="Track income, expenses, and savings in real time with the BudgetTools calculator. Export CSV, print reports, and upgrade to premium templates when you're ready." />
+  <meta name="description" content="Track income, expenses, and savings in real time with the BudgetTools calculator. Export CSV and print reports." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://budgettools.netlify.app/tools/budget-calculator/" />
   <meta property="og:title" content="Monthly Budget Calculator — BudgetTools" />
-  <meta property="og:description" content="Plan your monthly budget with live charts, CSV export, and premium upgrade paths." />
+  <meta property="og:description" content="Plan your monthly budget with live charts, CSV export, and optional upgrade paths." />
   <meta property="og:url" content="https://budgettools.netlify.app/tools/budget-calculator/" />
   <meta property="og:type" content="website" />
   <meta property="twitter:card" content="summary" />
   <meta property="twitter:title" content="Monthly Budget Calculator — BudgetTools" />
-  <meta property="twitter:description" content="The zero-install monthly budget calculator with CSV export and premium templates." />
+  <meta property="twitter:description" content="The zero-install monthly budget calculator with CSV export and customizable templates." />
   <meta name="theme-color" content="#f6f8fb" />
   <script>
     document.documentElement.classList.remove('no-js');
@@ -144,20 +144,7 @@
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Tax Estimator · Coming soon</span></li>
             </ul>
           </li>
-          <li class="site-nav__item site-nav__item--has-children" data-nav-item>
-            <button class="site-nav__link" type="button" id="nav-premium" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-premium-menu">
-              <span>Premium</span>
-              <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
-                <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
-              </svg>
-            </button>
-            <ul class="site-nav__sub-list" id="nav-premium-menu" aria-labelledby="nav-premium" data-nav-submenu>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/premium.html">Premium overview</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/premium.html#pricing">Pricing plans</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/premium.html#compare">Compare free vs premium</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/premium.html#faq">Premium FAQ</a></li>
-            </ul>
-          </li>
+
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
             <button class="site-nav__link" type="button" id="nav-resources" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-resources-menu">
               <span>Resources</span>
@@ -196,7 +183,7 @@
               <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/contact.html">Contact form</a></li>
             </ul>
           </li>
-          <li class="site-nav__item site-nav__item--cta"><a class="site-nav__cta" href="/premium.html">Get Premium</a></li>
+
         </ul>
       </nav>
     </div>
@@ -297,14 +284,7 @@
           <div id="legend" class="legend" role="list" aria-live="polite"></div>
         </article>
 
-        <section class="card site-aside" aria-labelledby="premium-upsell">
-          <h2 id="premium-upsell">Want BudgetTools Premium?</h2>
-          <p>Upgrade to save multiple scenarios, download offline spreadsheets, and access early features.</p>
-          <div class="button-row" style="margin-top: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
-            <button type="button" class="btn" data-checkout-button data-url="https://checkout-placeholder.example"><span>Start premium trial</span></button>
-            <a class="btn btn--ghost" href="/premium.html"><span>See plan details</span></a>
-          </div>
-        </section>
+
       </section>
 
     </article>
@@ -314,7 +294,7 @@
       <p>© <span data-year></span> BudgetTools. Built for transparent personal finance.</p>
       <nav aria-label="Footer">
         <a href="/">Home</a>
-        <a href="/premium.html">Premium</a>
+
         <a href="/privacy.html">Privacy</a>
       </nav>
     </div>

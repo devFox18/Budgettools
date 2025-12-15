@@ -336,7 +336,7 @@
     fillCurrentYear();
     enhanceOptInForm();
     enhanceAffiliateButtons();
-    initCheckoutButtons();
+
     initSiteNavigation();
     hydratePreloadedStyles();
     root.classList.remove('no-js');

@@ -1371,3 +1371,36 @@ hr {
   color: var(--color-text);
   outline: none;
 }
+
+.t-body .row {
+    background: transparent;
+    border: 0;
+    padding: 0.6rem 0;
+    border-radius: var(--radius-md);
+    animation: fade-in 0.25s ease;
+}
+
+.legend .item .legend__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-weight: 600;
+}
+
+.legend .item .legend__note {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    margin-left: 1.3rem;
+    max-width: 32ch;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

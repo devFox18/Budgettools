@@ -32,23 +32,14 @@
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header" role="banner">
-    <div class="container site-header__inner">
+    <div class="site-header__inner">
       <a class="site-logo" href="/">
-        <span class="site-logo__mark" aria-hidden="true">BT</span>
+        <span aria-hidden="true">💸</span>
         <span>BudgetTools</span>
       </a>
-      <button class="site-nav__toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-menu">
-        <span class="site-nav__toggle-box" aria-hidden="true">
-          <span class="site-nav__toggle-line"></span>
-          <span class="site-nav__toggle-line"></span>
-          <span class="site-nav__toggle-line"></span>
-        </span>
-        <span class="site-nav__toggle-label">Menu</span>
-      </button>
       <nav class="site-nav" aria-label="Main navigation" data-site-nav>
         <ul class="site-nav__list" id="site-menu">
-          <li class="site-nav__item"><a class="site-nav__link" href="#features">Features</a></li>
-          <li class="site-nav__item"><a class="site-nav__link" href="#how-it-works">How it works</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="/">Home</a></li>
           <li class="site-nav__item has-dropdown">
             <a class="site-nav__link" href="#">Tools <span class="site-nav__caret"></span></a>
             <ul class="site-nav__dropdown">
@@ -58,16 +49,15 @@
             </ul>
           </li>
           <li class="site-nav__item"><a class="site-nav__link" href="/contact.html">Login</a></li>
-          <li class="site-nav__item site-nav__item--cta"><a class="site-nav__cta" href="/tools/budget-calculator/">Get started</a></li>
         </ul>
       </nav>
     </div>
   </header>
   <main id="main-content">
-    <div class="container section">
-      <header>
-        <h1 class="section__title">Budget Calculator</h1>
-        <p class="section__lede">Enter your monthly income, add expense categories, and watch the balance update instantly - export or print whenever you’re done.</p>
+    <div class="wrap section">
+      <header class="hero">
+        <h1 class="hero__title">Budget Calculator</h1>
+        <p class="hero__lede">Enter your monthly income, add expense categories, and watch the balance update instantly - export or print whenever you’re done.</p>
       </header>
 
       <section class="grid-two">
@@ -152,17 +142,16 @@
     </div>
   </main>
   <footer role="contentinfo">
-    <div class="container footer-inner">
-      <p>© <span data-year></span> BudgetTools. Transparent, private budgeting.</p>
-      <nav aria-label="Footer" class="footer-nav">
+    <div class="footer-inner">
+      <p>© <span data-year></span> BudgetTools. Built for transparent personal finance.</p>
+      <nav aria-label="Footer">
+        <a href="/">Home</a>
         <a href="/privacy.html">Privacy</a>
-        <a href="/terms.html">Terms</a>
-        <a href="/contact.html">Contact</a>
       </nav>
     </div>
   </footer>
 
   <script defer src="/assets/js/main.js"></script>
-  <script defer src="/assets/js/budget-calculator.js"></script>
+  <script defer src="/tools/budget-calculator/script.js"></script>
 </body>
 </html>

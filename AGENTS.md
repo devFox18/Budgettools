@@ -75,15 +75,3 @@ Automated agents help keep the BudgetTools experience polished while letting con
    - Document the agent here so contributors know what to expect.
 
 Keep agent output actionable: link to files, include quick-fix suggestions, and avoid blocking unless the issue affects end users.
-
-## Refactoring
-- **Global Styling:** All tools now use the main `assets/css/style.css` stylesheet. The individual stylesheets for each tool have been merged and removed.
-- **JavaScript Consolidation:** All tool-specific JavaScript files have been moved to the `assets/js` directory and renamed for clarity.
-- **HTML Structure:** The HTML structure of all tools has been refactored to be consistent with the main `index.html` page, including headers, footers, and hero sections.
-- **Code Cleanup:** Removed all `console.log` statements from the JavaScript files and inline styles from the HTML files.
-
-## Next Steps
-- **Component-Based Architecture:** The current structure has a lot of repeated HTML for the header and footer. A next step could be to move to a component-based architecture (e.g., using a static site generator like Eleventy or a JavaScript framework like React or Vue) to reuse these components.
-- **Agent Enhancement:** The UI Consistency Agent could be enhanced to check for the new `bt-` prefixed classes and other inconsistencies that were manually fixed in this refactoring.
-- **Dark Mode:** Implement a dark mode for the entire site, which can be toggled by the user.
-- **New Tools:** Add more financial tools to the suite, such as a loan calculator or an investment projection tool.

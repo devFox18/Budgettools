@@ -15,6 +15,7 @@
   <meta property="twitter:title" content="Monthly Budget Calculator — BudgetTools" />
   <meta property="twitter:description" content="The zero-install monthly budget calculator with CSV export and customizable templates." />
   <meta name="theme-color" content="#f6f8fb" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     document.documentElement.classList.remove('no-js');
     document.documentElement.classList.add('js');
@@ -23,13 +24,8 @@
   <noscript>
     <link rel="stylesheet" href="/assets/css/style.css" />
   </noscript>
-  <style>
-    body {
-      background: var(--color-bg, #f6f8fb);
-    }
-  </style>
 </head>
-<body>
+<body class="bg-soft text-text">
   <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="site-header" role="banner">
     <div class="container site-header__inner">
@@ -63,27 +59,27 @@
       </nav>
     </div>
   </header>
-  <main id="main-content">
-    <div class="container section">
-      <header>
+  <main id="main-content" class="section">
+    <div class="container">
+      <header class="text-center mb-12">
         <h1 class="section__title">Budget Calculator</h1>
         <p class="section__lede">Enter your monthly income, add expense categories, and watch the balance update instantly - export or print whenever you’re done.</p>
       </header>
 
-      <section class="grid-two">
+      <section class="grid md:grid-cols-2 gap-8 mb-8">
         <div class="card">
-          <h2 class="section__title">Income &amp; Currency</h2>
-          <div class="grid-two">
+          <h2 class="text-xl font-bold mb-4">Income &amp; Currency</h2>
+          <div class="grid grid-cols-2 gap-6">
             <div>
-              <label for="income">Total monthly income</label>
-              <div class="input-group">
-                <span class="prefix" aria-hidden="true">€</span>
-                <input type="number" id="income" placeholder="Enter your monthly total" min="0" step="0.01" inputmode="decimal" />
+              <label for="income" class="block text-sm font-medium text-muted mb-1">Total monthly income</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-muted">€</span>
+                <input type="number" id="income" class="w-full pl-8 pr-4 py-2 border border-border rounded-md shadow-sm focus:ring-blue focus:border-blue" placeholder="Enter your monthly total" min="0" step="0.01" inputmode="decimal" />
               </div>
             </div>
             <div>
-              <label for="currency">Currency</label>
-              <select id="currency">
+              <label for="currency" class="block text-sm font-medium text-muted mb-1">Currency</label>
+              <select id="currency" class="w-full px-3 py-2 border border-border rounded-md shadow-sm focus:ring-blue focus:border-blue">
                 <option value="€" selected>Euro (€)</option>
                 <option value="$">US Dollar ($)</option>
                 <option value="£">Pound (£)</option>
@@ -93,71 +89,78 @@
         </div>
 
         <div class="card">
-          <h2 class="section__title">Overview</h2>
-          <div class="summary-grid">
-            <div>
-              <span class="label">Income</span>
-              <span id="sumIncome" class="value">€0.00</span>
+          <h2 class="text-xl font-bold mb-4">Overview</h2>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="stat">
+              <span class="stat__label">Income</span>
+              <span id="sumIncome" class="stat__value">€0.00</span>
             </div>
-            <div>
-              <span class="label">Expenses</span>
-              <span id="sumExpenses" class="value">€0.00</span>
+            <div class="stat">
+              <span class="stat__label">Expenses</span>
+              <span id="sumExpenses" class="stat__value">€0.00</span>
             </div>
-            <div>
-              <span class="label">Savings</span>
-              <span id="sumSavings" class="value positive">€0.00</span>
+            <div class="stat">
+              <span class="stat__label">Savings</span>
+              <span id="sumSavings" class="stat__value text-green">€0.00</span>
             </div>
-            <div>
-              <span class="label">Savings rate</span>
-              <span id="savingsRate" class="value">0%</span>
+            <div class="stat">
+              <span class="stat__label">Savings rate</span>
+              <span id="savingsRate" class="stat__value">0%</span>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="card">
-        <div class="section-header">
-          <h2 class="section__title">Expenses</h2>
-          <div class="button-row">
+      <section class="card mb-8">
+        <div class="flex flex-wrap items-center justify-between mb-4">
+          <h2 class="text-xl font-bold">Expenses</h2>
+          <div class="flex items-center space-x-2">
             <button class="btn btn--primary" id="addRow" type="button">Add item</button>
-            <button class="btn btn--ghost" id="reset" type="button">Reset</button>
-            <button class="btn btn--ghost" id="loadSample" type="button">Load sample data</button>
-            <button class="btn btn--ghost" id="export" type="button">Export CSV</button>
-            <button class="btn btn--ghost" id="print" type="button">Print</button>
+            <button class="btn btn--secondary" id="reset" type="button">Reset</button>
+            <button class="btn btn--secondary" id="loadSample" type="button">Load sample data</button>
+            <button class="btn btn--secondary" id="export" type="button">Export CSV</button>
+            <button class="btn btn--secondary" id="print" type="button">Print</button>
           </div>
         </div>
-        <div class="table-lite">
-          <div class="t-head">
-            <div role="columnheader">Category</div>
-            <div role="columnheader">Amount</div>
-            <div role="columnheader">Notes</div>
-            <div role="columnheader" aria-hidden="true"></div>
-          </div>
-          <div id="rows" class="t-body" role="rowgroup" aria-live="polite"></div>
-          <div class="t-foot">
-            <div class="muted" role="cell">Totals</div>
-            <div id="totalExpenses" class="strong" role="cell">€0.00</div>
-            <div role="cell"></div>
-            <div role="cell"></div>
-          </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-border">
+                <th class="text-left py-2 px-3 text-sm font-medium text-muted uppercase">Category</th>
+                <th class="text-left py-2 px-3 text-sm font-medium text-muted uppercase">Amount</th>
+                <th class="text-left py-2 px-3 text-sm font-medium text-muted uppercase">Notes</th>
+                <th class="w-12"></th>
+              </tr>
+            </thead>
+            <tbody id="rows" class="divide-y divide-border"></tbody>
+            <tfoot>
+              <tr class="border-t border-border">
+                <td class="py-2 px-3 font-bold">Totals</td>
+                <td id="totalExpenses" class="py-2 px-3 font-bold">€0.00</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
         </div>
       </section>
 
       <section class="card">
-        <h2 class="section__title">Expense breakdown</h2>
-        <canvas id="chart" width="400" height="300" role="img" aria-label="Pie chart of expense categories"></canvas>
-        <div id="legend" class="legend"></div>
+        <h2 class="text-xl font-bold mb-4">Expense breakdown</h2>
+        <div class="flex justify-center">
+          <canvas id="chart" width="300" height="300" role="img" aria-label="Pie chart of expense categories"></canvas>
+        </div>
+        <div id="legend" class="mt-4 flex justify-center flex-wrap gap-4"></div>
       </section>
-
     </div>
   </main>
-  <footer role="contentinfo">
-    <div class="container footer-inner">
+  <footer role="contentinfo" class="bg-text text-soft py-8">
+    <div class="container flex justify-between items-center">
       <p>© <span data-year></span> BudgetTools. Transparent, private budgeting.</p>
       <nav aria-label="Footer" class="footer-nav">
-        <a href="/privacy.html">Privacy</a>
-        <a href="/terms.html">Terms</a>
-        <a href="/contact.html">Contact</a>
+        <a href="/privacy.html" class="hover:text-white">Privacy</a>
+        <a href="/terms.html" class="hover:text-white">Terms</a>
+        <a href="/contact.html" class="hover:text-white">Contact</a>
       </nav>
     </div>
   </footer>

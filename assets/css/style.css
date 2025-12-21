@@ -306,6 +306,9 @@ a:focus-visible {
   align-items: center;
   gap: 0.4rem;
   padding: 0.4rem 0;
+  background: none;
+  border: 0;
+  appearance: none;
   font-weight: 600;
   font-size: 0.98rem;
   letter-spacing: 0.01em;
@@ -344,6 +347,9 @@ a:focus-visible {
 
 .site-nav__link:focus-visible {
   outline: none;
+  text-decoration: underline;
+  text-decoration-thickness: 0.14em;
+  text-underline-offset: 0.35em;
 }
 
 .site-nav__link[data-active="true"],

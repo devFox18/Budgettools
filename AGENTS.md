@@ -13,9 +13,7 @@ Automated agents help keep the BudgetTools experience polished while letting con
 - **Checklist before merging:**
   - No `dark:` or `.theme-toggle` classes.
   - Section padding aligns with the 4/8/12/16/24/32 spacing scale.
-  - Buttons and cards use the shared variables defined in `assets/css/style.css`.
-
-### Accessibility Agent
+  - Buttons and cards use the shared variables defined in `assets/css/style.css`.### Accessibility Agent
 - **Runs:** GitHub Actions on every PR and nightly schedule.
 - **What it checks:** Lighthouse + AXE scans for color contrast, missing labels, focus traps, and ARIA misuse. Reports include file/line references.
 - **Config:** `.github/workflows/accessibility.yml`, thresholds in `.agent-rules/a11y.json`.

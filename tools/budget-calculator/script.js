@@ -35,7 +35,6 @@ const sumExpensesEl = document.getElementById("sumExpenses");
 const sumSavingsEl = document.getElementById("sumSavings");
 const savingsRateEl = document.getElementById("savingsRate");
 const addRowBtn = document.getElementById("addRow");
-const overviewCard = document.querySelector('.summary-grid').closest('.card'); // Selects the card containing the summary-grid
 const resetBtn = document.getElementById("reset");
 const loadSampleBtn = document.getElementById("loadSample");
 const exportBtn = document.getElementById("export");
@@ -183,16 +182,6 @@ function drawSummary(){
   }, 1000);
 
   sumSavingsEl.classList.toggle("positive", savings >= 0);
-
-  // Update card status
-  if (overviewCard) {
-      overviewCard.classList.remove('positive-status', 'negative-status');
-      if (savings >= 0) {
-          overviewCard.classList.add('positive-status');
-      } else {
-          overviewCard.classList.add('negative-status');
-      }
-  }
 }
 
 function randomColor(i){

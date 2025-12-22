@@ -44,7 +44,18 @@ const chartCanvas = document.getElementById("chart");
 const ctx = chartCanvas.getContext("2d");
 const legend = document.getElementById("legend");
 
+const STORAGE_KEY = 'budget-calculator-data';
 let rows = [];
+
+function saveState() {
+  const state = {
+    income: incomeInput.value,
+    currency: currencySelect.value,
+    rows: rows
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
 
 // Make the income field step per €1 via spinner
 if (incomeInput) {
@@ -250,6 +261,7 @@ function drawChart(){
 function draw(){
   drawSummary();
   drawChart();
+  saveState();
 }
 
 function addRow(category="", amount="", notes=""){
@@ -327,7 +339,27 @@ incomeInput.addEventListener("input", draw);
 currencySelect.addEventListener("change", ()=>{ renderRows(); draw(); });
 
 // Init
-rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
-incomeInput.value = "";
-renderRows();
-draw();
+function loadState() {
+  const savedState = localStorage.getItem(STORAGE_KEY);
+  if (savedState) {
+    try {
+      const state = JSON.parse(savedState);
+      rows = state.rows || JSON.parse(JSON.stringify(DEFAULT_ROWS));
+      incomeInput.value = state.income || "";
+      currencySelect.value = state.currency || "€";
+    } catch (e) {
+      console.error("Failed to parse saved state:", e);
+      // If parsing fails, fall back to default state
+      rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
+      incomeInput.value = "";
+    }
+  } else {
+    // No saved state, use defaults
+    rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
+    incomeInput.value = "";
+  }
+  renderRows();
+  draw();
+}
+
+loadState();

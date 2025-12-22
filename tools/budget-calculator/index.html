@@ -59,6 +59,32 @@
         background-color: var(--surface);
         border-color: var(--border);
     }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes highlight {
+      from { background-color: var(--green); }
+      to { background-color: transparent; }
+    }
+
+    @keyframes highlight-red {
+      from { background-color: #ffcccb; }
+      to { background-color: transparent; }
+    }
+
+    .row-enter {
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    .highlight-value {
+        animation: highlight 1s ease-out;
+    }
+
+    .highlight-value-red {
+        animation: highlight-red 1s ease-out;
+    }
   </style>
 </head>
 <body>

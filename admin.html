@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Website Stats</title>
+  <style>
+    body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f5f7fb; }
+    .stat-card { background-color: #ffffff; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(15,23,42,0.08); text-align: center; }
+    .stat-title { font-size: 1.5rem; color: #4b5563; }
+    .stat-value { font-size: 3rem; font-weight: bold; color: #0f172a; }
+  </style>
+</head>
+<body>
+  <div class="stat-card">
+    <h1 class="stat-title">Total Website Visits</h1>
+    <p class="stat-value" id="user-count">Loading...</p>
+  </div>
+
+  <script>
+    fetch('/api/stats')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('user-count').textContent = data.userCount;
+      })
+      .catch(error => {
+        console.error('Error fetching stats:', error);
+        document.getElementById('user-count').textContent = 'Error';
+      });
+  </script>
+</body>
+</html>

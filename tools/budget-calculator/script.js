@@ -65,9 +65,7 @@ function sanitizeCsvField(value){
   return `"${safe}"`;
 }
 
-function renderRows(){
-  rowsContainer.innerHTML = "";
-  rows.forEach((r,i)=>{
+function createRowElement(r, i) {
     const row = document.createElement("div");
     row.className = "row";
 
@@ -127,7 +125,14 @@ function renderRows(){
       draw();
     });
 
-    rowsContainer.appendChild(row);
+    return row;
+}
+
+function renderRows(){
+  rowsContainer.innerHTML = "";
+  rows.forEach((r,i)=>{
+    const rowEl = createRowElement(r, i);
+    rowsContainer.appendChild(rowEl);
   });
 }
 
@@ -146,6 +151,25 @@ function drawSummary(){
   sumExpensesEl.textContent = fmt(expenses);
   sumSavingsEl.textContent = fmt(savings);
   savingsRateEl.textContent = rate.toFixed(0) + "%";
+
+  sumSavingsEl.classList.remove('highlight-value', 'highlight-value-red');
+  sumExpensesEl.classList.remove('highlight-value');
+  totalExpensesEl.classList.remove('highlight-value');
+
+  if (savings >= 0) {
+    sumSavingsEl.classList.add('highlight-value');
+  } else {
+    sumSavingsEl.classList.add('highlight-value-red');
+  }
+  sumExpensesEl.classList.add('highlight-value');
+  totalExpensesEl.classList.add('highlight-value');
+
+  setTimeout(() => {
+    sumSavingsEl.classList.remove('highlight-value', 'highlight-value-red');
+    sumExpensesEl.classList.remove('highlight-value');
+    totalExpensesEl.classList.remove('highlight-value');
+  }, 1000);
+
   sumSavingsEl.classList.toggle("positive", savings >= 0);
 }
 
@@ -229,8 +253,11 @@ function draw(){
 }
 
 function addRow(category="", amount="", notes=""){
-  rows.push({category, amount, notes, noteHint: ""});
-  renderRows();
+  const newRow = {category, amount, notes, noteHint: ""};
+  rows.push(newRow);
+  const newRowEl = createRowElement(newRow, rows.length - 1);
+  newRowEl.classList.add("row-enter");
+  rowsContainer.appendChild(newRowEl);
   draw();
 }
 

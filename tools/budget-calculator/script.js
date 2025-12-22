@@ -78,13 +78,13 @@ function sanitizeCsvField(value){
 
 function createRowElement(r, i) {
     const row = document.createElement("div");
-    row.className = "row";
+    row.className = "row mb-4";
 
     const catEl = document.createElement("input");
     catEl.type = "text";
     catEl.value = r.category;
     catEl.placeholder = "e.g., Rent, Groceries";
-    catEl.setAttribute("aria-label", "Expense category");
+    catEl.setAttribute("aria-label", "Expense category"); catEl.classList.add("p-3");
 
     const group = document.createElement("div");
     group.className = "input-group";
@@ -98,7 +98,7 @@ function createRowElement(r, i) {
     amountEl.value = r.amount === "" ? "" : r.amount;
     amountEl.min = "0";
     amountEl.step = "1"; // step per €1 with the arrow keys/spinner
-    amountEl.setAttribute("aria-label", "Amount");
+    amountEl.setAttribute("aria-label", "Amount"); amountEl.classList.add("p-3");
     amountEl.placeholder = "0.00";
 
     group.appendChild(prefix);
@@ -108,7 +108,7 @@ function createRowElement(r, i) {
     notesEl.type = "text";
     notesEl.value = r.notes;
     notesEl.placeholder = r.noteHint || "Notes (optional)";
-    notesEl.setAttribute("aria-label", "Notes");
+    notesEl.setAttribute("aria-label", "Notes"); notesEl.classList.add("p-3");
 
     const removeBtn = document.createElement("button");
     removeBtn.className = "remove";

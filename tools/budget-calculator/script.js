@@ -83,7 +83,7 @@ function createRowElement(r, i) {
     const catEl = document.createElement("input");
     catEl.type = "text";
     catEl.value = r.category;
-    catEl.placeholder = "Category";
+    catEl.placeholder = "e.g., Rent, Groceries";
     catEl.setAttribute("aria-label", "Expense category");
 
     const group = document.createElement("div");
@@ -99,7 +99,7 @@ function createRowElement(r, i) {
     amountEl.min = "0";
     amountEl.step = "1"; // step per €1 with the arrow keys/spinner
     amountEl.setAttribute("aria-label", "Amount");
-    amountEl.placeholder = "0";
+    amountEl.placeholder = "0.00";
 
     group.appendChild(prefix);
     group.appendChild(amountEl);

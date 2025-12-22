@@ -45,8 +45,6 @@ const ctx = chartCanvas.getContext("2d");
 const legend = document.getElementById("legend");
 
 let rows = [];
-let chartSegments = [];
-let hoveredSegmentIndex = -1;
 
 // Make the income field step per €1 via spinner
 if (incomeInput) {
@@ -67,28 +65,9 @@ function sanitizeCsvField(value){
   return `"${safe}"`;
 }
 
-function getIconForCategory(category) {
-  const cat = category.toLowerCase();
-  if (cat.includes('housing') || cat.includes('rent')) return '🏠';
-  if (cat.includes('utilities') || cat.includes('internet') || cat.includes('energy')) return '💡';
-  if (cat.includes('groceries') || cat.includes('food') || cat.includes('market')) return '🛒';
-  if (cat.includes('transport') || cat.includes('fuel') || cat.includes('car')) return '🚗';
-  if (cat.includes('savings') || cat.includes('invest')) return '💰';
-  if (cat.includes('insurance') || cat.includes('health')) return '🛡️';
-  if (cat.includes('childcare') || cat.includes('school')) return '🎓';
-  if (cat.includes('subscription') || cat.includes('media')) return '📰';
-  if (cat.includes('fun') || cat.includes('eating out') || cat.includes('entertainment')) return '🎉';
-  if (cat.includes('emergency')) return '🚨';
-  return '💸'; // Default icon
-}
-
 function createRowElement(r, i) {
     const row = document.createElement("div");
     row.className = "row";
-
-    const iconEl = document.createElement("span");
-    iconEl.className = "category-icon";
-    iconEl.textContent = getIconForCategory(r.category);
 
     const catEl = document.createElement("input");
     catEl.type = "text";
@@ -127,17 +106,12 @@ function createRowElement(r, i) {
     removeBtn.setAttribute("aria-label", "Remove this expense row");
     removeBtn.textContent = "×";
 
-    row.appendChild(iconEl);
     row.appendChild(catEl);
     row.appendChild(group);
     row.appendChild(notesEl);
     row.appendChild(removeBtn);
 
-    catEl.addEventListener("input", e => { 
-        rows[i].category = e.target.value; 
-        iconEl.textContent = getIconForCategory(rows[i].category);
-        draw(); 
-    });
+    catEl.addEventListener("input", e => { rows[i].category = e.target.value; draw(); });
     amountEl.addEventListener("input", e => {
       const value = e.target.value;
       rows[i].amount = value === "" ? "" : parseFloat(value);
@@ -211,28 +185,23 @@ function drawChart(){
   const total = data.reduce((s,r)=> s + Number(r.amount), 0);
   ctx.clearRect(0,0,chartCanvas.width, chartCanvas.height);
   legend.innerHTML = "";
-  chartSegments = [];
 
   if (total <= 0){ return; }
 
   let start = -Math.PI/2;
   const cx = chartCanvas.width/2, cy = chartCanvas.height/2;
-  
+  const radius = Math.min(cx, cy) - 10;
+
   data.forEach((r, i) => {
     const val = Number(r.amount);
     const angle = (val/total) * Math.PI*2;
     const end = start + angle;
-    const isHovered = i === hoveredSegmentIndex;
-    const radius = Math.min(cx, cy) - 10 + (isHovered ? 5 : 0);
-
     ctx.beginPath();
     ctx.moveTo(cx, cy);
     ctx.arc(cx, cy, radius, start, end);
     ctx.closePath();
     ctx.fillStyle = randomColor(i);
     ctx.fill();
-
-    chartSegments.push({ start, end, data: r, index: i });
 
     // label
     const mid = (start+end)/2;
@@ -243,7 +212,7 @@ function drawChart(){
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     const pct = Math.round((val/total)*100);
-    ctx.fillText(pct + "em", lx, ly);
+    ctx.fillText(pct + "%", lx, ly);
 
     // legend
     const it = document.createElement("div");
@@ -276,57 +245,7 @@ function drawChart(){
 
     start = end;
   });
-
-  if (hoveredSegmentIndex !== -1) {
-    const segment = chartSegments[hoveredSegmentIndex];
-    if (segment) {
-      const { category, amount } = segment.data;
-      const text = `${category}: ${fmt(amount)}`;
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-      ctx.fillRect(5, 5, ctx.measureText(text).width + 20, 30);
-      ctx.fillStyle = '#fff';
-      ctx.fillText(text, 15, 20);
-    }
-  }
 }
-
-function handleMouseMove(e) {
-    const rect = chartCanvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const cx = chartCanvas.width / 2;
-    const cy = chartCanvas.height / 2;
-    const radius = Math.min(cx, cy) - 10;
-
-    const dx = x - cx;
-    const dy = y - cy;
-
-    if (dx * dx + dy * dy > radius * radius) {
-        hoveredSegmentIndex = -1;
-        drawChart();
-        return;
-    }
-
-    let angle = Math.atan2(dy, dx);
-    if (angle < -Math.PI / 2) {
-        angle += 2 * Math.PI;
-    }
-
-    for (let i = 0; i < chartSegments.length; i++) {
-        const segment = chartSegments[i];
-        if (angle >= segment.start && angle <= segment.end) {
-            if (hoveredSegmentIndex !== i) {
-                hoveredSegmentIndex = i;
-                drawChart();
-            }
-            return;
-        }
-    }
-
-    hoveredSegmentIndex = -1;
-    drawChart();
-}
-
 
 function draw(){
   drawSummary();
@@ -406,7 +325,6 @@ if (printBtn) {
 
 incomeInput.addEventListener("input", draw);
 currencySelect.addEventListener("change", ()=>{ renderRows(); draw(); });
-chartCanvas.addEventListener('mousemove', handleMouseMove);
 
 // Init
 rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));

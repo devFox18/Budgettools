@@ -41,8 +41,9 @@ const exportBtn = document.getElementById("export");
 const printBtn = document.getElementById("print");
 
 const chartCanvas = document.getElementById("chart");
-const ctx = chartCanvas.getContext("2d");
 const legend = document.getElementById("legend");
+
+let chart; // To hold the Chart.js instance
 
 const STORAGE_KEY = 'budget-calculator-data';
 let rows = [];
@@ -54,6 +55,18 @@ function saveState() {
     rows: rows
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+
+  const statusIndicator = document.getElementById("status-indicator");
+  if (statusIndicator) {
+    statusIndicator.textContent = "Saving...";
+    statusIndicator.style.opacity = "1";
+    setTimeout(() => {
+      statusIndicator.textContent = "Saved.";
+      setTimeout(() => {
+        statusIndicator.style.opacity = "0";
+      }, 1000);
+    }, 500);
+  }
 }
 
 
@@ -111,11 +124,20 @@ function createRowElement(r, i) {
     notesEl.setAttribute("aria-label", "Notes"); notesEl.classList.add("p-3");
 
     const removeBtn = document.createElement("button");
-    removeBtn.className = "remove";
+    removeBtn.className = "remove btn btn--ghost";
     removeBtn.type = "button";
-    removeBtn.title = "Remove";
     removeBtn.setAttribute("aria-label", "Remove this expense row");
-    removeBtn.textContent = "×";
+
+    const removeIcon = document.createElement("span");
+    removeIcon.setAttribute("aria-hidden", "true");
+    removeIcon.textContent = "×";
+
+    const removeText = document.createElement("span");
+    removeText.className = "sr-only";
+    removeText.textContent = "Remove row";
+
+    removeBtn.appendChild(removeIcon);
+    removeBtn.appendChild(removeText);
 
     row.appendChild(catEl);
     row.appendChild(group);
@@ -124,7 +146,11 @@ function createRowElement(r, i) {
 
     catEl.addEventListener("input", e => { rows[i].category = e.target.value; draw(); });
     amountEl.addEventListener("input", e => {
-      const value = e.target.value;
+      let value = e.target.value;
+      if (parseFloat(value) < 0) {
+        value = "0";
+        e.target.value = value;
+      }
       rows[i].amount = value === "" ? "" : parseFloat(value);
       draw();
     });
@@ -157,11 +183,16 @@ function drawSummary(){
   const savings = income - expenses;
   const rate = income>0 ? Math.max(0,(savings/income)*100) : 0;
 
+  const elementsToAnimate = [totalExpensesEl, sumIncomeEl, sumExpensesEl, sumSavingsEl, savingsRateEl];
+  elementsToAnimate.forEach(el => el.classList.remove('fade-in'));
+
   totalExpensesEl.textContent = fmt(expenses);
   sumIncomeEl.textContent = fmt(income);
   sumExpensesEl.textContent = fmt(expenses);
   sumSavingsEl.textContent = fmt(savings);
   savingsRateEl.textContent = rate.toFixed(0) + "%";
+
+  elementsToAnimate.forEach(el => el.classList.add('fade-in'));
 
   sumSavingsEl.classList.remove('highlight-value', 'highlight-value-red');
   sumExpensesEl.classList.remove('highlight-value');
@@ -169,8 +200,12 @@ function drawSummary(){
 
   if (savings >= 0) {
     sumSavingsEl.classList.add('highlight-value');
+    sumSavingsEl.classList.remove('negative');
+    sumSavingsEl.classList.add('positive');
   } else {
     sumSavingsEl.classList.add('highlight-value-red');
+    sumSavingsEl.classList.remove('positive');
+    sumSavingsEl.classList.add('negative');
   }
   sumExpensesEl.classList.add('highlight-value');
   totalExpensesEl.classList.add('highlight-value');
@@ -179,9 +214,8 @@ function drawSummary(){
     sumSavingsEl.classList.remove('highlight-value', 'highlight-value-red');
     sumExpensesEl.classList.remove('highlight-value');
     totalExpensesEl.classList.remove('highlight-value');
+    elementsToAnimate.forEach(el => el.classList.remove('fade-in'));
   }, 1000);
-
-  sumSavingsEl.classList.toggle("positive", savings >= 0);
 }
 
 function randomColor(i){
@@ -191,71 +225,97 @@ function randomColor(i){
   return `hsl(${h} 70% 55%)`;
 }
 
-function drawChart(){
-  const data = rows.filter(r => Number(r.amount)>0);
-  const total = data.reduce((s,r)=> s + Number(r.amount), 0);
-  ctx.clearRect(0,0,chartCanvas.width, chartCanvas.height);
-  legend.innerHTML = "";
+function drawChart() {
+    const data = rows.filter(r => Number(r.amount) > 0);
+    const total = data.reduce((s, r) => s + Number(r.amount), 0);
+    legend.innerHTML = "";
 
-  if (total <= 0){ return; }
+    const chartContainer = document.getElementById("chart-container");
+    const chartEmptyState = document.getElementById("chart-empty-state");
 
-  let start = -Math.PI/2;
-  const cx = chartCanvas.width/2, cy = chartCanvas.height/2;
-  const radius = Math.min(cx, cy) - 10;
-
-  data.forEach((r, i) => {
-    const val = Number(r.amount);
-    const angle = (val/total) * Math.PI*2;
-    const end = start + angle;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, radius, start, end);
-    ctx.closePath();
-    ctx.fillStyle = randomColor(i);
-    ctx.fill();
-
-    // label
-    const mid = (start+end)/2;
-    const lx = cx + Math.cos(mid) * (radius*0.6);
-    const ly = cy + Math.sin(mid) * (radius*0.6);
-    ctx.fillStyle = "#fff";
-    ctx.font = "bold 12px system-ui, -apple-system, Segoe UI, Roboto, Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    const pct = Math.round((val/total)*100);
-    ctx.fillText(pct + "%", lx, ly);
-
-    // legend
-    const it = document.createElement("div");
-    it.className = "item";
-    it.setAttribute("role", "listitem");
-
-    const labelLine = document.createElement("span");
-    labelLine.className = "legend__label";
-
-    const dot = document.createElement("span");
-    dot.className = "dot";
-    dot.style.background = randomColor(i);
-    labelLine.appendChild(dot);
-
-    const labelText = document.createElement("span");
-    labelText.textContent = `${r.category} (${fmt(val)})`;
-    labelLine.appendChild(labelText);
-
-    it.appendChild(labelLine);
-
-    const detailText = (r.notes && r.notes.trim()) || r.noteHint || "";
-    if (detailText) {
-      const detail = document.createElement("span");
-      detail.className = "legend__note";
-      detail.textContent = `Note: ${detailText}`;
-      it.appendChild(detail);
+    if (total <= 0) {
+        chartContainer.style.display = "none";
+        chartEmptyState.style.display = "block";
+        if(chart) {
+            chart.destroy();
+            chart = null;
+        }
+        return;
     }
 
-    legend.appendChild(it);
+    chartContainer.style.display = "block";
+    chartEmptyState.style.display = "none";
 
-    start = end;
-  });
+    if (!chart) {
+        const ctx = chartCanvas.getContext("2d");
+        chart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [],
+                datasets: [{
+                    data: [],
+                    backgroundColor: [],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += fmt(context.parsed);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    chart.data.labels = data.map(r => r.category);
+    chart.data.datasets[0].data = data.map(r => r.amount);
+    chart.data.datasets[0].backgroundColor = data.map((_, i) => randomColor(i));
+    chart.update();
+
+    data.forEach((r, i) => {
+        const it = document.createElement("div");
+        it.className = "item";
+        it.setAttribute("role", "listitem");
+
+        const labelLine = document.createElement("span");
+        labelLine.className = "legend__label";
+
+        const dot = document.createElement("span");
+        dot.className = "dot";
+        dot.style.background = randomColor(i);
+        labelLine.appendChild(dot);
+
+        const labelText = document.createElement("span");
+        labelText.textContent = `${r.category} (${fmt(r.amount)})`;
+        labelLine.appendChild(labelText);
+
+        it.appendChild(labelLine);
+
+        const detailText = (r.notes && r.notes.trim()) || r.noteHint || "";
+        if (detailText) {
+            const detail = document.createElement("span");
+            detail.className = "legend__note";
+            detail.textContent = `Note: ${detailText}`;
+            it.appendChild(detail);
+        }
+        legend.appendChild(it);
+    });
 }
 
 function draw(){
@@ -335,7 +395,12 @@ if (printBtn) {
   printBtn.addEventListener("click", () => window.print());
 }
 
-incomeInput.addEventListener("input", draw);
+incomeInput.addEventListener("input", (e) => {
+    if (e.target.value < 0) {
+        e.target.value = 0;
+    }
+    draw();
+});
 currencySelect.addEventListener("change", ()=>{ renderRows(); draw(); });
 
 // Init

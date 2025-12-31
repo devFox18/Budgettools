@@ -236,51 +236,9 @@ function drawChart() {
     if (total <= 0) {
         chartContainer.style.display = "none";
         chartEmptyState.style.display = "block";
-        if(chart) {
-            chart.destroy();
-            chart = null;
-        }
-        return;
-    }
-
-    chartContainer.style.display = "block";
-    chartEmptyState.style.display = "none";
-
-    if (!chart) {
-        const ctx = chartCanvas.getContext("2d");
-        chart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: [],
-                datasets: [{
-                    data: [],
-                    backgroundColor: [],
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed !== null) {
-                                    label += fmt(context.parsed);
-                                }
-                                return label;
-                            }
-                        }
-                    }
-                }
-            }
-        });
+    } else {
+        chartContainer.style.display = "block";
+        chartEmptyState.style.display = "none";
     }
 
     chart.data.labels = data.map(r => r.category);
@@ -345,6 +303,7 @@ if (resetBtn) {
     incomeInput.step = "1"; // keep reset consistent
     currencySelect.value = "€";
     renderRows();
+    initChart();
     draw();
   });
 }
@@ -404,6 +363,46 @@ incomeInput.addEventListener("input", (e) => {
 currencySelect.addEventListener("change", ()=>{ renderRows(); draw(); });
 
 // Init
+function initChart() {
+    if (chart) {
+        chart.destroy();
+    }
+    const ctx = chartCanvas.getContext("2d");
+    chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [],
+            datasets: [{
+                data: [],
+                backgroundColor: [],
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += fmt(context.parsed);
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
 function loadState() {
   const savedState = localStorage.getItem(STORAGE_KEY);
   if (savedState) {
@@ -424,6 +423,7 @@ function loadState() {
     incomeInput.value = "";
   }
   renderRows();
+  initChart();
   draw();
 }
 

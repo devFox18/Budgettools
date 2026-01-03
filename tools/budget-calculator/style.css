@@ -321,33 +321,37 @@ h4 {
     color: var(--color-text);
 }
 
-/* NEW: Card-Based Expense List Item */
-.expense-item {
-    background: var(--bt-surface);
+/* Expenses Table Restoration */
+.bt-table-wrapper {
+    overflow-x: auto;
     border: 1px solid var(--bt-border);
     border-radius: var(--bt-radius-md);
+    margin-top: 1rem;
+}
+
+.expense-table {
+    min-width: 600px;
+    /* Ensure table doesn't squash on mobile */
+    margin-bottom: 0;
+}
+
+.expense-table thead th {
+    background-color: var(--bt-surface-soft);
+    color: var(--bt-muted);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
     padding: 1rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    border-bottom: 1px solid var(--bt-border);
 }
 
-.expense-item:focus-within {
-    border-color: var(--bt-primary);
-    box-shadow: var(--shadow-md);
+.expense-table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--bt-border);
 }
 
-/* Inputs inside expense item should be subtle */
-.expense-item .form-control {
-    background: transparent;
-    border: none;
-    padding: 0.25rem 0.5rem;
-    border-radius: 6px;
-    transition: background 0.2s;
-}
-
-.expense-item .form-control:focus {
-    background: var(--bt-surface-soft);
-    box-shadow: none;
-    /* We use the container focus ring or nothing */
+.expense-table tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .btn-remove {

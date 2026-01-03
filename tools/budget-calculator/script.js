@@ -116,45 +116,38 @@ function updateCurrencySymbols() {
 // --- UI Rendering ---
 
 function createRowElement(r, i) {
-  const item = document.createElement("div");
-  item.className = "expense-item";
+  const tr = document.createElement("tr");
+  tr.className = "expense-row";
 
-  // Top Row: Category (Big) + Amount (Big)
-  const topRow = document.createElement("div");
-  topRow.className = "d-flex justify-content-between align-items-center mb-2 gap-3";
-
-  // Category
+  // Category Column
+  const tdCat = document.createElement("td");
   const catInput = document.createElement("input");
   catInput.type = "text";
-  catInput.className = "form-control fw-bold border-0 p-0 shadow-none bg-transparent";
+  catInput.className = "form-control";
   catInput.value = r.category;
   catInput.placeholder = "Category Name";
-  catInput.style.fontSize = "1.05rem";
-  catInput.ariaLabel = "Category Name";
   catInput.addEventListener("input", e => { rows[i].category = e.target.value; draw(); });
+  tdCat.appendChild(catInput);
+  tr.appendChild(tdCat);
 
-  // Amount Wrapper
-  const amountWrapper = document.createElement("div");
-  amountWrapper.className = "d-flex align-items-center bg-light rounded px-2 py-1 border";
-  amountWrapper.style.backgroundColor = "var(--bt-surface-soft)";
+  // Amount Column
+  const tdAmount = document.createElement("td");
+  const amountGroup = document.createElement("div");
+  amountGroup.className = "input-group";
 
-  const curSpan = document.createElement("span");
-  curSpan.className = "text-muted me-1 fw-bold small js-currency-symbol";
-  curSpan.textContent = currencySelect.value;
+  const prefix = document.createElement("span");
+  prefix.className = "input-group-text js-currency-symbol";
+  prefix.textContent = currencySelect.value;
 
   const amountInput = document.createElement("input");
   amountInput.type = "number";
-  amountInput.className = "form-control p-1 text-end fw-bold bg-white";
+  amountInput.className = "form-control text-end";
   amountInput.value = r.amount === "" ? "" : r.amount;
   amountInput.min = "0";
   amountInput.step = "any";
-  amountInput.placeholder = "0";
-  amountInput.style.width = "140px";
-  amountInput.style.fontSize = "1.1rem";
-  amountInput.style.border = "1px solid var(--bt-border)";
-  amountInput.style.borderRadius = "6px";
-  amountInput.style.color = "var(--bt-primary-dark)";
-  amountInput.ariaLabel = "Amount";
+  amountInput.placeholder = "0.00";
+  // FIX: Make input wider (min 130px) as requested
+  amountInput.style.minWidth = "130px";
 
   amountInput.addEventListener("input", e => {
     let value = e.target.value;
@@ -163,60 +156,56 @@ function createRowElement(r, i) {
     draw();
   });
 
-  amountWrapper.appendChild(curSpan);
-  amountWrapper.appendChild(amountInput);
+  amountGroup.appendChild(prefix);
+  amountGroup.appendChild(amountInput);
+  tdAmount.appendChild(amountGroup);
+  tr.appendChild(tdAmount);
 
-  topRow.appendChild(catInput);
-  topRow.appendChild(amountWrapper);
-
-  // Bottom Row: Notes + Delete
-  const bottomRow = document.createElement("div");
-  bottomRow.className = "d-flex justify-content-between align-items-center gap-3";
-
-  // Notes
+  // Notes Column
+  const tdNotes = document.createElement("td");
   const notesInput = document.createElement("input");
   notesInput.type = "text";
-  notesInput.className = "form-control form-control-sm border-0 text-muted p-0 shadow-none bg-transparent";
+  notesInput.className = "form-control text-muted";
   notesInput.value = r.notes;
-  notesInput.placeholder = r.noteHint || "Add notes...";
-  notesInput.ariaLabel = "Notes";
+  notesInput.placeholder = r.noteHint || "Optional notes";
+  notesInput.style.fontSize = "0.9em";
   notesInput.addEventListener("input", e => { rows[i].notes = e.target.value; draw(); });
+  tdNotes.appendChild(notesInput);
+  tr.appendChild(tdNotes);
 
-  // Delete
+  // Actions Column
+  const tdAction = document.createElement("td");
+  tdAction.className = "text-end";
   const removeBtn = document.createElement("button");
-  removeBtn.className = "btn-remove";
+  removeBtn.className = "btn-remove mx-auto";
   removeBtn.type = "button";
   removeBtn.innerHTML = "&times;";
-  removeBtn.title = "Remove item";
+  removeBtn.title = "Remove row";
   removeBtn.addEventListener("click", () => {
     rows.splice(i, 1);
     renderRows();
     draw();
   });
+  tdAction.appendChild(removeBtn);
+  tr.appendChild(tdAction);
 
-  bottomRow.appendChild(notesInput);
-  bottomRow.appendChild(removeBtn);
-
-  item.appendChild(topRow);
-  item.appendChild(bottomRow);
-
-  return item;
+  return tr;
 }
 
 function renderRows() {
   rowsContainer.innerHTML = "";
 
   if (rows.length === 0) {
-    const emptyState = document.createElement("div");
-    emptyState.className = "text-center py-5 border rounded-3 bg-light";
-    emptyState.style.backgroundColor = "var(--bt-surface-soft)";
-    emptyState.innerHTML = `
+    const emptyRow = document.createElement("tr");
+    emptyRow.innerHTML = `
+        <td colspan="4" class="text-center py-5">
             <div class="text-muted mb-3">No expenses added yet.</div>
             <button id="btn-empty-load-sample" class="btn btn-sm btn-outline-primary">
                 Load Sample Data
             </button>
+        </td>
       `;
-    rowsContainer.appendChild(emptyState);
+    rowsContainer.appendChild(emptyRow);
 
     // Bind event to the new button
     const emptyBtn = document.getElementById("btn-empty-load-sample");
@@ -250,8 +239,6 @@ function updateProgressBar(income, expenses) {
   let percent = 0;
   if (income > 0) {
     percent = (expenses / income) * 100;
-    // Cap visual bar at 100% (or allow overflow logic if desired, but 100% is safer for layout)
-    // Let's cap at 100% for the width, but maybe change color if over budget.
   } else if (expenses > 0) {
     percent = 100; // All expenses, no income = 100% bar
   }

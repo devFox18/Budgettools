@@ -64,168 +64,180 @@
                   data-disabled="true">Tax Estimator · Coming soon</span></li>
             </ul>
           </li>
-          <!-- ... Keep existing nav items if needed ... -->
         </ul>
       </nav>
     </div>
   </header>
 
   <main id="main-content">
-    <section class="budget-section">
-      <header class="text-center mb-5">
-        <span class="badge rounded-pill text-bg-primary bg-opacity-10 text-primary mb-2 px-3 py-2 fw-bold"
-          style="background-color: color-mix(in srgb, var(--blue) 10%, #fff) !important; color: var(--blue) !important;">Free
-          Tool</span>
-        <h1 class="section__title display-4 mb-3">Monthly Budget Calculator</h1>
-        <p class="section__lede lead mx-auto text-muted" style="max-width: 600px;">
+
+    <!-- Unified Page Hero -->
+    <section class="page-hero" aria-labelledby="hero-title">
+      <div class="page-hero__inner">
+        <p class="page-hero__eyebrow">Personal Finance</p>
+        <h1 id="hero-title">Monthly Budget Calculator</h1>
+        <p class="page-hero__lede">
           Gain clarity on your cash flow. Enter your income and expenses to see exactly where your money goes.
+          Everything stays private on your device.
         </p>
-        <div id="status-indicator" class="text-muted small mt-2" style="opacity: 0; transition: opacity 0.5s;"></div>
-      </header>
-
-      <div class="row g-4 mb-5">
-        <!-- Income Section -->
-        <div class="col-lg-5">
-          <div class="budget-card h-100">
-            <h2 class="card-title">
-              <span class="text-muted">Settings</span>
-            </h2>
-
-            <div class="mb-4">
-              <label for="income" class="form-label">Total Monthly Income</label>
-              <div class="currency-input-group">
-                <span class="currency-symbol js-currency-symbol">€</span>
-                <input type="number" id="income" placeholder="0.00" min="0" step="any" inputmode="decimal"
-                  class="form-control form-control-lg" />
-              </div>
-              <div class="form-text mt-2">Net income after tax</div>
-            </div>
-
-            <div class="mb-0">
-              <label for="currency" class="form-label">Currency</label>
-              <select id="currency" class="form-select">
-                <option value="€" selected>Euro (€)</option>
-                <option value="$">US Dollar ($)</option>
-                <option value="£">Pound (£)</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <!-- Overview Section -->
-        <div class="col-lg-7">
-          <div class="budget-card h-100">
-            <h2 class="card-title">
-              <span class="text-muted">Snapshot</span>
-            </h2>
-            <div class="row text-center mb-4">
-              <div class="col-4 border-end">
-                <span class="overview-label">In</span>
-                <div id="sumIncome" class="overview-value text-income">€0.00</div>
-              </div>
-              <div class="col-4 border-end">
-                <span class="overview-label">Out</span>
-                <div id="sumExpenses" class="overview-value text-expense">€0.00</div>
-              </div>
-              <div class="col-4">
-                <span class="overview-label">Left</span>
-                <div id="sumSavings" class="overview-value text-saving">€0.00</div>
-              </div>
-            </div>
-
-            <div class="px-2">
-              <div class="d-flex justify-content-between align-items-end mb-2">
-                <span class="text-muted fw-bold small text-uppercase">Spending Capacity</span>
-                <span id="savingsRate" class="fw-bold small">0% used</span>
-              </div>
-              <div class="budget-progress-container">
-                <div id="expenseBar" class="budget-progress-bar" style="width: 0%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div id="status-indicator"
+          style="opacity:0; transition: opacity 0.5s; font-size: 0.9rem; color: var(--bt-primary);"></div>
       </div>
+    </section>
 
-      <div class="budget-card mb-5">
-        <div class="card-body p-0">
-          <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-            <h2 class="card-title mb-0">Detailed Expenses</h2>
-            <div class="d-flex gap-2 flex-wrap">
-              <button class="btn btn-primary" id="addRow" type="button">
-                + Add Expense
-              </button>
-              <button class="btn btn-outline-secondary" id="reset" type="button">Reset</button>
-              <div class="dropdown">
-                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown"
-                  aria-expanded="false">
-                  More
+    <section class="calculator-wrap">
+      <div class="calculator-layout">
+
+        <!-- MAIN APP AREA -->
+        <div class="calculator-layout__app">
+
+          <!-- Settings Card -->
+          <div class="budget-card">
+            <div class="section-title">
+              <h2>Income & Settings</h2>
+            </div>
+            <div class="row g-4">
+              <div class="col-md-6">
+                <label for="income" class="form-label">Monthly Net Income</label>
+                <div class="currency-input-group">
+                  <span class="currency-symbol js-currency-symbol">€</span>
+                  <input type="number" id="income" placeholder="0.00" min="0" step="any" inputmode="decimal"
+                    class="form-control" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="currency" class="form-label">Currency</label>
+                <select id="currency" class="form-select">
+                  <option value="€" selected>Euro (€)</option>
+                  <option value="$">US Dollar ($)</option>
+                  <option value="£">Pound (£)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Expenses Card -->
+          <div class="budget-card">
+            <div class="section-title">
+              <h2>Detailed Expenses</h2>
+              <div class="d-flex gap-2">
+                <div class="dropdown">
+                  <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Actions
+                  </button>
+                  <ul class="dropdown-menu shadow border-0" style="border-radius:12px;">
+                    <li><button class="dropdown-item" id="reset" type="button">Reset All</button></li>
+                    <li><button class="dropdown-item" id="loadSample" type="button">Load Sample Data</button></li>
+                    <li>
+                      <hr class="dropdown-divider">
+                    </li>
+                    <li><button class="dropdown-item" id="export" type="button">Download CSV</button></li>
+                    <li><button class="dropdown-item" id="print" type="button">Print View</button></li>
+                  </ul>
+                </div>
+                <button class="btn btn-primary btn-sm" id="addRow" type="button">
+                  + Add Expense
                 </button>
-                <ul class="dropdown-menu shadow border-0" style="border-radius:12px;">
-                  <li><button class="dropdown-item" id="loadSample" type="button">Load Sample Data</button></li>
-                  <li>
-                    <hr class="dropdown-divider">
-                  </li>
-                  <li><button class="dropdown-item" id="export" type="button">Download CSV</button></li>
-                  <li><button class="dropdown-item" id="print" type="button">Print View</button></li>
-                </ul>
+              </div>
+            </div>
+
+            <div class="bt-table-wrapper">
+              <table class="table mb-0 align-middle expense-table">
+                <thead>
+                  <tr>
+                    <th style="width: 35%; padding-left: 1rem;">Category</th>
+                    <th style="width: 25%;">Amount</th>
+                    <th style="width: 35%;">Notes</th>
+                    <th style="width: 5%;"></th>
+                  </tr>
+                </thead>
+                <tbody id="rows">
+                  <!-- Rows injected by script.js -->
+                </tbody>
+              </table>
+            </div>
+            <div class="d-flex justify-content-end align-items-center mt-3 p-3 bg-light rounded-3"
+              style="background-color: var(--bt-surface-soft)!important">
+              <span class="text-muted small fw-bold text-uppercase me-3">Total Expenses</span>
+              <span id="totalExpenses" class="h4 mb-0 fw-bold text-expense">€0.00</span>
+            </div>
+          </div>
+
+          <!-- Visuals Card -->
+          <div class="budget-card">
+            <div class="section-title">
+              <h2>Spending Breakdown</h2>
+            </div>
+            <div class="position-relative">
+              <div id="chart-container" class="chart-container">
+                <canvas id="chart" role="img" aria-label="Pie chart of expense categories"></canvas>
+              </div>
+              <div id="chart-empty-state" class="text-center py-5 text-muted">
+                <p class="mb-0">Add expenses to see the breakdown.</p>
+              </div>
+            </div>
+            <div id="legend" class="d-flex flex-wrap gap-2 mt-4 justify-content-center"></div>
+          </div>
+
+        </div>
+        <!-- END MAIN APP AREA -->
+
+        <!-- SIDEBAR -->
+        <aside class="calculator-layout__aside">
+
+          <!-- Summary Overview (Sticky Results) -->
+          <div class="card--subtle results-summary-mount">
+            <h3 class="h5 mb-3">Snapshot</h3>
+
+            <div class="overview-item">
+              <span class="overview-label">Income</span>
+              <span id="sumIncome" class="overview-value text-income">€0.00</span>
+            </div>
+            <div class="overview-item">
+              <span class="overview-label">Expenses</span>
+              <span id="sumExpenses" class="overview-value text-expense">€0.00</span>
+            </div>
+            <div class="overview-item">
+              <span class="overview-label">Savings</span>
+              <span id="sumSavings" class="overview-value text-saving">€0.00</span>
+            </div>
+
+            <div class="mt-3">
+              <div class="d-flex justify-content-between align-items-baseline mb-1">
+                <span class="overview-label">Capacity Used</span>
+                <span id="savingsRate" class="small fw-bold text-muted">0%</span>
+              </div>
+              <div class="budget-progress-container mb-1">
+                <div id="expenseBar" class="budget-progress-bar"></div>
               </div>
             </div>
           </div>
 
-          <div class="table-responsive">
-            <table class="table mb-0 align-middle">
-              <thead class="text-muted small text-uppercase">
-                <tr>
-                  <th scope="col" style="width: 35%; padding-left:0;">Category</th>
-                  <th scope="col" style="width: 25%;">Amount</th>
-                  <th scope="col" style="width: 35%;">Notes</th>
-                  <th scope="col" style="width: 5%;"></th>
-                </tr>
-              </thead>
-              <tbody id="rows"></tbody>
-            </table>
+          <!-- Tips / Instructions (Matches other tools sidebar) -->
+          <div class="card--subtle">
+            <h3 class="h5 mb-3">How to use</h3>
+            <ul class="checklist">
+              <li>Enter your monthly net income to set a baseline.</li>
+              <li>Add your fixed expenses (rent, bills) and variable costs (groceries, fun).</li>
+              <li>If "Savings" is positive, you're within budget. If negative, check the breakdown to see where to cut.
+              </li>
+              <li>Tap <strong>Actions</strong> to export or reset your data.</li>
+            </ul>
           </div>
 
-          <div class="d-grid justify-content-end p-4 bg-light rounded-3 mt-4"
-            style="background-color: var(--soft) !important;">
-            <div class="text-end">
-              <span class="text-muted me-3 text-uppercase fw-bold small">Total Expenses</span>
-              <span id="totalExpenses" class="h3 fw-bold mb-0 text-expense"
-                style="font-family:'Poppins', sans-serif;">€0.00</span>
-            </div>
-          </div>
-
-        </div>
+        </aside>
       </div>
-
-      <div class="budget-card">
-        <div class="row align-items-center">
-          <div class="col-md-5 mb-4 mb-md-0">
-            <h2 class="card-title mb-3">Where is it going?</h2>
-            <p class="text-muted mb-4">Your spending breakdown helps you identify areas to cut back. Try keeping
-              "Essential" costs under 50%.</p>
-            <div id="legend" class="d-flex flex-wrap gap-2"></div>
-          </div>
-          <div class="col-md-7">
-            <div id="chart-container" style="position: relative; height:300px; width:100%">
-              <canvas id="chart" role="img" aria-label="Pie chart of expense categories"></canvas>
-            </div>
-            <div id="chart-empty-state" class="text-center py-5 text-muted">
-              <p>Add data to see the chart.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <p class="calculator-footnote text-center mt-5">Your data never leaves your browser.</p>
     </section>
   </main>
 
-  <footer role="contentinfo" style="margin-top:auto;">
+  <footer role="contentinfo">
     <div class="container footer-inner py-5 border-top">
-      <p class="mb-0">© <span data-year></span> BudgetTools. Transparent, private budgeting.</p>
+      <p class="mb-0">© <span data-year></span> BudgetTools. Built for transparent personal finance.</p>
       <nav aria-label="Footer" class="d-flex gap-3">
-        <a href="/">Home</a>
         <a href="/privacy.html">Privacy</a>
+        <a href="/terms.html">Terms</a>
       </nav>
     </div>
   </footer>

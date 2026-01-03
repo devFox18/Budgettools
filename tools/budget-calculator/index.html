@@ -41,10 +41,10 @@
       </button>
       <nav class="site-nav" aria-label="Main navigation" data-site-nav>
         <ul class="site-nav__list" id="site-menu">
-          <li class="site-nav__item"><a class="site-nav__link" href="/">Home</a></li>
+          <li class="site-nav__item"><a class="site-nav__link" href="/" aria-current="page">Home</a></li>
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
-            <button class="site-nav__link" type="button" id="nav-tools" data-nav-parent data-active="true"
-              aria-expanded="false" aria-haspopup="true" aria-controls="nav-tools-menu">
+            <button class="site-nav__link" type="button" id="nav-tools" data-nav-parent aria-expanded="false"
+              aria-haspopup="true" aria-controls="nav-tools-menu">
               <span>Tools</span>
               <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
                 <path fill="currentColor"
@@ -52,8 +52,8 @@
               </svg>
             </button>
             <ul class="site-nav__sub-list" id="nav-tools-menu" aria-labelledby="nav-tools" data-nav-submenu>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/budget-calculator/"
-                  aria-current="page">Budget Calculator</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/budget-calculator/">Budget
+                  Calculator</a></li>
               <li class="site-nav__sub-item"><a class="site-nav__sub-link"
                   href="/tools/savings-goal-calculator/">Savings Goal Calculator</a></li>
               <li class="site-nav__sub-item"><a class="site-nav__sub-link"
@@ -62,6 +62,54 @@
                   data-disabled="true">Budget Planner · Coming soon</span></li>
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation"
                   data-disabled="true">Tax Estimator · Coming soon</span></li>
+            </ul>
+          </li>
+          <li class="site-nav__item site-nav__item--has-children" data-nav-item>
+            <button class="site-nav__link" type="button" id="nav-resources" data-nav-parent aria-expanded="false"
+              aria-haspopup="true" aria-controls="nav-resources-menu">
+              <span>Resources</span>
+              <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+                <path fill="currentColor"
+                  d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
+              </svg>
+            </button>
+            <ul class="site-nav__sub-list" id="nav-resources-menu" aria-labelledby="nav-resources" data-nav-submenu>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#guides">Blog &amp; articles</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#newsletter">Tips &amp; guides</a>
+              </li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#testimonials">Customer stories</a>
+              </li>
+              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation"
+                  data-disabled="true">Updates &amp; changelog · Coming soon</span></li>
+            </ul>
+          </li>
+          <li class="site-nav__item site-nav__item--has-children" data-nav-item>
+            <button class="site-nav__link" type="button" id="nav-privacy" data-nav-parent aria-expanded="false"
+              aria-haspopup="true" aria-controls="nav-privacy-menu">
+              <span>Privacy &amp; Terms</span>
+              <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+                <path fill="currentColor"
+                  d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
+              </svg>
+            </button>
+            <ul class="site-nav__sub-list" id="nav-privacy-menu" aria-labelledby="nav-privacy" data-nav-submenu>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/privacy.html">Privacy policy</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/terms.html">Terms of use</a></li>
+              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation"
+                  data-disabled="true">Cookie policy · Coming soon</span></li>
+            </ul>
+          </li>
+          <li class="site-nav__item site-nav__item--has-children" data-nav-item>
+            <button class="site-nav__link" type="button" id="nav-contact" data-nav-parent aria-expanded="false"
+              aria-haspopup="true" aria-controls="nav-contact-menu">
+              <span>Contact</span>
+              <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+                <path fill="currentColor"
+                  d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
+              </svg>
+            </button>
+            <ul class="site-nav__sub-list" id="nav-contact-menu" aria-labelledby="nav-contact" data-nav-submenu>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/contact.html">Contact form</a></li>
             </ul>
           </li>
         </ul>

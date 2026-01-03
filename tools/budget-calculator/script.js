@@ -116,36 +116,45 @@ function updateCurrencySymbols() {
 // --- UI Rendering ---
 
 function createRowElement(r, i) {
-  const tr = document.createElement("tr");
-  tr.className = "expense-row";
+  const item = document.createElement("div");
+  item.className = "expense-item";
 
-  // Category Column
-  const tdCat = document.createElement("td");
+  // Top Row: Category (Big) + Amount (Big)
+  const topRow = document.createElement("div");
+  topRow.className = "d-flex justify-content-between align-items-center mb-2 gap-3";
+
+  // Category
   const catInput = document.createElement("input");
   catInput.type = "text";
-  catInput.className = "form-control";
+  catInput.className = "form-control fw-bold border-0 p-0 shadow-none bg-transparent";
   catInput.value = r.category;
   catInput.placeholder = "Category Name";
+  catInput.style.fontSize = "1.05rem";
+  catInput.ariaLabel = "Category Name";
   catInput.addEventListener("input", e => { rows[i].category = e.target.value; draw(); });
-  tdCat.appendChild(catInput);
-  tr.appendChild(tdCat);
 
-  // Amount Column
-  const tdAmount = document.createElement("td");
-  const amountGroup = document.createElement("div");
-  amountGroup.className = "input-group";
+  // Amount Wrapper
+  const amountWrapper = document.createElement("div");
+  amountWrapper.className = "d-flex align-items-center bg-light rounded px-2 py-1 border";
+  amountWrapper.style.backgroundColor = "var(--bt-surface-soft)";
 
-  const prefix = document.createElement("span");
-  prefix.className = "input-group-text js-currency-symbol";
-  prefix.textContent = currencySelect.value;
+  const curSpan = document.createElement("span");
+  curSpan.className = "text-muted me-1 fw-bold small js-currency-symbol";
+  curSpan.textContent = currencySelect.value;
 
   const amountInput = document.createElement("input");
   amountInput.type = "number";
-  amountInput.className = "form-control text-end"; // align numbers right
+  amountInput.className = "form-control p-1 text-end fw-bold bg-white";
   amountInput.value = r.amount === "" ? "" : r.amount;
   amountInput.min = "0";
   amountInput.step = "any";
-  amountInput.placeholder = "0.00";
+  amountInput.placeholder = "0";
+  amountInput.style.width = "140px";
+  amountInput.style.fontSize = "1.1rem";
+  amountInput.style.border = "1px solid var(--bt-border)";
+  amountInput.style.borderRadius = "6px";
+  amountInput.style.color = "var(--bt-primary-dark)";
+  amountInput.ariaLabel = "Amount";
 
   amountInput.addEventListener("input", e => {
     let value = e.target.value;
@@ -154,56 +163,60 @@ function createRowElement(r, i) {
     draw();
   });
 
-  amountGroup.appendChild(prefix);
-  amountGroup.appendChild(amountInput);
-  tdAmount.appendChild(amountGroup);
-  tr.appendChild(tdAmount);
+  amountWrapper.appendChild(curSpan);
+  amountWrapper.appendChild(amountInput);
 
-  // Notes Column
-  const tdNotes = document.createElement("td");
+  topRow.appendChild(catInput);
+  topRow.appendChild(amountWrapper);
+
+  // Bottom Row: Notes + Delete
+  const bottomRow = document.createElement("div");
+  bottomRow.className = "d-flex justify-content-between align-items-center gap-3";
+
+  // Notes
   const notesInput = document.createElement("input");
   notesInput.type = "text";
-  notesInput.className = "form-control text-muted";
+  notesInput.className = "form-control form-control-sm border-0 text-muted p-0 shadow-none bg-transparent";
   notesInput.value = r.notes;
-  notesInput.placeholder = r.noteHint || "Optional notes";
-  notesInput.style.fontSize = "0.9em";
+  notesInput.placeholder = r.noteHint || "Add notes...";
+  notesInput.ariaLabel = "Notes";
   notesInput.addEventListener("input", e => { rows[i].notes = e.target.value; draw(); });
-  tdNotes.appendChild(notesInput);
-  tr.appendChild(tdNotes);
 
-  // Actions Column
-  const tdAction = document.createElement("td");
-  tdAction.className = "text-end";
+  // Delete
   const removeBtn = document.createElement("button");
-  removeBtn.className = "btn-remove mx-auto";
+  removeBtn.className = "btn-remove";
   removeBtn.type = "button";
   removeBtn.innerHTML = "&times;";
-  removeBtn.title = "Remove row";
+  removeBtn.title = "Remove item";
   removeBtn.addEventListener("click", () => {
     rows.splice(i, 1);
     renderRows();
     draw();
   });
-  tdAction.appendChild(removeBtn);
-  tr.appendChild(tdAction);
 
-  return tr;
+  bottomRow.appendChild(notesInput);
+  bottomRow.appendChild(removeBtn);
+
+  item.appendChild(topRow);
+  item.appendChild(bottomRow);
+
+  return item;
 }
 
 function renderRows() {
   rowsContainer.innerHTML = "";
 
   if (rows.length === 0) {
-    const emptyRow = document.createElement("tr");
-    emptyRow.innerHTML = `
-        <td colspan="4" class="text-center py-5">
+    const emptyState = document.createElement("div");
+    emptyState.className = "text-center py-5 border rounded-3 bg-light";
+    emptyState.style.backgroundColor = "var(--bt-surface-soft)";
+    emptyState.innerHTML = `
             <div class="text-muted mb-3">No expenses added yet.</div>
             <button id="btn-empty-load-sample" class="btn btn-sm btn-outline-primary">
                 Load Sample Data
             </button>
-        </td>
       `;
-    rowsContainer.appendChild(emptyRow);
+    rowsContainer.appendChild(emptyState);
 
     // Bind event to the new button
     const emptyBtn = document.getElementById("btn-empty-load-sample");

@@ -1,152 +1,262 @@
-/* Custom styles for Budget Calculator */
+/* Custom styles for Budget Calculator - Matched to Homepage */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap");
 
 :root {
-  --color-income: #10b981;
-  --color-expense: #ef4444;
-  --color-saving: #3b82f6;
-  --card-radius: 16px;
-  --input-radius: 12px;
+    /* Match homepage variables */
+    --blue: #4a90e2;
+    --green: #6fcf97;
+    --red: #ef4444;
+    /* Added for expenses */
+    --amber: #f59e0b;
+    /* Added for warning */
+
+    --text: #0f172a;
+    --muted: #4b5563;
+    --soft: #f5f7fb;
+    --surface: #ffffff;
+    --border: #e5e7eb;
+
+    --shadow: 0 18px 50px -26px rgba(15, 23, 42, 0.25);
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+    --radius: 12px;
+    --radius-lg: 18px;
+    --radius-pill: 999px;
+
+    --container: min(1180px, 100% - 2.75rem);
 }
 
+body {
+    background: var(--soft);
+    color: var(--text);
+    font-family: "Inter", system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+.section__title,
+.card-title {
+    font-family: "Poppins", system-ui, sans-serif;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.budget-section {
+    padding: clamp(3rem, 6vw, 4.75rem) 0;
+    width: var(--container);
+    margin-inline: auto;
+}
+
+/* Card Styling to match homepage */
 .budget-card {
-  border: none;
-  border-radius: var(--card-radius);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  background: #fff;
-  height: 100%;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    border: 1px solid color-mix(in srgb, var(--border) 88%, transparent);
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
 }
 
 .budget-card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
+    transform: translateY(-2px);
 }
 
-.budget-card .card-body {
-    padding: 2rem;
+.card-title {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.budget-card .card-title {
-    color: var(--color-muted);
+/* Form Controls */
+.form-label {
     font-weight: 600;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 1.5rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
 }
 
-/* Overview Section Enhancements */
+.form-control,
+.form-select {
+    border-radius: var(--radius);
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border);
+    background-color: var(--soft);
+    font-weight: 500;
+    color: var(--text);
+    box-shadow: none;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--surface);
+    border-color: var(--blue);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--blue) 15%, transparent);
+}
+
+/* Input Group with Currency */
+.currency-input-group {
+    position: relative;
+}
+
+.currency-symbol {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-weight: 600;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.currency-input-group .form-control {
+    padding-left: 2.2rem;
+}
+
+/* Overview Stats */
 .overview-value {
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: var(--color-text);
-    transition: color 0.3s ease;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    line-height: 1.2;
+    transition: color 0.3s;
 }
 
 .overview-label {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: var(--color-muted);
-    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 0.2rem;
     display: block;
 }
 
-.text-income { color: var(--color-income) !important; }
-.text-expense { color: var(--color-expense) !important; }
-.text-saving { color: var(--color-saving) !important; }
+.text-income {
+    color: var(--green) !important;
+}
+
+.text-expense {
+    color: var(--red) !important;
+}
+
+.text-saving {
+    color: var(--blue) !important;
+}
 
 /* Progress Bar */
 .budget-progress-container {
-    height: 12px;
-    background-color: #f3f4f6;
-    border-radius: 999px;
+    height: 10px;
+    background-color: var(--border);
+    border-radius: var(--radius-pill);
     overflow: hidden;
-    margin-top: 1.5rem;
-    position: relative;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    margin-top: 1rem;
 }
 
 .budget-progress-bar {
     height: 100%;
-    background: linear-gradient(90deg, var(--color-expense) 0%, #f87171 100%);
-    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 999px;
+    background: linear-gradient(90deg, var(--red), #f87171);
+    border-radius: var(--radius-pill);
+    transition: width 0.5s ease;
 }
 
-/* Form Elements */
-.form-control, .form-select {
-    border-radius: var(--input-radius);
-    padding: 0.75rem 1rem;
-    border-color: #e5e7eb;
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    transition: all 0.2s;
+/* Buttons */
+.btn-primary {
+    background: var(--blue);
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 0.7rem 1.5rem;
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.2s ease, background 0.2s ease;
 }
 
-.form-control:focus, .form-select:focus {
-    border-color: var(--color-saving);
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+.btn-primary:hover {
+    background: color-mix(in srgb, var(--blue) 85%, black);
+    transform: translateY(-1px);
 }
 
-/* Table Enhancements */
+.btn-outline-secondary {
+    border-color: var(--border);
+    color: var(--text);
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+}
+
+.btn-outline-secondary:hover {
+    background: var(--border);
+    color: var(--text);
+}
+
+/* Table */
 .table {
     --bs-table-bg: transparent;
 }
-.table > :not(caption) > * > * {
+
+.expense-row td {
     padding: 1rem 0.75rem;
     vertical-align: middle;
-    border-color: #f3f4f6;
+    border-bottom: 1px solid var(--border);
 }
 
-.expense-row {
-    transition: background-color 0.2s;
-}
-
-.expense-row:hover {
-    background-color: #f9fafb;
+.expense-row:last-child td {
+    border-bottom: none;
 }
 
 .btn-remove {
-    color: #9ca3af;
-    transition: color 0.2s, background-color 0.2s;
-    border-radius: 50%;
     width: 32px;
     height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: none;
-    background: transparent;
+    transition: all 0.2s;
     cursor: pointer;
 }
+
 .btn-remove:hover {
-    color: var(--color-expense);
-    background-color: #fee2e2;
+    background: #fee2e2;
+    color: var(--red);
+    border-color: #fecaca;
+}
+
+/* Chart Label */
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    background: var(--surface);
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
 }
 
 /* Animations */
 @keyframes slideIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .row-enter {
     animation: slideIn 0.3s ease-out forwards;
-}
-
-/* Currency Input Group Wrapper */
-.currency-input-group {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-.currency-symbol {
-    position: absolute;
-    left: 1rem;
-    color: var(--color-muted);
-    font-weight: 500;
-    pointer-events: none;
-    z-index: 5;
-}
-.currency-input-group .form-control {
-    padding-left: 2rem; /* Make space for symbol */
 }

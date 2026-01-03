@@ -3,14 +3,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap");
 
 :root {
-    /* Site standard variables (from savings-goal-calculator) */
+    /* Site standard variables */
     --bt-surface: #ffffff;
     --bt-surface-soft: #f8fafc;
-    /* slightly different to ensure contrast */
     --bt-border: #e2e8f0;
     --bt-muted: #64748b;
     --bt-primary: #10b981;
-    /* Emerald green matching others */
     --bt-primary-dark: #047857;
     --bt-danger: #ef4444;
     --bt-warning: #f59e0b;
@@ -37,6 +35,14 @@ body {
     color: var(--color-text);
     font-family: "Inter", system-ui, sans-serif;
     line-height: 1.65;
+}
+
+/* Fix Navbar overlap and visibility */
+.site-header {
+    z-index: 1000 !important;
+    /* Ensure it stays above everything */
+    position: sticky;
+    top: 0;
 }
 
 h1,
@@ -88,6 +94,8 @@ h4 {
     max-width: 60ch;
     font-size: clamp(1.1rem, 2.5vw, 1.25rem);
     margin: 0;
+    padding: 0 1rem;
+    /* Prevent text touching edges on small screens */
 }
 
 .calculator-wrap {
@@ -138,6 +146,8 @@ h4 {
     padding-left: 1.75rem;
     color: var(--color-muted);
     font-size: 0.95rem;
+    word-wrap: break-word;
+    /* Ensure functionality instructions don't overflow */
 }
 
 .checklist li::before {
@@ -156,8 +166,16 @@ h4 {
     border-radius: var(--bt-radius-lg);
     border: 1px solid var(--bt-border);
     box-shadow: var(--shadow-lg);
-    padding: clamp(1.5rem, 3vw, 2rem);
+    padding: clamp(1rem, 3vw, 2rem);
+    /* Ensure padding allows text to breathe */
     margin-bottom: 2rem;
+    overflow: hidden;
+    /* Contain inner elements */
+}
+
+/* Prevent text overflow in cards */
+.budget-card p {
+    max-width: 100%;
 }
 
 .section-title {
@@ -166,6 +184,9 @@ h4 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    /* Allow wrapping on small screens */
+    gap: 0.5rem;
 }
 
 /* Forms */
@@ -185,6 +206,7 @@ h4 {
     color: var(--color-text);
     box-shadow: none;
     transition: all 0.2s;
+    max-width: 100%;
 }
 
 .form-control:focus,
@@ -245,6 +267,12 @@ h4 {
     font-family: "Poppins", sans-serif;
     font-weight: 700;
     font-size: 1.1rem;
+    /* Ensure values don't overflow sidebar */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 15ch;
+    text-align: right;
 }
 
 .text-income {
@@ -258,8 +286,6 @@ h4 {
 .text-saving {
     color: #3b82f6;
 }
-
-/* Blue for savings */
 
 /* Progress Bar */
 .budget-progress-container {
@@ -306,7 +332,20 @@ h4 {
     color: var(--color-text);
 }
 
-/* Table */
+/* Table - Fix Horizontal Scroll and Text Visibility */
+.bt-table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--bt-radius-md);
+    border: 1px solid color-mix(in srgb, var(--bt-border) 70%, transparent);
+    /* Allow dropdown to break out if possible, but scroll usually conflicts. 
+       We handle this by min-width to reduce scroll need */
+}
+
+.expense-table {
+    min-width: 600px;
+    /* Force minimum width to prevent text squashing */
+}
+
 .expense-table th {
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -319,6 +358,15 @@ h4 {
     padding: 0.75rem 0.5rem;
     vertical-align: middle;
     border-bottom: 1px solid var(--bt-border);
+    white-space: nowrap;
+    /* Prevent breaking mid-word */
+}
+
+/* Allow category notes to wrap if needed or truncate with ellipsis */
+.expense-row td:nth-child(3) {
+    /* Notes column */
+    white-space: normal;
+    min-width: 150px;
 }
 
 .btn-remove {

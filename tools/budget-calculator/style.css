@@ -1,0 +1,152 @@
+/* Custom styles for Budget Calculator */
+
+:root {
+  --color-income: #10b981;
+  --color-expense: #ef4444;
+  --color-saving: #3b82f6;
+  --card-radius: 16px;
+  --input-radius: 12px;
+}
+
+.budget-card {
+  border: none;
+  border-radius: var(--card-radius);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #fff;
+  height: 100%;
+}
+
+.budget-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.budget-card .card-body {
+    padding: 2rem;
+}
+
+.budget-card .card-title {
+    color: var(--color-muted);
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+}
+
+/* Overview Section Enhancements */
+.overview-value {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--color-text);
+    transition: color 0.3s ease;
+}
+
+.overview-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-muted);
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.text-income { color: var(--color-income) !important; }
+.text-expense { color: var(--color-expense) !important; }
+.text-saving { color: var(--color-saving) !important; }
+
+/* Progress Bar */
+.budget-progress-container {
+    height: 12px;
+    background-color: #f3f4f6;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 1.5rem;
+    position: relative;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.budget-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-expense) 0%, #f87171 100%);
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 999px;
+}
+
+/* Form Elements */
+.form-control, .form-select {
+    border-radius: var(--input-radius);
+    padding: 0.75rem 1rem;
+    border-color: #e5e7eb;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--color-saving);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* Table Enhancements */
+.table {
+    --bs-table-bg: transparent;
+}
+.table > :not(caption) > * > * {
+    padding: 1rem 0.75rem;
+    vertical-align: middle;
+    border-color: #f3f4f6;
+}
+
+.expense-row {
+    transition: background-color 0.2s;
+}
+
+.expense-row:hover {
+    background-color: #f9fafb;
+}
+
+.btn-remove {
+    color: #9ca3af;
+    transition: color 0.2s, background-color 0.2s;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+.btn-remove:hover {
+    color: var(--color-expense);
+    background-color: #fee2e2;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.row-enter {
+    animation: slideIn 0.3s ease-out forwards;
+}
+
+/* Currency Input Group Wrapper */
+.currency-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.currency-symbol {
+    position: absolute;
+    left: 1rem;
+    color: var(--color-muted);
+    font-weight: 500;
+    pointer-events: none;
+    z-index: 5;
+}
+.currency-input-group .form-control {
+    padding-left: 2rem; /* Make space for symbol */
+}

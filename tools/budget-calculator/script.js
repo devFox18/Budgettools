@@ -1,6 +1,5 @@
-// ===== Monthly Budget Calculator (vanilla JS) =====
+// ===== Monthly Budget Calculator (Improved UX) =====
 
-// Default categories give structure but start empty so users can type without clearing values.
 const DEFAULT_ROWS = [
   { category: "Housing", amount: "", notes: "", noteHint: "Rent or mortgage" },
   { category: "Utilities & Internet", amount: "", notes: "", noteHint: "Energy, water, wifi" },
@@ -26,6 +25,7 @@ const SAMPLE_DATA = {
   ]
 };
 
+// DOM Elements
 const rowsContainer = document.getElementById("rows");
 const incomeInput = document.getElementById("income");
 const currencySelect = document.getElementById("currency");
@@ -39,14 +39,16 @@ const resetBtn = document.getElementById("reset");
 const loadSampleBtn = document.getElementById("loadSample");
 const exportBtn = document.getElementById("export");
 const printBtn = document.getElementById("print");
-
 const chartCanvas = document.getElementById("chart");
 const legend = document.getElementById("legend");
+const expenseBar = document.getElementById("expenseBar");
 
-let chart; // To hold the Chart.js instance
-
-const STORAGE_KEY = 'budget-calculator-data';
+// State
+let chart;
 let rows = [];
+const STORAGE_KEY = "budget_calc_v1";
+
+// --- Persistence ---
 
 function saveState() {
   const state = {
@@ -54,257 +56,302 @@ function saveState() {
     currency: currencySelect.value,
     rows: rows
   };
+
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 
   const statusIndicator = document.getElementById("status-indicator");
   if (statusIndicator) {
-    statusIndicator.textContent = "Saving...";
+    statusIndicator.textContent = "Saved to local storage.";
     statusIndicator.style.opacity = "1";
     setTimeout(() => {
-      statusIndicator.textContent = "Saved.";
-      setTimeout(() => {
-        statusIndicator.style.opacity = "0";
-      }, 1000);
-    }, 500);
+      statusIndicator.style.opacity = "0";
+    }, 1500);
   }
 }
 
-
-// Make the income field step per €1 via spinner
-if (incomeInput) {
-  incomeInput.step = "1";
+function loadState() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try {
+      const state = JSON.parse(saved);
+      rows = state.rows || JSON.parse(JSON.stringify(DEFAULT_ROWS));
+      incomeInput.value = state.income || "";
+      currencySelect.value = state.currency || "€";
+    } catch (e) {
+      console.error("Failed to parse saved state", e);
+      resetToDefaults();
+    }
+  } else {
+    resetToDefaults();
+  }
 }
 
-// Helpers
-function fmt(v){
+function resetToDefaults() {
+  rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
+  incomeInput.value = "";
+  currencySelect.value = "€";
+}
+
+// --- Helpers ---
+
+function fmt(v) {
   const cur = currencySelect.value || "€";
-  return cur + (Number(v)||0).toFixed(2);
+  return cur + (Number(v) || 0).toFixed(2);
 }
 
-function sanitizeCsvField(value){
+function sanitizeCsvField(value) {
   const str = String(value ?? "");
   const escaped = str.replace(/"/g, '""');
+  // Prevent CSV injection (formulae)
   const needsFormulaEscape = /^[=+\-@]/.test(escaped);
   const safe = needsFormulaEscape ? `'${escaped}` : escaped;
   return `"${safe}"`;
 }
 
-function createRowElement(r, i) {
-    const row = document.createElement("div");
-    row.className = "row mb-4";
-
-    const catEl = document.createElement("input");
-    catEl.type = "text";
-    catEl.value = r.category;
-    catEl.placeholder = "e.g., Rent, Groceries";
-    catEl.setAttribute("aria-label", "Expense category"); catEl.classList.add("p-3");
-
-    const group = document.createElement("div");
-    group.className = "input-group";
-
-    const prefix = document.createElement("span");
-    prefix.className = "prefix";
-    prefix.textContent = currencySelect.value;
-
-    const amountEl = document.createElement("input");
-    amountEl.type = "number";
-    amountEl.value = r.amount === "" ? "" : r.amount;
-    amountEl.min = "0";
-    amountEl.step = "1"; // step per €1 with the arrow keys/spinner
-    amountEl.setAttribute("aria-label", "Amount"); amountEl.classList.add("p-3");
-    amountEl.placeholder = "0.00";
-
-    group.appendChild(prefix);
-    group.appendChild(amountEl);
-
-    const notesEl = document.createElement("input");
-    notesEl.type = "text";
-    notesEl.value = r.notes;
-    notesEl.placeholder = r.noteHint || "Notes (optional)";
-    notesEl.setAttribute("aria-label", "Notes"); notesEl.classList.add("p-3");
-
-    const removeBtn = document.createElement("button");
-    removeBtn.className = "remove btn btn--ghost";
-    removeBtn.type = "button";
-    removeBtn.setAttribute("aria-label", "Remove this expense row");
-
-    const removeIcon = document.createElement("span");
-    removeIcon.setAttribute("aria-hidden", "true");
-    removeIcon.textContent = "×";
-
-    const removeText = document.createElement("span");
-    removeText.className = "sr-only";
-    removeText.textContent = "Remove row";
-
-    removeBtn.appendChild(removeIcon);
-    removeBtn.appendChild(removeText);
-
-    row.appendChild(catEl);
-    row.appendChild(group);
-    row.appendChild(notesEl);
-    row.appendChild(removeBtn);
-
-    catEl.addEventListener("input", e => { rows[i].category = e.target.value; draw(); });
-    amountEl.addEventListener("input", e => {
-      let value = e.target.value;
-      if (parseFloat(value) < 0) {
-        value = "0";
-        e.target.value = value;
-      }
-      rows[i].amount = value === "" ? "" : parseFloat(value);
-      draw();
-    });
-    notesEl.addEventListener("input", e => { rows[i].notes = e.target.value; draw(); });
-
-    removeBtn.addEventListener("click", ()=>{
-      rows.splice(i,1);
-      renderRows();
-      draw();
-    });
-
-    return row;
+function updateCurrencySymbols() {
+  const sym = currencySelect.value;
+  document.querySelectorAll('.js-currency-symbol').forEach(el => el.textContent = sym);
 }
 
-function renderRows(){
+// --- UI Rendering ---
+
+function createRowElement(r, i) {
+  const tr = document.createElement("tr");
+  tr.className = "expense-row";
+
+  // Category Column
+  const tdCat = document.createElement("td");
+  const catInput = document.createElement("input");
+  catInput.type = "text";
+  catInput.className = "form-control";
+  catInput.value = r.category;
+  catInput.placeholder = "Category Name";
+  catInput.addEventListener("input", e => { rows[i].category = e.target.value; draw(); });
+  tdCat.appendChild(catInput);
+  tr.appendChild(tdCat);
+
+  // Amount Column
+  const tdAmount = document.createElement("td");
+  const amountGroup = document.createElement("div");
+  amountGroup.className = "input-group";
+
+  const prefix = document.createElement("span");
+  prefix.className = "input-group-text js-currency-symbol";
+  prefix.textContent = currencySelect.value;
+
+  const amountInput = document.createElement("input");
+  amountInput.type = "number";
+  amountInput.className = "form-control text-end"; // align numbers right
+  amountInput.value = r.amount === "" ? "" : r.amount;
+  amountInput.min = "0";
+  amountInput.step = "any";
+  amountInput.placeholder = "0.00";
+
+  amountInput.addEventListener("input", e => {
+    let value = e.target.value;
+    if (parseFloat(value) < 0) value = "0";
+    rows[i].amount = value === "" ? "" : parseFloat(value);
+    draw();
+  });
+
+  amountGroup.appendChild(prefix);
+  amountGroup.appendChild(amountInput);
+  tdAmount.appendChild(amountGroup);
+  tr.appendChild(tdAmount);
+
+  // Notes Column
+  const tdNotes = document.createElement("td");
+  const notesInput = document.createElement("input");
+  notesInput.type = "text";
+  notesInput.className = "form-control text-muted";
+  notesInput.value = r.notes;
+  notesInput.placeholder = r.noteHint || "Optional notes";
+  notesInput.style.fontSize = "0.9em";
+  notesInput.addEventListener("input", e => { rows[i].notes = e.target.value; draw(); });
+  tdNotes.appendChild(notesInput);
+  tr.appendChild(tdNotes);
+
+  // Actions Column
+  const tdAction = document.createElement("td");
+  tdAction.className = "text-end";
+  const removeBtn = document.createElement("button");
+  removeBtn.className = "btn-remove mx-auto";
+  removeBtn.type = "button";
+  removeBtn.innerHTML = "&times;";
+  removeBtn.title = "Remove row";
+  removeBtn.addEventListener("click", () => {
+    rows.splice(i, 1);
+    renderRows();
+    draw();
+  });
+  tdAction.appendChild(removeBtn);
+  tr.appendChild(tdAction);
+
+  return tr;
+}
+
+function renderRows() {
   rowsContainer.innerHTML = "";
-  rows.forEach((r,i)=>{
+  rows.forEach((r, i) => {
     const rowEl = createRowElement(r, i);
     rowsContainer.appendChild(rowEl);
   });
+  // Update currency symbols in new rows
+  updateCurrencySymbols();
 }
 
-function totalExpenses(){
-  return rows.reduce((s,r)=> s + (Number(r.amount)||0), 0);
+function totalExpenses() {
+  return rows.reduce((s, r) => s + (Number(r.amount) || 0), 0);
 }
 
-function drawSummary(){
-  const income = Number(incomeInput.value||0);
+function updateProgressBar(income, expenses) {
+  if (!expenseBar) return;
+
+  let percent = 0;
+  if (income > 0) {
+    percent = (expenses / income) * 100;
+    // Cap visual bar at 100% (or allow overflow logic if desired, but 100% is safer for layout)
+    // Let's cap at 100% for the width, but maybe change color if over budget.
+  } else if (expenses > 0) {
+    percent = 100; // All expenses, no income = 100% bar
+  }
+
+  expenseBar.style.width = Math.min(percent, 100) + "%";
+
+  // Change color based on health
+  if (expenses > income && income > 0) {
+    expenseBar.style.background = "var(--color-expense)";
+  } else if (percent > 80) {
+    expenseBar.style.background = "#fbbf24"; // warning yellow/orange
+  } else {
+    expenseBar.style.background = ""; // reset to default gradient
+  }
+}
+
+function drawSummary() {
+  const income = Number(incomeInput.value || 0);
   const expenses = totalExpenses();
   const savings = income - expenses;
-  const rate = income>0 ? Math.max(0,(savings/income)*100) : 0;
+  const rate = income > 0 ? ((savings / income) * 100) : 0;
 
-  const elementsToAnimate = [totalExpensesEl, sumIncomeEl, sumExpensesEl, sumSavingsEl, savingsRateEl];
-  elementsToAnimate.forEach(el => el.classList.remove('fade-in'));
+  // Format Rate Display
+  const rateText = savings >= 0
+    ? `${Math.max(0, rate).toFixed(0)}% Saved`
+    : `Over budget`;
 
+  // Update DOM
   totalExpensesEl.textContent = fmt(expenses);
   sumIncomeEl.textContent = fmt(income);
   sumExpensesEl.textContent = fmt(expenses);
   sumSavingsEl.textContent = fmt(savings);
-  savingsRateEl.textContent = rate.toFixed(0) + "%";
 
-  elementsToAnimate.forEach(el => el.classList.add('fade-in'));
-
-  sumSavingsEl.classList.remove('highlight-value', 'highlight-value-red');
-  sumExpensesEl.classList.remove('highlight-value');
-  totalExpensesEl.classList.remove('highlight-value');
-
-  if (savings >= 0) {
-    sumSavingsEl.classList.add('highlight-value');
-    sumSavingsEl.classList.remove('negative');
-    sumSavingsEl.classList.add('positive');
-  } else {
-    sumSavingsEl.classList.add('highlight-value-red');
-    sumSavingsEl.classList.remove('positive');
-    sumSavingsEl.classList.add('negative');
+  // Savings Rate / Status Logic
+  if (savingsRateEl) {
+    savingsRateEl.textContent = rateText;
+    if (savings < 0) {
+      savingsRateEl.classList.add("text-expense");
+      savingsRateEl.classList.remove("text-success", "text-muted");
+    } else {
+      savingsRateEl.classList.remove("text-expense", "text-muted");
+      savingsRateEl.classList.add("text-success");
+    }
   }
-  sumExpensesEl.classList.add('highlight-value');
-  totalExpensesEl.classList.add('highlight-value');
 
-  setTimeout(() => {
-    sumSavingsEl.classList.remove('highlight-value', 'highlight-value-red');
-    sumExpensesEl.classList.remove('highlight-value');
-    totalExpensesEl.classList.remove('highlight-value');
-    elementsToAnimate.forEach(el => el.classList.remove('fade-in'));
-  }, 1000);
+  // Update Overview Colors
+  if (savings >= 0) {
+    sumSavingsEl.className = "overview-value text-saving";
+  } else {
+    sumSavingsEl.className = "overview-value text-expense";
+  }
+
+  updateProgressBar(income, expenses);
 }
 
-function randomColor(i){
-  // deterministic pleasant colors
+function randomColor(i) {
   const hues = [210, 260, 190, 20, 340, 120, 280, 45, 160, 0, 300, 200];
   const h = hues[i % hues.length];
   return `hsl(${h} 70% 55%)`;
 }
 
 function drawChart() {
-    const data = rows.filter(r => Number(r.amount) > 0);
-    const total = data.reduce((s, r) => s + Number(r.amount), 0);
-    legend.innerHTML = "";
+  const data = rows.filter(r => Number(r.amount) > 0);
+  const total = data.reduce((s, r) => s + Number(r.amount), 0);
+  legend.innerHTML = "";
 
-    const chartContainer = document.getElementById("chart-container");
-    const chartEmptyState = document.getElementById("chart-empty-state");
+  const chartContainer = document.getElementById("chart-container");
+  const chartEmptyState = document.getElementById("chart-empty-state");
 
-    if (total <= 0) {
-        chartContainer.style.display = "none";
-        chartEmptyState.style.display = "block";
-    } else {
-        chartContainer.style.display = "block";
-        chartEmptyState.style.display = "none";
-    }
+  if (total <= 0) {
+    chartContainer.style.display = "none";
+    chartEmptyState.style.display = "block";
+  } else {
+    chartContainer.style.display = "block";
+    chartEmptyState.style.display = "none";
+  }
 
-    chart.data.labels = data.map(r => r.category);
-    chart.data.datasets[0].data = data.map(r => r.amount);
-    chart.data.datasets[0].backgroundColor = data.map((_, i) => randomColor(i));
-    chart.update();
+  if (!chart) return; // safety
 
-    data.forEach((r, i) => {
-        const it = document.createElement("div");
-        it.className = "item";
-        it.setAttribute("role", "listitem");
+  chart.data.labels = data.map(r => r.category);
+  chart.data.datasets[0].data = data.map(r => r.amount);
+  chart.data.datasets[0].backgroundColor = data.map((_, i) => randomColor(i));
+  chart.update();
 
-        const labelLine = document.createElement("span");
-        labelLine.className = "legend__label";
+  // Custom Legend
+  data.forEach((r, i) => {
+    const item = document.createElement("div");
+    item.className = "d-flex align-items-center small border rounded px-2 py-1 bg-white shadow-sm";
 
-        const dot = document.createElement("span");
-        dot.className = "dot";
-        dot.style.background = randomColor(i);
-        labelLine.appendChild(dot);
+    const dot = document.createElement("span");
+    dot.style.width = "10px";
+    dot.style.height = "10px";
+    dot.style.borderRadius = "50%";
+    dot.style.backgroundColor = randomColor(i);
+    dot.style.marginRight = "8px";
 
-        const labelText = document.createElement("span");
-        labelText.textContent = `${r.category} (${fmt(r.amount)})`;
-        labelLine.appendChild(labelText);
+    const text = document.createElement("span");
+    text.textContent = `${r.category}: ${fmt(r.amount)}`;
 
-        it.appendChild(labelLine);
-
-        const detailText = (r.notes && r.notes.trim()) || r.noteHint || "";
-        if (detailText) {
-            const detail = document.createElement("span");
-            detail.className = "legend__note";
-            detail.textContent = `Note: ${detailText}`;
-            it.appendChild(detail);
-        }
-        legend.appendChild(it);
-    });
+    item.appendChild(dot);
+    item.appendChild(text);
+    legend.appendChild(item);
+  });
 }
 
-function draw(){
+function draw() {
   drawSummary();
   drawChart();
   saveState();
 }
 
-function addRow(category="", amount="", notes=""){
-  const newRow = {category, amount, notes, noteHint: ""};
+function addRow(category = "", amount = "", notes = "") {
+  const newRow = { category, amount, notes, noteHint: "" };
   rows.push(newRow);
-  const newRowEl = createRowElement(newRow, rows.length - 1);
-  newRowEl.classList.add("row-enter");
-  rowsContainer.appendChild(newRowEl);
+  renderRows();
+
+  // Focus the new category input
+  const lastRow = rowsContainer.lastElementChild;
+  if (lastRow) {
+    const input = lastRow.querySelector("input");
+    if (input) input.focus();
+    lastRow.classList.add("row-enter");
+  }
+
   draw();
 }
 
-// Events
-if (addRowBtn) {
-  addRowBtn.addEventListener("click", () => addRow("", 0, ""));
-}
+// --- Event Listeners ---
+
+if (addRowBtn) addRowBtn.addEventListener("click", () => addRow("", "", ""));
 
 if (resetBtn) {
   resetBtn.addEventListener("click", () => {
-    rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
-    incomeInput.value = "";
-    incomeInput.step = "1"; // keep reset consistent
-    currencySelect.value = "€";
-    renderRows();
-    initChart();
-    draw();
+    if (confirm("Are you sure you want to reset all data?")) {
+      resetToDefaults();
+      renderRows(); // full re-render
+      // Re-init chart not strictly needed if we just update data, but good for safety
+      initChart();
+      draw();
+    }
   });
 }
 
@@ -312,7 +359,6 @@ if (loadSampleBtn) {
   loadSampleBtn.addEventListener("click", () => {
     rows = JSON.parse(JSON.stringify(SAMPLE_DATA.rows));
     incomeInput.value = SAMPLE_DATA.income;
-    incomeInput.step = "1";
     currencySelect.value = SAMPLE_DATA.currency;
     renderRows();
     draw();
@@ -322,10 +368,10 @@ if (loadSampleBtn) {
 if (exportBtn) {
   exportBtn.addEventListener("click", () => {
     const cur = currencySelect.value;
-    const income = Number(incomeInput.value||0);
-    const header = ["Category","Amount("+cur+")","Notes"].map(sanitizeCsvField);
+    const income = Number(incomeInput.value || 0);
+    const header = ["Category", "Amount(" + cur + ")", "Notes"].map(sanitizeCsvField);
     const lines = [header.join(",")];
-    rows.forEach(r=>{
+    rows.forEach(r => {
       lines.push([
         sanitizeCsvField(r.category),
         sanitizeCsvField(r.amount),
@@ -334,11 +380,10 @@ if (exportBtn) {
     });
     lines.push("");
     lines.push([sanitizeCsvField("Income"), sanitizeCsvField(income)].join(","));
-    const expenses = totalExpenses();
-    lines.push([sanitizeCsvField("Total Expenses"), sanitizeCsvField(expenses)].join(","));
-    lines.push([sanitizeCsvField("Savings"), sanitizeCsvField(income - expenses)].join(","));
+    lines.push([sanitizeCsvField("Total Expenses"), sanitizeCsvField(totalExpenses())].join(","));
+    lines.push([sanitizeCsvField("Savings"), sanitizeCsvField(income - totalExpenses())].join(","));
 
-    const blob = new Blob([lines.join("\n")], {type:"text/csv"});
+    const blob = new Blob([lines.join("\n")], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -355,76 +400,54 @@ if (printBtn) {
 }
 
 incomeInput.addEventListener("input", (e) => {
-    if (e.target.value < 0) {
-        e.target.value = 0;
-    }
-    draw();
-});
-currencySelect.addEventListener("change", ()=>{ renderRows(); draw(); });
-
-// Init
-function initChart() {
-    if (chart) {
-        chart.destroy();
-    }
-    const ctx = chartCanvas.getContext("2d");
-    chart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: [],
-            datasets: [{
-                data: [],
-                backgroundColor: [],
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.label || '';
-                            if (label) {
-                                label += ': ';
-                            }
-                            if (context.parsed !== null) {
-                                label += fmt(context.parsed);
-                            }
-                            return label;
-                        }
-                    }
-                }
-            }
-        }
-    });
-}
-
-function loadState() {
-  const savedState = localStorage.getItem(STORAGE_KEY);
-  if (savedState) {
-    try {
-      const state = JSON.parse(savedState);
-      rows = state.rows || JSON.parse(JSON.stringify(DEFAULT_ROWS));
-      incomeInput.value = state.income || "";
-      currencySelect.value = state.currency || "€";
-    } catch (e) {
-      console.error("Failed to parse saved state:", e);
-      // If parsing fails, fall back to default state
-      rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
-      incomeInput.value = "";
-    }
-  } else {
-    // No saved state, use defaults
-    rows = JSON.parse(JSON.stringify(DEFAULT_ROWS));
-    incomeInput.value = "";
-  }
-  renderRows();
-  initChart();
+  if (e.target.value < 0) e.target.value = 0;
   draw();
+});
+
+currencySelect.addEventListener("change", () => {
+  updateCurrencySymbols();
+  renderRows();
+  draw();
+});
+
+// --- Initialization ---
+
+function initChart() {
+  if (chart) chart.destroy();
+  const ctx = chartCanvas.getContext("2d");
+  chart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: [],
+      datasets: [{
+        data: [],
+        backgroundColor: [],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              let label = context.label || '';
+              if (label) label += ': ';
+              if (context.parsed !== null) label += fmt(context.parsed);
+              return label;
+            }
+          }
+        }
+      },
+      cutout: '65%' // Thinner doughnut
+    }
+  });
 }
 
+// Start
 loadState();
+renderRows();
+initChart();
+draw();

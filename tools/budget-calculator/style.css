@@ -95,7 +95,6 @@ h4 {
     font-size: clamp(1.1rem, 2.5vw, 1.25rem);
     margin: 0;
     padding: 0 1rem;
-    /* Prevent text touching edges on small screens */
 }
 
 .calculator-wrap {
@@ -147,7 +146,6 @@ h4 {
     color: var(--color-muted);
     font-size: 0.95rem;
     word-wrap: break-word;
-    /* Ensure functionality instructions don't overflow */
 }
 
 .checklist li::before {
@@ -167,15 +165,8 @@ h4 {
     border: 1px solid var(--bt-border);
     box-shadow: var(--shadow-lg);
     padding: clamp(1rem, 3vw, 2rem);
-    /* Ensure padding allows text to breathe */
     margin-bottom: 2rem;
     overflow: hidden;
-    /* Contain inner elements */
-}
-
-/* Prevent text overflow in cards */
-.budget-card p {
-    max-width: 100%;
 }
 
 .section-title {
@@ -185,7 +176,6 @@ h4 {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    /* Allow wrapping on small screens */
     gap: 0.5rem;
 }
 
@@ -267,7 +257,6 @@ h4 {
     font-family: "Poppins", sans-serif;
     font-weight: 700;
     font-size: 1.1rem;
-    /* Ensure values don't overflow sidebar */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -332,41 +321,33 @@ h4 {
     color: var(--color-text);
 }
 
-/* Table - Fix Horizontal Scroll and Text Visibility */
-.bt-table-wrapper {
-    overflow-x: auto;
+/* NEW: Card-Based Expense List Item */
+.expense-item {
+    background: var(--bt-surface);
+    border: 1px solid var(--bt-border);
     border-radius: var(--bt-radius-md);
-    border: 1px solid color-mix(in srgb, var(--bt-border) 70%, transparent);
-    /* Allow dropdown to break out if possible, but scroll usually conflicts. 
-       We handle this by min-width to reduce scroll need */
+    padding: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.expense-table {
-    min-width: 600px;
-    /* Force minimum width to prevent text squashing */
+.expense-item:focus-within {
+    border-color: var(--bt-primary);
+    box-shadow: var(--shadow-md);
 }
 
-.expense-table th {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--bt-muted);
-    padding-bottom: 1rem;
+/* Inputs inside expense item should be subtle */
+.expense-item .form-control {
+    background: transparent;
+    border: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    transition: background 0.2s;
 }
 
-.expense-row td {
-    padding: 0.75rem 0.5rem;
-    vertical-align: middle;
-    border-bottom: 1px solid var(--bt-border);
-    white-space: nowrap;
-    /* Prevent breaking mid-word */
-}
-
-/* Allow category notes to wrap if needed or truncate with ellipsis */
-.expense-row td:nth-child(3) {
-    /* Notes column */
-    white-space: normal;
-    min-width: 150px;
+.expense-item .form-control:focus {
+    background: var(--bt-surface-soft);
+    box-shadow: none;
+    /* We use the container focus ring or nothing */
 }
 
 .btn-remove {

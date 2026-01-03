@@ -192,10 +192,37 @@ function createRowElement(r, i) {
 
 function renderRows() {
   rowsContainer.innerHTML = "";
-  rows.forEach((r, i) => {
-    const rowEl = createRowElement(r, i);
-    rowsContainer.appendChild(rowEl);
-  });
+
+  if (rows.length === 0) {
+    const emptyRow = document.createElement("tr");
+    emptyRow.innerHTML = `
+        <td colspan="4" class="text-center py-5">
+            <div class="text-muted mb-3">No expenses added yet.</div>
+            <button id="btn-empty-load-sample" class="btn btn-sm btn-outline-primary">
+                Load Sample Data
+            </button>
+        </td>
+      `;
+    rowsContainer.appendChild(emptyRow);
+
+    // Bind event to the new button
+    const emptyBtn = document.getElementById("btn-empty-load-sample");
+    if (emptyBtn) {
+      emptyBtn.addEventListener("click", () => {
+        rows = JSON.parse(JSON.stringify(SAMPLE_DATA.rows));
+        incomeInput.value = SAMPLE_DATA.income;
+        currencySelect.value = SAMPLE_DATA.currency;
+        renderRows();
+        draw();
+      });
+    }
+  } else {
+    rows.forEach((r, i) => {
+      const rowEl = createRowElement(r, i);
+      rowsContainer.appendChild(rowEl);
+    });
+  }
+
   // Update currency symbols in new rows
   updateCurrencySymbols();
 }

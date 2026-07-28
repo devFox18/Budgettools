@@ -54,6 +54,34 @@
     });
   };
 
+  const initQuickCheck = () => {
+    const form = document.querySelector('[data-quick-check]');
+    if (!form) return;
+    const income = form.elements.income;
+    const costs = form.elements.costs;
+    const result = form.querySelector('[data-quick-result]');
+    const note = form.querySelector('[data-quick-note]');
+    const money = new Intl.NumberFormat('en-IE', {
+      style: 'currency',
+      currency: 'EUR',
+      maximumFractionDigits: 0
+    });
+    const update = () => {
+      const incomeValue = Math.max(0, Number(income.value) || 0);
+      const costsValue = Math.max(0, Number(costs.value) || 0);
+      const room = incomeValue - costsValue;
+      const percentage = incomeValue ? Math.round(Math.abs(room / incomeValue) * 100) : 0;
+      result.textContent = money.format(room);
+      result.classList.toggle('negative', room < 0);
+      note.textContent = room >= 0
+        ? `${percentage}% of your income is still available.`
+        : `Your essentials are ${percentage}% over your income.`;
+    };
+    form.addEventListener('input', update);
+    form.addEventListener('submit', (event) => event.preventDefault());
+    update();
+  };
+
   const initSiteNavigation = () => {
     const toggle = document.querySelector('[data-nav-toggle]');
     const nav = document.querySelector('[data-site-nav]');
@@ -67,7 +95,7 @@
     });
 
     const rootElement = document.documentElement;
-    const mobileQuery = window.matchMedia('(min-width: 721px)');
+    const mobileQuery = window.matchMedia('(min-width: 801px)');
 
     const isOpen = () => nav.getAttribute('data-open') === 'true';
     const isMobileViewport = () => !mobileQuery.matches;
@@ -163,18 +191,6 @@
 
     nav.addEventListener('click', (event) => {
       if (!isMobileViewport()) return;
-      const parentButton = event.target.closest('button.site-nav__link');
-      if (parentButton) {
-        const shouldOpen = !isDropdownOpen(parentButton);
-        if (shouldOpen) {
-          closeAllDropdowns({ except: parentButton });
-          openDropdown(parentButton);
-        } else {
-          closeDropdown(parentButton);
-        }
-        return;
-      }
-
       const anchorTarget = event.target.closest('a.site-nav__link, a.site-nav__sub-link, .site-nav__cta');
       if (anchorTarget) {
         if (anchorTarget.getAttribute('aria-current') === 'page') {
@@ -336,6 +352,7 @@
     fillCurrentYear();
     enhanceOptInForm();
     enhanceAffiliateButtons();
+    initQuickCheck();
 
     initSiteNavigation();
     hydratePreloadedStyles();

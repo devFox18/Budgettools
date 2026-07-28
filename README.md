@@ -1,4 +1,22 @@
-# Budgettools
+# BudgetTools
+
+BudgetTools is a static HTML, CSS, and JavaScript website. It does not use
+Next.js and needs no build step.
+
+## Deploying to Vercel
+
+Import `devFox18/Budgettools` into Vercel with these settings:
+
+- Framework Preset: **Other**
+- Root Directory: `./`
+- Build Command: leave empty
+- Output Directory: leave empty
+- Production Branch: `main`
+
+The included `vercel.json` makes clean URLs work and adds basic security
+headers. If Vercel shows the default Next.js starter page, the Vercel project
+is connected to the wrong repository, branch, or root directory. Correct the
+Git settings above and redeploy once without the build cache.
 
 Simple and powerful financial tools – Budget Calculator, Savings Tracker, and more.
 

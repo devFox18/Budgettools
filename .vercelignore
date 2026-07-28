@@ -1,0 +1,6 @@
+backend/
+tests/
+AGENTS.md
+README.md
+**/*.ts
+**/node_modules/

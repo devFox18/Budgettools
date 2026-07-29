@@ -78,22 +78,24 @@
 
   <main id="main-content">
     <section class="hero">
-      <div class="container hero__grid">
-        <div class="hero__copy">
+      <div class="container">
+        <div class="hero__topline">
           <span class="badge badge--lime">● Gratis, privé en zonder account</span>
-          <h1 class="hero__title">Reken slimmer met je <span>geld.</span></h1>
-          <p class="hero__lede">Praktische rekentools voor Nederland. Bereken je maandbudget, maak een haalbaar spaarplan en ontdek hoeveel je abonnementen werkelijk kosten.</p>
+          <span class="hero__counter">3 tools · direct resultaat</span>
+        </div>
+        <div class="hero__grid">
+        <div class="hero__copy">
+          <p class="hero__kicker">Waar wil je vandaag grip op krijgen?</p>
+          <h1 class="hero__title">Van geldvraag naar <span>duidelijk antwoord.</span></h1>
+          <p class="hero__lede">Kies je situatie, vul een paar bedragen in en weet meteen waar je staat. Gemaakt voor Nederlandse huishoudens.</p>
           <div class="hero__actions">
-            <a class="btn btn--primary" href="/tools/budget-calculator/">Bereken mijn budget <span aria-hidden="true">→</span></a>
-            <a class="btn btn--secondary" href="#rekentools">Bekijk alle tools</a>
+            <a class="btn btn--primary" href="#rekentools">Kies een rekentool <span aria-hidden="true">↓</span></a>
+            <a class="btn btn--secondary" href="#snelle-check">Doe de snelle check</a>
           </div>
-          <ul class="hero__meta" aria-label="Voordelen">
-            <li>Altijd gratis</li><li>Direct resultaat</li><li>Gegevens blijven privé</li>
-          </ul>
         </div>
 
-        <form class="quick-check game-card" data-quick-check>
-          <div class="card-topline"><span>Snelle budgetcheck</span><span class="window-dots" aria-hidden="true">● ● ●</span></div>
+        <form class="quick-check game-card" id="snelle-check" data-quick-check>
+          <div class="card-topline"><span>Probeer het direct</span><span class="window-dots" aria-hidden="true">● ● ●</span></div>
           <p class="quick-check__intro">Bekijk wat je na je vaste maandlasten overhoudt.</p>
           <div class="quick-check__fields">
             <label>Netto maandinkomen <span class="input-shell"><span>€</span><input name="income" type="number" min="0" step="50" value="2800" inputmode="decimal"></span></label>
@@ -104,6 +106,10 @@
           </div>
           <a class="text-link" href="/tools/budget-calculator/">Open de uitgebreide budgetcalculator →</a>
         </form>
+        </div>
+        <ul class="hero__meta" aria-label="Voordelen">
+          <li>Geen registratie</li><li>Geen gegevensopslag</li><li>Werkt op ieder apparaat</li><li>Uitleg in gewone taal</li>
+        </ul>
       </div>
     </section>
 
@@ -113,26 +119,34 @@
 
     <section class="section" id="rekentools">
       <div class="container">
-        <p class="section__eyebrow">Gratis online rekentools</p>
+        <p class="section__eyebrow">Kies je situatie</p>
         <div class="section-heading">
-          <h2 class="section__title">Drie tools. <span>Meer overzicht.</span></h2>
-          <p>Kies wat je vandaag wilt uitrekenen. Iedere berekening gebeurt lokaal op je eigen apparaat.</p>
+          <h2 class="section__title">Wat wil je <span>uitrekenen?</span></h2>
+          <p>Begin bij de vraag die nu speelt. Je kunt later altijd een andere rekentool openen.</p>
         </div>
-        <div class="tool-grid">
-          <article class="tool-card tool-card--blue">
-            <span class="tool-card__number">01</span><div class="pixel-icon" aria-hidden="true">€</div>
-            <h3>Budget berekenen</h3><p>Zet inkomsten en uitgaven naast elkaar en zie direct hoeveel je maandelijks overhoudt.</p>
-            <a href="/tools/budget-calculator/">Naar de budgetcalculator <span aria-hidden="true">→</span></a>
+        <div class="tool-grid tool-grid--bento">
+          <article class="tool-card tool-card--blue tool-card--featured">
+            <div class="tool-card__top"><span class="tool-card__number">01</span><span class="tool-card__tag">Meest gekozen</span></div>
+            <div class="pixel-icon" aria-hidden="true">€</div>
+            <div class="tool-card__body">
+              <p class="tool-card__question">“Wat houd ik deze maand over?”</p>
+              <h3>Budget berekenen</h3>
+              <p>Zet je netto inkomen en uitgaven overzichtelijk naast elkaar. Bekijk je vrije ruimte en verdeling per categorie.</p>
+              <ul class="tool-card__features"><li>Inkomsten en lasten</li><li>Visuele verdeling</li><li>CSV-export</li></ul>
+            </div>
+            <a class="tool-card__action" href="/tools/budget-calculator/">Start met je maandbudget <span aria-hidden="true">→</span></a>
           </article>
           <article class="tool-card tool-card--lime">
             <span class="tool-card__number">02</span><div class="pixel-icon" aria-hidden="true">↗</div>
-            <h3>Spaardoel berekenen</h3><p>Bereken hoeveel je per week of maand moet sparen om je doel op tijd te bereiken.</p>
-            <a href="/tools/savings-goal-calculator/">Maak een spaarplan <span aria-hidden="true">→</span></a>
+            <p class="tool-card__question">“Hoe haal ik mijn spaardoel?”</p>
+            <h3>Spaardoel berekenen</h3><p>Vertaal je eindbedrag en datum naar een haalbaar bedrag per week of maand.</p>
+            <a class="tool-card__action" href="/tools/savings-goal-calculator/">Maak mijn spaarplan <span aria-hidden="true">→</span></a>
           </article>
           <article class="tool-card tool-card--coral">
             <span class="tool-card__number">03</span><div class="pixel-icon" aria-hidden="true">×</div>
-            <h3>Abonnementskosten</h3><p>Tel terugkerende kosten op en ontdek wat opzeggen je per maand en jaar oplevert.</p>
-            <a href="/tools/subscription-saver/">Bereken abonnementen <span aria-hidden="true">→</span></a>
+            <p class="tool-card__question">“Waar lekken kleine bedragen weg?”</p>
+            <h3>Abonnementskosten</h3><p>Maak terugkerende kosten zichtbaar en zie wat stoppen per maand én per jaar scheelt.</p>
+            <a class="tool-card__action" href="/tools/subscription-saver/">Check mijn abonnementen <span aria-hidden="true">→</span></a>
           </article>
         </div>
       </div>
@@ -142,13 +156,13 @@
       <div class="container process-grid">
         <div>
           <p class="section__eyebrow">Zo werkt NLrekentools</p>
-          <h2 class="section__title">Duidelijkheid in <span>drie stappen.</span></h2>
-          <p>Geen registratie, ingewikkelde uitleg of financieel jargon. Je krijgt binnen enkele minuten een begrijpelijke uitkomst.</p>
+          <h2 class="section__title">Geen gedoe. <span>Wel inzicht.</span></h2>
+          <p>Iedere tool volgt dezelfde eenvoudige route. Daardoor weet je vooraf precies wat je kunt verwachten.</p>
         </div>
         <ol class="level-list">
-          <li><span>Stap 1</span><div><h3>Kies een rekentool</h3><p>Bereken je budget, spaardoel of abonnementen.</p></div></li>
-          <li><span>Stap 2</span><div><h3>Vul je bedragen in</h3><p>Je gegevens blijven op je eigen apparaat.</p></div></li>
-          <li><span>Stap 3</span><div><h3>Gebruik de uitkomst</h3><p>Maak een concreet plan dat bij jouw situatie past.</p></div></li>
+          <li><span>01 · Kies</span><div><h3>Start met één geldvraag</h3><p>Geen keuzestress: kies de situatie die vandaag belangrijk is.</p></div></li>
+          <li><span>02 · Reken</span><div><h3>Gebruik je eigen bedragen</h3><p>De berekening gebeurt meteen en volledig in je browser.</p></div></li>
+          <li><span>03 · Beslis</span><div><h3>Zie je volgende stap</h3><p>Je krijgt een duidelijke uitkomst waarmee je verder kunt.</p></div></li>
         </ol>
       </div>
     </section>

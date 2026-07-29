@@ -11,14 +11,13 @@
   <link rel="canonical" href="https://nlrekentools.nl/tools/budget-calculator/" />
 
   <!-- Global Assets -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="/assets/css/style.css" />
 
   <!-- Tool Specific Styles -->
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="/assets/css/tools.css" />
   <link rel="stylesheet" href="/assets/css/mature.css" />
+  <link rel="stylesheet" href="/tools/budget-calculator/budget-v2.css" />
 
   <script>
     document.documentElement.classList.remove('no-js');
@@ -26,7 +25,7 @@
   </script>
 </head>
 
-<body class="tool-page">
+<body class="tool-page budget-page">
   <a class="skip-link" href="#main-content">Naar de inhoud</a>
   <header class="site-header" role="banner">
     <div class="site-header__inner">
@@ -120,164 +119,126 @@
   </header>
 
   <main id="main-content">
-
-    <!-- Unified Page Hero -->
-    <section class="page-hero" aria-labelledby="hero-title">
-      <div class="page-hero__inner">
-        <p class="page-hero__eyebrow">Persoonlijke financiën</p>
-        <h1 id="hero-title">Maandbudget berekenen</h1>
-        <p class="page-hero__lede">
-          Vul je netto inkomen en maandelijkse uitgaven in. Je ziet direct hoeveel je overhoudt en waar je geld naartoe gaat.
-          Alles blijft privé op je eigen apparaat.
-        </p>
-        <div id="status-indicator" role="status" aria-live="polite"
-          style="opacity:0; transition: opacity 0.5s; font-size: 0.9rem; color: var(--bt-primary);"></div>
+    <section class="budget-hero" aria-labelledby="hero-title">
+      <div class="budget-hero__inner">
+        <div>
+          <p class="budget-eyebrow">Maandbudget</p>
+          <h1 id="hero-title">Weet wat je overhoudt.</h1>
+          <p class="budget-hero__lede">Zet je inkomen en uitgaven overzichtelijk naast elkaar. Je ziet direct waar je geld naartoe gaat en hoeveel ruimte er deze maand overblijft.</p>
+        </div>
+        <ul class="budget-trust" aria-label="Eigenschappen">
+          <li><span aria-hidden="true">✓</span> Geen account</li>
+          <li><span aria-hidden="true">✓</span> Automatisch opgeslagen</li>
+          <li><span aria-hidden="true">✓</span> Blijft op je apparaat</li>
+        </ul>
       </div>
     </section>
 
-    <section class="calculator-wrap">
-      <div class="calculator-layout">
+    <section class="budget-app" aria-label="Budgetcalculator">
+      <div id="status-indicator" class="save-status" role="status" aria-live="polite"></div>
 
-        <!-- MAIN APP AREA -->
-        <div class="calculator-layout__app">
-
-          <!-- Settings Card -->
-          <div class="budget-card">
-            <div class="section-title">
-              <h2>Inkomen en instellingen</h2>
+      <div class="budget-workspace">
+        <div class="budget-workspace__main">
+          <section class="budget-panel budget-panel--income" aria-labelledby="income-heading">
+            <div class="budget-panel__heading">
+              <span class="step-number" aria-hidden="true">1</span>
+              <div><p class="step-label">Begin hier</p><h2 id="income-heading">Wat komt er binnen?</h2></div>
             </div>
-            <div class="row g-4">
-              <div class="col-md-6">
-                <label for="income" class="form-label">Netto maandinkomen</label>
-                <div class="currency-input-group">
-                  <span class="currency-symbol js-currency-symbol">€</span>
-                  <input type="number" id="income" placeholder="0.00" min="0" step="any" inputmode="decimal"
-                    class="form-control" />
-                </div>
-              </div>
-              <div class="col-md-6">
-                <label for="currency" class="form-label">Valuta</label>
+            <div class="income-grid">
+              <label for="income">Netto maandinkomen
+                <span class="currency-input-group">
+                  <span class="currency-symbol js-currency-symbol" aria-hidden="true">€</span>
+                  <input type="number" id="income" placeholder="0,00" min="0" step="any" inputmode="decimal" class="form-control" />
+                </span>
+              </label>
+              <label for="currency">Valuta
                 <select id="currency" class="form-select">
                   <option value="€" selected>Euro (€)</option>
-                  <option value="$">US Dollar ($)</option>
-                  <option value="£">Pound (£)</option>
+                  <option value="$">Amerikaanse dollar ($)</option>
+                  <option value="£">Britse pond (£)</option>
                 </select>
-              </div>
+              </label>
             </div>
-          </div>
+          </section>
 
-          <!-- Expenses Card -->
-          <div class="budget-card">
-            <div class="section-title">
-              <h2>Maandelijkse uitgaven</h2>
-              <div class="d-flex gap-2">
-                <div class="dropdown">
-                  <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    Acties
-                  </button>
-                  <ul class="dropdown-menu shadow border-0" style="border-radius:12px;">
-                    <li><button class="dropdown-item" id="reset" type="button">Alles wissen</button></li>
-                    <li><button class="dropdown-item" id="loadSample" type="button">Voorbeeld laden</button></li>
-                    <li>
-                      <hr class="dropdown-divider">
-                    </li>
-                    <li><button class="dropdown-item" id="export" type="button">CSV downloaden</button></li>
-                    <li><button class="dropdown-item" id="print" type="button">Overzicht afdrukken</button></li>
-                  </ul>
-                </div>
-                <button class="btn btn-primary btn-sm" id="addRow" type="button">
-                    + Uitgave toevoegen
-                </button>
-              </div>
+          <section class="budget-panel budget-panel--expenses" aria-labelledby="expenses-heading">
+            <div class="budget-panel__heading budget-panel__heading--actions">
+              <span class="step-number" aria-hidden="true">2</span>
+              <div><p class="step-label">Maak het compleet</p><h2 id="expenses-heading">Waar geef je geld aan uit?</h2></div>
+              <button class="button button--primary" id="addRow" type="button">Uitgave toevoegen</button>
+            </div>
+
+            <div class="expense-toolbar" aria-label="Budgetacties">
+              <button class="button button--quiet" id="loadSample" type="button">Voorbeeld laden</button>
+              <button class="button button--quiet" id="export" type="button">CSV downloaden</button>
+              <button class="button button--quiet" id="print" type="button">Afdrukken</button>
+              <button class="button button--danger" id="reset" type="button">Alles wissen</button>
             </div>
 
             <div class="bt-table-wrapper">
-              <table class="table mb-0 align-middle expense-table">
+              <table class="expense-table">
                 <thead>
                   <tr>
-                    <th scope="col" style="width: 35%; padding-left: 1rem;">Categorie</th>
-                    <th scope="col" style="width: 25%;">Bedrag</th>
-                    <th scope="col" style="width: 35%;">Notitie</th>
-                    <th scope="col" style="width: 5%;"><span class="visually-hidden">Acties</span></th>
+                    <th scope="col">Categorie</th>
+                    <th scope="col">Bedrag</th>
+                    <th scope="col">Notitie</th>
+                    <th scope="col"><span class="sr-only">Acties</span></th>
                   </tr>
                 </thead>
-                <tbody id="rows">
-                  <!-- Rows injected by script.js -->
-                </tbody>
+                <tbody id="rows"></tbody>
               </table>
             </div>
-            <div class="d-flex justify-content-end align-items-center mt-3 p-3 bg-light rounded-3"
-              style="background-color: var(--bt-surface-soft)!important">
-              <span class="text-muted small fw-bold text-uppercase me-3">Totale uitgaven</span>
-              <span id="totalExpenses" class="h4 mb-0 fw-bold text-expense">€0.00</span>
-            </div>
-          </div>
 
-          <!-- Visuals Card -->
-          <div class="budget-card">
-            <div class="section-title">
-              <h2>Verdeling van je uitgaven</h2>
+            <div class="expense-total">
+              <span>Totale uitgaven</span>
+              <strong id="totalExpenses">€ 0,00</strong>
             </div>
-            <div class="position-relative">
-              <div id="chart-container" class="chart-container">
-                <canvas id="chart" role="img" aria-label="Diagram van uitgaven per categorie"></canvas>
-              </div>
-              <div id="chart-empty-state" class="text-center py-5 text-muted">
-                <p class="mb-0">Vul uitgaven in om de verdeling te bekijken.</p>
-              </div>
-            </div>
-            <div id="legend" class="d-flex flex-wrap gap-2 mt-4 justify-content-center"></div>
-          </div>
+          </section>
 
+          <section class="budget-panel budget-panel--chart" aria-labelledby="chart-heading">
+            <div class="budget-panel__heading">
+              <span class="step-number" aria-hidden="true">3</span>
+              <div><p class="step-label">Bekijk de verdeling</p><h2 id="chart-heading">Waar gaat je geld naartoe?</h2></div>
+            </div>
+            <div class="chart-layout">
+              <div class="chart-stage">
+                <div id="chart-container" class="chart-container">
+                  <canvas id="chart" role="img" aria-label="Diagram van uitgaven per categorie"></canvas>
+                </div>
+                <div id="chart-empty-state" class="chart-empty">
+                  <p>Vul uitgaven in om de verdeling te bekijken.</p>
+                </div>
+              </div>
+              <div id="legend" class="chart-legend"></div>
+            </div>
+          </section>
         </div>
-        <!-- END MAIN APP AREA -->
 
-        <!-- SIDEBAR -->
-        <aside class="calculator-layout__aside">
-
-          <!-- Summary Overview (Sticky Results) -->
-          <div class="card--subtle results-summary-mount" aria-live="polite">
-            <h3 class="h5 mb-3">Budgetoverzicht</h3>
-
-            <div class="overview-item">
-              <span class="overview-label">Inkomen</span>
-              <span id="sumIncome" class="overview-value text-income">€0.00</span>
+        <aside class="budget-workspace__aside" aria-label="Budgetresultaat">
+          <section class="result-card" aria-live="polite">
+            <div class="result-card__header">
+              <p class="step-label">Jouw maand</p>
+              <h2>Budgetoverzicht</h2>
             </div>
-            <div class="overview-item">
-              <span class="overview-label">Uitgaven</span>
-              <span id="sumExpenses" class="overview-value text-expense">€0.00</span>
+            <dl class="result-list">
+              <div><dt>Inkomen</dt><dd id="sumIncome">€ 0,00</dd></div>
+              <div><dt>Uitgaven</dt><dd id="sumExpenses">€ 0,00</dd></div>
+              <div class="result-list__balance"><dt>Resterend</dt><dd id="sumSavings">€ 0,00</dd></div>
+            </dl>
+            <div class="budget-meter">
+              <div class="budget-meter__label"><span>Beschikbaar</span><strong id="savingsRate">0%</strong></div>
+              <div class="budget-progress-container"><div id="expenseBar" class="budget-progress-bar"></div></div>
             </div>
-            <div class="overview-item">
-              <span class="overview-label">Resterend</span>
-              <span id="sumSavings" class="overview-value text-saving">€0.00</span>
-            </div>
+            <p class="result-card__note">Dit overzicht wordt direct bijgewerkt wanneer je een bedrag wijzigt.</p>
+          </section>
 
-            <div class="mt-3">
-              <div class="d-flex justify-content-between align-items-baseline mb-1">
-                <span class="overview-label">Budget gebruikt</span>
-                <span id="savingsRate" class="small fw-bold text-muted">0%</span>
-              </div>
-              <div class="budget-progress-container mb-1">
-                <div id="expenseBar" class="budget-progress-bar"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tips / Instructions (Matches other tools sidebar) -->
-          <div class="card--subtle">
-            <h3 class="h5 mb-3">Zo gebruik je de tool</h3>
-            <ul class="checklist">
-              <li>Vul je netto maandinkomen in.</li>
-              <li>Voeg vaste lasten en wisselende uitgaven toe.</li>
-              <li>Bekijk hoeveel je overhoudt en hoe je uitgaven zijn verdeeld.</li>
-              <li>Gebruik <strong>Acties</strong> om je overzicht te downloaden, af te drukken of te wissen.</li>
-            </ul>
-          </div>
-
+          <section class="privacy-note">
+            <span class="privacy-note__icon" aria-hidden="true">✓</span>
+            <div><h2>Privé op je apparaat</h2><p>Je bedragen worden niet naar een server verstuurd.</p></div>
+          </section>
         </aside>
       </div>
-      <p class="calculator-footnote text-center mt-5">Je gegevens verlaten je browser niet.</p>
+      <p class="calculator-footnote">Indicatieve berekening, geen persoonlijk financieel advies.</p>
     </section>
   </main>
 
@@ -291,9 +252,6 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-    crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script defer src="/assets/js/main.js"></script>
   <script defer src="/tools/budget-calculator/script.js"></script>

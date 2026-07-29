@@ -208,7 +208,7 @@ function renderRows() {
     emptyRow.innerHTML = `
         <td colspan="4" class="text-center py-5">
             <div class="text-muted mb-3">Nog geen uitgaven toegevoegd.</div>
-            <button id="btn-empty-load-sample" class="btn btn-sm btn-outline-primary">
+            <button id="btn-empty-load-sample" class="button button--quiet">
                 Voorbeeld laden
             </button>
         </td>
@@ -334,14 +334,11 @@ function drawChart() {
   // Custom Legend
   data.forEach((r, i) => {
     const item = document.createElement("div");
-    item.className = "d-flex align-items-center small border rounded px-2 py-1 bg-white shadow-sm";
+    item.className = "legend-item";
 
     const dot = document.createElement("span");
-    dot.style.width = "10px";
-    dot.style.height = "10px";
-    dot.style.borderRadius = "50%";
+    dot.className = "legend-dot";
     dot.style.backgroundColor = randomColor(i);
-    dot.style.marginRight = "8px";
 
     const text = document.createElement("span");
     text.textContent = `${r.category}: ${fmt(r.amount)}`;

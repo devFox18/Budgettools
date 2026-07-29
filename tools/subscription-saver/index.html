@@ -111,9 +111,10 @@
       .no-js .site-nav__sub-list { max-height: none; padding-bottom: 0; }
     }
   </style>
+  <link rel="stylesheet" href="/assets/css/tools.css" />
 </head>
-<body>
-  <a class="skip-link" href="#main-content">Skip to content</a>
+<body class="tool-page">
+  <a class="skip-link" href="#main-content">Naar de inhoud</a>
   <header class="site-header" role="banner">
     <div class="site-header__inner">
       <a class="site-logo" href="/">
@@ -127,20 +128,20 @@
         </span>
         <span class="site-nav__toggle-label">Menu</span>
       </button>
-      <nav class="site-nav" aria-label="Main navigation" data-site-nav>
+      <nav class="site-nav" aria-label="Hoofdnavigatie" data-site-nav>
         <ul class="site-nav__list" id="site-menu">
           <li class="site-nav__item"><a class="site-nav__link" href="/">Home</a></li>
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
             <button class="site-nav__link" type="button" id="nav-tools" data-nav-parent data-active="true" aria-expanded="false" aria-haspopup="true" aria-controls="nav-tools-menu">
-              Tools
+              Rekentools
               <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
                 <path d="M3.22 5.22a.75.75 0 0 1 1.06 0L8 8.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L3.22 6.28a.75.75 0 0 1 0-1.06z" fill="currentColor" />
               </svg>
             </button>
             <ul class="site-nav__sub-list" id="nav-tools-menu" aria-labelledby="nav-tools" data-nav-submenu>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/budget-calculator/">Budget Calculator</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/savings-goal-calculator/">Savings Goal Calculator</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/subscription-saver/" aria-current="page">Subscription Saver</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/budget-calculator/">Budget berekenen</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/savings-goal-calculator/">Spaardoel berekenen</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/subscription-saver/" aria-current="page">Abonnementskosten</a></li>
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Budget Planner · Coming soon</span></li>
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Tax Estimator · Coming soon</span></li>
             </ul>
@@ -148,7 +149,7 @@
 
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
             <button class="site-nav__link" type="button" id="nav-resources" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-resources-menu">
-              Resources
+              Informatie
               <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
                 <path d="M3.22 5.22a.75.75 0 0 1 1.06 0L8 8.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L3.22 6.28a.75.75 0 0 1 0-1.06z" fill="currentColor" />
               </svg>
@@ -192,19 +193,19 @@
     <main id="main-content">
     <section class="page-hero">
       <div class="page-hero__inner">
-        <p class="page-hero__eyebrow">Budget clarity</p>
+        <p class="page-hero__eyebrow">Terugkerende kosten</p>
         <h1>Abonnementskosten berekenen</h1>
-        <p class="page-hero__lede">Track every recurring charge, see true monthly and yearly totals, and uncover quick wins before the next renewal hits.</p>
-        <p class="page-hero__meta">Everything stays on this device - load demo data to explore or export a snapshot when you're finished.</p>
+        <p class="page-hero__lede">Breng al je abonnementen samen en bekijk direct wat je per maand en per jaar betaalt.</p>
+        <p class="page-hero__meta">Alles blijft op dit apparaat. Laad voorbeelddata of exporteer je eigen overzicht.</p>
         <div class="hero-actions button-row">
-          <button type="button" class="btn" id="demoDataButtonTop">Load demo data</button>
-          <button type="button" class="btn btn--ghost" id="exportCsvButtonTop">Export CSV</button>
-          <button type="button" class="btn btn--inline" data-open-shortcuts>Keyboard shortcuts</button>
+          <button type="button" class="btn" id="demoDataButtonTop">Voorbeeld laden</button>
+          <button type="button" class="btn btn--ghost" id="exportCsvButtonTop">CSV exporteren</button>
+          <button type="button" class="btn btn--inline" data-open-shortcuts>Sneltoetsen</button>
         </div>
         <ul class="checklist">
-          <li>See monthly and yearly commitments at a glance.</li>
-          <li>Filter by category or frequency to surface duplicates.</li>
-          <li>Queue subscriptions for optimization before you cancel.</li>
+          <li>Bekijk je maandelijkse en jaarlijkse kosten.</li>
+          <li>Filter op categorie of betaalfrequentie.</li>
+          <li>Vergelijk wat pauzeren of opzeggen je oplevert.</li>
         </ul>
       </div>
     </section>

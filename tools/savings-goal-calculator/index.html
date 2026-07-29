@@ -102,9 +102,10 @@
       .no-js .site-nav__sub-list { max-height: none; padding-bottom: 0; }
     }
   </style>
+  <link rel="stylesheet" href="/assets/css/tools.css" />
 </head>
-<body>
-  <a class="skip-link" href="#main-content">Skip to content</a>
+<body class="tool-page">
+  <a class="skip-link" href="#main-content">Naar de inhoud</a>
   <header class="site-header" role="banner">
     <div class="site-header__inner">
       <a class="site-logo" href="/">
@@ -118,20 +119,20 @@
         </span>
         <span class="site-nav__toggle-label">Menu</span>
       </button>
-      <nav class="site-nav" aria-label="Main navigation" data-site-nav>
+      <nav class="site-nav" aria-label="Hoofdnavigatie" data-site-nav>
         <ul class="site-nav__list" id="site-menu">
           <li class="site-nav__item"><a class="site-nav__link" href="/">Home</a></li>
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
             <button class="site-nav__link" type="button" id="nav-tools" data-nav-parent data-active="true" aria-expanded="false" aria-haspopup="true" aria-controls="nav-tools-menu">
-              <span>Tools</span>
+              <span>Rekentools</span>
               <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
                 <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
               </svg>
             </button>
             <ul class="site-nav__sub-list" id="nav-tools-menu" aria-labelledby="nav-tools" data-nav-submenu>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/budget-calculator/">Budget Calculator</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/savings-goal-calculator/" aria-current="page">Savings Goal Calculator</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/subscription-saver/">Subscription Saver</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/budget-calculator/">Budget berekenen</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/savings-goal-calculator/" aria-current="page">Spaardoel berekenen</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/subscription-saver/">Abonnementskosten</a></li>
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Budget Planner · Coming soon</span></li>
               <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Tax Estimator · Coming soon</span></li>
             </ul>
@@ -139,7 +140,7 @@
 
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
             <button class="site-nav__link" type="button" id="nav-resources" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-resources-menu">
-              <span>Resources</span>
+              <span>Informatie</span>
               <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
                 <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
               </svg>
@@ -153,7 +154,7 @@
           </li>
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
             <button class="site-nav__link" type="button" id="nav-privacy" data-nav-parent aria-expanded="false" aria-haspopup="true" aria-controls="nav-privacy-menu">
-              <span>Privacy &amp; Terms</span>
+              <span>Privacy en voorwaarden</span>
               <svg class="site-nav__caret" viewBox="0 0 16 16" focusable="false" aria-hidden="true">
                 <path fill="currentColor" d="M3.2 6.2a.75.75 0 0 1 1.06 0L8 9.94l3.74-3.74a.75.75 0 1 1 1.06 1.06l-4.27 4.27a.75.75 0 0 1-1.06 0L3.2 7.26a.75.75 0 0 1 0-1.06z" />
               </svg>
@@ -183,38 +184,38 @@
   <main id="main-content">
     <section class="page-hero" aria-labelledby="savings-heading">
       <div class="page-hero__inner">
-        <p class="page-hero__eyebrow">Savings goal tool</p>
+        <p class="page-hero__eyebrow">Spaardoel calculator</p>
         <h1 id="savings-heading">Bereken je spaardoel stap voor stap</h1>
-        <p class="page-hero__lede">Enter your goal, current savings, and planned deposits to see when you can reach the amount you want. Change interest, schedule, or start date and the results update right away.</p>
-        <p class="page-hero__meta">Calculations follow the schedule you choose. Interest rate and start date are optional—leave them blank for a quick estimate.</p>
+        <p class="page-hero__lede">Vul je spaardoel, huidige spaargeld en geplande inleg in. Je ziet direct wanneer je jouw doel kunt bereiken.</p>
+        <p class="page-hero__meta">Rente en startdatum zijn optioneel. Laat ze leeg voor een snelle schatting.</p>
       </div>
     </section>
 
-    <section class="calculator-wrap" aria-label="Savings goal calculator">
+    <section class="calculator-wrap" aria-label="Spaardoel calculator">
       <div class="calculator-layout">
         <div class="calculator-layout__app" id="savings-calculator"></div>
-        <aside class="calculator-layout__aside" aria-label="Additional tools">
+        <aside class="calculator-layout__aside" aria-label="Extra uitleg">
 
           <div class="results-summary-mount" data-results-summary></div>
           <div class="card card--subtle">
-            <h2 id="tips-heading">Getting started</h2>
+            <h2 id="tips-heading">Zo begin je</h2>
             <ul class="checklist">
-              <li>Enter your goal amount, current savings, and how often you add money, then choose timeline or target-date mode.</li>
-              <li>Add an interest rate, deposit schedule, or start date if you need them—the numbers update as you type.</li>
-              <li>Review the results for finish date and totals, then export or copy the report when you’re ready.</li>
+              <li>Vul je doelbedrag, huidige spaargeld en periodieke inleg in.</li>
+              <li>Voeg eventueel rente en een startdatum toe; de uitkomst wordt direct bijgewerkt.</li>
+              <li>Bekijk de einddatum en totalen en exporteer je resultaat wanneer je klaar bent.</li>
             </ul>
           </div>
         </aside>
       </div>
-      <p class="calculator-footnote">Estimates only. Returns are not guaranteed. Everything runs locally in your browser.</p>
+      <p class="calculator-footnote">De uitkomst is een schatting. Alles wordt lokaal in je browser berekend.</p>
     </section>
   </main>
   <footer role="contentinfo">
     <div class="footer-inner">
-      <p>© <span data-year></span> NLrekentools. Built for transparent personal finance.</p>
+      <p>© <span data-year></span> NLrekentools. Helder rekenen aan je geld.</p>
       <nav aria-label="Footer">
         <a href="/privacy.html">Privacy</a>
-        <a href="/terms.html">Terms</a>
+        <a href="/terms.html">Voorwaarden</a>
       </nav>
     </div>
   </footer>

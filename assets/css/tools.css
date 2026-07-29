@@ -1,0 +1,257 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;700;800&display=swap");
+
+body.tool-page {
+  --tool-bg: #f5f0e6;
+  --tool-surface: #fffdf8;
+  --tool-ink: #20201f;
+  --tool-muted: #5f5d57;
+  --tool-border: #20201f;
+  --tool-blue: #3657ff;
+  --tool-lime: #c8f36a;
+  --tool-coral: #ff6b45;
+  --tool-radius: 20px;
+  --tool-shadow: 6px 6px 0 var(--tool-border);
+  --container-width: min(1160px, 100% - 3rem);
+  margin: 0;
+  overflow-x: clip;
+  color: var(--tool-ink);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--tool-border) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--tool-border) 6%, transparent) 1px, transparent 1px),
+    var(--tool-bg);
+  background-size: 32px 32px;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+.tool-page h1,
+.tool-page h2,
+.tool-page h3,
+.tool-page h4 {
+  color: var(--tool-ink);
+  font-family: "Archivo Black", Impact, sans-serif;
+  letter-spacing: -.035em;
+}
+
+.tool-page .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  min-height: 76px;
+  color: var(--tool-ink);
+  background: color-mix(in srgb, var(--tool-bg) 97%, transparent);
+  border-bottom: 2px solid var(--tool-border);
+  box-shadow: none;
+  backdrop-filter: blur(14px);
+}
+
+.tool-page .site-header__inner {
+  width: var(--container-width);
+  min-height: 76px;
+  margin-inline: auto;
+  padding: .75rem 0;
+}
+
+.tool-page .site-logo {
+  color: var(--tool-ink);
+  font-family: "Archivo Black", Impact, sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: -.04em;
+}
+
+.tool-page .site-nav__link,
+.tool-page .site-nav__cta {
+  min-height: 42px;
+  padding: .6rem .8rem;
+  color: var(--tool-ink);
+  border-radius: 10px;
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.tool-page .site-nav__link[aria-current="page"],
+.tool-page .site-nav__sub-link[aria-current="page"] {
+  color: #fff;
+  background: var(--tool-blue);
+}
+
+.tool-page .site-nav__sub-list {
+  background: var(--tool-surface);
+  border: 2px solid var(--tool-border);
+  border-radius: 14px;
+  box-shadow: 5px 5px 0 var(--tool-border);
+}
+
+.tool-page .page-hero {
+  width: var(--container-width);
+  margin-inline: auto;
+  padding: clamp(3.5rem, 7vw, 6rem) 0 clamp(2.5rem, 5vw, 4rem);
+  text-align: left;
+}
+
+.tool-page .page-hero__inner {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  max-width: 880px;
+}
+
+.tool-page .page-hero__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  margin: 0;
+  padding: .42rem .72rem;
+  color: var(--tool-ink);
+  background: var(--tool-lime);
+  border: 2px solid var(--tool-border);
+  border-radius: 999px;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.tool-page .page-hero h1 {
+  max-width: 12ch;
+  margin: 0;
+  font-size: clamp(3rem, 7vw, 6.4rem);
+  line-height: .9;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.tool-page .page-hero__lede {
+  max-width: 66ch;
+  margin: 0;
+  padding: 0;
+  color: var(--tool-muted);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.tool-page .page-hero__meta {
+  max-width: 70ch;
+  margin: 0;
+  color: var(--tool-muted);
+  font-size: .9rem;
+}
+
+.tool-page .calculator-wrap,
+.tool-page .wrap {
+  width: var(--container-width);
+  margin-inline: auto;
+  padding-bottom: clamp(4rem, 8vw, 7rem);
+}
+
+.tool-page .calculator-layout {
+  width: 100%;
+  gap: 2rem;
+}
+
+.tool-page :is(.budget-card, .card, .card--subtle, .panel, .content-card) {
+  color: var(--tool-ink);
+  background: var(--tool-surface);
+  border: 2px solid var(--tool-border);
+  border-radius: var(--tool-radius);
+  box-shadow: var(--tool-shadow);
+}
+
+.tool-page :is(input, select, textarea, .form-control, .form-select) {
+  min-height: 48px;
+  color: var(--tool-ink);
+  background: #fff;
+  border: 2px solid var(--tool-border);
+  border-radius: 11px;
+  box-shadow: none;
+}
+
+.tool-page :is(input, select, textarea, .form-control, .form-select):focus {
+  border-color: var(--tool-blue);
+  outline: 3px solid color-mix(in srgb, var(--tool-blue) 22%, transparent);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+.tool-page :is(.btn, button[type="submit"], button.btn) {
+  min-height: 44px;
+  border: 2px solid var(--tool-border);
+  border-radius: 12px;
+  font-weight: 800;
+}
+
+.tool-page :is(.btn-primary, .btn:not(.btn--ghost):not(.btn--inline):not(.btn-outline-secondary)) {
+  color: #fff;
+  background: var(--tool-blue);
+  box-shadow: 4px 4px 0 var(--tool-border);
+}
+
+.tool-page :is(.btn--ghost, .btn-outline-secondary) {
+  color: var(--tool-ink);
+  background: #fff;
+  border-color: var(--tool-border);
+}
+
+.tool-page .calculator-footnote {
+  color: var(--tool-muted);
+  font-size: .85rem;
+  text-align: center;
+}
+
+.tool-page footer {
+  margin-top: 0;
+  padding: 2rem 0;
+  color: #fff;
+  background: var(--tool-ink);
+  border-top: 2px solid var(--tool-border);
+}
+
+.tool-page footer .footer-inner {
+  width: var(--container-width);
+  margin-inline: auto;
+}
+
+.tool-page footer p,
+.tool-page footer a {
+  color: #fff;
+}
+
+@media (max-width: 800px) {
+  body.tool-page { --container-width: min(100% - 1.25rem, 1160px); }
+
+  .tool-page .site-header,
+  .tool-page .site-header__inner { min-height: 68px; }
+
+  .tool-page .site-nav__toggle {
+    display: inline-flex;
+    color: #fff;
+    background: var(--tool-blue);
+    border: 2px solid var(--tool-border);
+    border-radius: 10px;
+    box-shadow: 3px 3px 0 var(--tool-border);
+  }
+
+  .tool-page .site-nav {
+    background: var(--tool-surface);
+    border: 2px solid var(--tool-border);
+    border-radius: 14px;
+    box-shadow: 5px 5px 0 var(--tool-border);
+  }
+
+  .tool-page .page-hero {
+    padding-top: 3rem;
+  }
+
+  .tool-page .page-hero h1 {
+    max-width: 100%;
+    font-size: clamp(2.65rem, 13vw, 4.5rem);
+  }
+
+  .tool-page .calculator-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .tool-page :is(.budget-card, .card, .card--subtle, .panel, .content-card) {
+    border-radius: 16px;
+    box-shadow: 4px 4px 0 var(--tool-border);
+  }
+}

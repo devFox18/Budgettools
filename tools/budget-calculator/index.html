@@ -16,7 +16,7 @@
   <!-- Shared and tool-specific styles -->
   <link rel="stylesheet" href="/assets/css/tools.css" />
   <link rel="stylesheet" href="/assets/css/mature.css" />
-  <link rel="stylesheet" href="/tools/budget-calculator/budget-v2.css?v=5" />
+  <link rel="stylesheet" href="/tools/budget-calculator/budget-v2.css?v=6" />
 
   <script>
     document.documentElement.classList.remove('no-js');
@@ -168,10 +168,21 @@
             </div>
 
             <div class="expense-toolbar" aria-label="Budgetacties">
-              <button class="button button--quiet" id="loadSample" type="button">Voorbeeld laden</button>
-              <button class="button button--quiet" id="export" type="button">CSV downloaden</button>
-              <button class="button button--quiet" id="print" type="button">Afdrukken</button>
-              <button class="button button--danger" id="reset" type="button">Alles wissen</button>
+              <div class="expense-toolbar__group">
+                <span class="expense-toolbar__label">Snel beginnen</span>
+                <button class="button button--quiet" id="loadSample" type="button">Voorbeeld invullen</button>
+              </div>
+              <div class="expense-toolbar__group">
+                <span class="expense-toolbar__label">Overzicht bewaren</span>
+                <div class="expense-toolbar__actions">
+                  <button class="button button--quiet" id="export" type="button">CSV downloaden</button>
+                  <button class="button button--quiet" id="print" type="button">Afdrukken</button>
+                </div>
+              </div>
+              <div class="expense-toolbar__group expense-toolbar__group--danger">
+                <span class="expense-toolbar__label">Opnieuw beginnen</span>
+                <button class="button button--danger" id="reset" type="button">Alles wissen</button>
+              </div>
             </div>
 
             <div class="bt-table-wrapper">
@@ -185,8 +196,8 @@
                 <thead>
                   <tr>
                     <th scope="col">Categorie</th>
-                    <th scope="col">Bedrag</th>
-                    <th scope="col">Notitie</th>
+                    <th scope="col">Per maand</th>
+                    <th scope="col">Toelichting <span class="optional-label">(optioneel)</span></th>
                     <th scope="col"><span class="sr-only">Acties</span></th>
                   </tr>
                 </thead>
@@ -264,7 +275,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script defer src="/assets/js/main.js"></script>
-  <script defer src="/tools/budget-calculator/script.js?v=5"></script>
+  <script defer src="/tools/budget-calculator/script.js?v=6"></script>
 </body>
 
 </html>

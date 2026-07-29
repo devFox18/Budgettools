@@ -42,6 +42,8 @@ const printBtn = document.getElementById("print");
 const chartCanvas = document.getElementById("chart");
 const legend = document.getElementById("legend");
 const expenseBar = document.getElementById("expenseBar");
+const budgetMessageEl = document.getElementById("budgetMessage");
+const progressContainer = document.querySelector(".budget-progress-container");
 
 // State
 let chart;
@@ -252,6 +254,13 @@ function updateProgressBar(income, expenses) {
   }
 
   expenseBar.style.width = Math.min(percent, 100) + "%";
+  if (progressContainer) {
+    progressContainer.setAttribute("aria-valuenow", String(Math.round(Math.min(percent, 100))));
+    progressContainer.setAttribute(
+      "aria-valuetext",
+      income > 0 ? `${Math.round(percent)}% van het inkomen uitgegeven` : "Nog geen inkomen ingevuld"
+    );
+  }
 
   // Change color based on health
   if (expenses > income) {
@@ -267,12 +276,11 @@ function drawSummary() {
   const income = Number(incomeInput.value || 0);
   const expenses = totalExpenses();
   const savings = income - expenses;
-  const rate = income > 0 ? ((savings / income) * 100) : 0;
+  const usedRate = income > 0 ? ((expenses / income) * 100) : 0;
 
-  // Format Rate Display
-  const rateText = savings >= 0
-    ? `${Math.max(0, rate).toFixed(0)}% beschikbaar`
-    : `Budget overschreden`;
+  const rateText = income > 0
+    ? `${usedRate.toFixed(0)}% gebruikt`
+    : "Nog geen inkomen";
 
   // Update DOM
   totalExpensesEl.textContent = fmt(expenses);
@@ -283,7 +291,10 @@ function drawSummary() {
   // Savings Rate / Status Logic
   if (savingsRateEl) {
     savingsRateEl.textContent = rateText;
-    if (savings < 0) {
+    if (income <= 0) {
+      savingsRateEl.classList.add("text-muted");
+      savingsRateEl.classList.remove("text-expense", "text-success");
+    } else if (savings < 0) {
       savingsRateEl.classList.add("text-expense");
       savingsRateEl.classList.remove("text-success", "text-muted");
     } else {
@@ -299,13 +310,39 @@ function drawSummary() {
     sumSavingsEl.className = "overview-value text-expense";
   }
 
+  if (budgetMessageEl) {
+    let message = "Vul je inkomen en uitgaven in om te zien hoeveel ruimte je overhoudt.";
+    let tone = "neutral";
+
+    if (income > 0 && expenses === 0) {
+      message = "Je inkomen staat erin. Voeg je vaste en variabele uitgaven toe voor een realistisch overzicht.";
+    } else if (income > 0 && savings < 0) {
+      message = `Je uitgaven zijn ${fmt(Math.abs(savings))} hoger dan je inkomen. Bekijk welke posten je kunt aanpassen.`;
+      tone = "danger";
+    } else if (income > 0 && usedRate >= 90) {
+      message = `Je houdt ${fmt(savings)} over. Dat geeft weinig ruimte voor onverwachte kosten.`;
+      tone = "warning";
+    } else if (income > 0 && expenses > 0) {
+      message = `Je houdt deze maand ${fmt(savings)} over. Dat is ${(100 - usedRate).toFixed(0)}% van je inkomen.`;
+    } else if (income === 0 && expenses > 0) {
+      message = "Vul je maandinkomen in om te zien of deze uitgaven binnen je budget passen.";
+      tone = "warning";
+    }
+
+    budgetMessageEl.textContent = message;
+    budgetMessageEl.dataset.tone = tone;
+  }
+
   updateProgressBar(income, expenses);
 }
 
 function randomColor(i) {
-  const hues = [210, 260, 190, 20, 340, 120, 280, 45, 160, 0, 300, 200];
-  const h = hues[i % hues.length];
-  return `hsl(${h} 70% 55%)`;
+  const palette = [
+    "#176b4d", "#4f7f6c", "#79a38f", "#b58a4b",
+    "#85715e", "#47708f", "#7a6b91", "#b26b5f",
+    "#66865a", "#9a7d54", "#517d7a", "#8b6874"
+  ];
+  return palette[i % palette.length];
 }
 
 function drawChart() {
@@ -446,6 +483,11 @@ currencySelect.addEventListener("change", () => {
 
 function initChart() {
   if (chart) chart.destroy();
+  if (typeof Chart === "undefined") {
+    const chartContainer = document.getElementById("chart-container");
+    if (chartContainer) chartContainer.hidden = true;
+    return;
+  }
   const ctx = chartCanvas.getContext("2d");
   chart = new Chart(ctx, {
     type: 'doughnut',

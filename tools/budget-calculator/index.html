@@ -13,11 +13,10 @@
   <!-- Global Assets -->
   <link rel="stylesheet" href="/assets/css/style.css" />
 
-  <!-- Tool Specific Styles -->
-  <link rel="stylesheet" href="style.css" />
+  <!-- Shared and tool-specific styles -->
   <link rel="stylesheet" href="/assets/css/tools.css" />
   <link rel="stylesheet" href="/assets/css/mature.css" />
-  <link rel="stylesheet" href="/tools/budget-calculator/budget-v2.css" />
+  <link rel="stylesheet" href="/tools/budget-calculator/budget-v2.css?v=5" />
 
   <script>
     document.documentElement.classList.remove('no-js');
@@ -177,6 +176,12 @@
 
             <div class="bt-table-wrapper">
               <table class="expense-table">
+                <colgroup>
+                  <col class="expense-table__category" />
+                  <col class="expense-table__amount" />
+                  <col class="expense-table__note" />
+                  <col class="expense-table__action" />
+                </colgroup>
                 <thead>
                   <tr>
                     <th scope="col">Categorie</th>
@@ -226,10 +231,15 @@
               <div class="result-list__balance"><dt>Resterend</dt><dd id="sumSavings">€ 0,00</dd></div>
             </dl>
             <div class="budget-meter">
-              <div class="budget-meter__label"><span>Beschikbaar</span><strong id="savingsRate">0%</strong></div>
-              <div class="budget-progress-container"><div id="expenseBar" class="budget-progress-bar"></div></div>
+              <div class="budget-meter__label"><span>Budget gebruikt</span><strong id="savingsRate">0% gebruikt</strong></div>
+              <div class="budget-progress-container" role="progressbar" aria-label="Percentage van het inkomen uitgegeven"
+                aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div id="expenseBar" class="budget-progress-bar"></div>
+              </div>
             </div>
-            <p class="result-card__note">Dit overzicht wordt direct bijgewerkt wanneer je een bedrag wijzigt.</p>
+            <p class="result-card__insight" id="budgetMessage">Vul je inkomen en uitgaven in om te zien hoeveel ruimte je overhoudt.</p>
+            <a class="result-card__chart-link" href="#chart-heading">Bekijk de verdeling van je uitgaven <span aria-hidden="true">↓</span></a>
+            <p class="result-card__note">Wordt direct bijgewerkt en alleen op dit apparaat opgeslagen.</p>
           </section>
 
           <section class="privacy-note">
@@ -254,7 +264,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script defer src="/assets/js/main.js"></script>
-  <script defer src="/tools/budget-calculator/script.js"></script>
+  <script defer src="/tools/budget-calculator/script.js?v=5"></script>
 </body>
 
 </html>

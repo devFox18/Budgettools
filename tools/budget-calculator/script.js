@@ -1,27 +1,27 @@
-// ===== Monthly Budget Calculator (Improved UX) =====
+// ===== NLrekentools maandbudgetcalculator =====
 
 const DEFAULT_ROWS = [
-  { category: "Housing", amount: "", notes: "", noteHint: "Rent or mortgage" },
-  { category: "Utilities & Internet", amount: "", notes: "", noteHint: "Energy, water, wifi" },
-  { category: "Groceries & Household", amount: "", notes: "", noteHint: "Supermarket, toiletries" },
-  { category: "Transport", amount: "", notes: "", noteHint: "Fuel, transit passes" },
-  { category: "Savings & Investments", amount: "", notes: "", noteHint: "Pay yourself first" }
+  { category: "Wonen", amount: "", notes: "", noteHint: "Huur of hypotheek" },
+  { category: "Energie & internet", amount: "", notes: "", noteHint: "Energie, water en internet" },
+  { category: "Boodschappen & huishouden", amount: "", notes: "", noteHint: "Supermarkt en drogist" },
+  { category: "Vervoer", amount: "", notes: "", noteHint: "Brandstof of openbaar vervoer" },
+  { category: "Sparen & beleggen", amount: "", notes: "", noteHint: "Betaal jezelf eerst" }
 ];
 
 const SAMPLE_DATA = {
   income: 3600,
   currency: "€",
   rows: [
-    { category: "Housing", amount: 1350, notes: "Rent incl. service costs", noteHint: "Rent or mortgage" },
-    { category: "Utilities & Internet", amount: 180, notes: "Electricity, water, fibre", noteHint: "Energy, water, wifi" },
-    { category: "Groceries & Household", amount: 420, notes: "Family of three", noteHint: "Supermarket, toiletries" },
-    { category: "Transport", amount: 190, notes: "Train pass + fuel", noteHint: "Fuel, transit passes" },
-    { category: "Insurance & Healthcare", amount: 220, notes: "Health + car insurance", noteHint: "Monthly premiums" },
-    { category: "Childcare & School", amount: 250, notes: "After-school care", noteHint: "Daycare, tuition" },
-    { category: "Subscriptions & Media", amount: 65, notes: "Streaming + news", noteHint: "Recurring services" },
-    { category: "Eating Out & Fun", amount: 160, notes: "Weekends out", noteHint: "Restaurants, hobbies" },
-    { category: "Emergency Fund", amount: 200, notes: "Separate savings account", noteHint: "Savings buffer" },
-    { category: "Retirement & Investments", amount: 300, notes: "Automatic transfer", noteHint: "Pension, ETF" }
+    { category: "Wonen", amount: 1350, notes: "Huur inclusief servicekosten", noteHint: "Huur of hypotheek" },
+    { category: "Energie & internet", amount: 180, notes: "Energie, water en glasvezel", noteHint: "Energie, water en internet" },
+    { category: "Boodschappen & huishouden", amount: 420, notes: "Huishouden van drie personen", noteHint: "Supermarkt en drogist" },
+    { category: "Vervoer", amount: 190, notes: "Treinabonnement en brandstof", noteHint: "Brandstof of openbaar vervoer" },
+    { category: "Verzekeringen & zorg", amount: 220, notes: "Zorg- en autoverzekering", noteHint: "Maandelijkse premies" },
+    { category: "Kinderopvang & school", amount: 250, notes: "Buitenschoolse opvang", noteHint: "Opvang en schoolkosten" },
+    { category: "Abonnementen & media", amount: 65, notes: "Streaming en nieuws", noteHint: "Terugkerende diensten" },
+    { category: "Uit eten & vrije tijd", amount: 160, notes: "Uitjes in het weekend", noteHint: "Restaurants en hobby's" },
+    { category: "Noodbuffer", amount: 200, notes: "Aparte spaarrekening", noteHint: "Financiële buffer" },
+    { category: "Pensioen & beleggen", amount: 300, notes: "Automatische overboeking", noteHint: "Pensioen en beleggingen" }
   ]
 };
 
@@ -50,7 +50,7 @@ const STORAGE_KEY = "budget_calc_v1";
 
 // --- Persistence ---
 
-function saveState() {
+function saveState({ announce = true } = {}) {
   const state = {
     income: incomeInput.value,
     currency: currencySelect.value,
@@ -60,8 +60,8 @@ function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 
   const statusIndicator = document.getElementById("status-indicator");
-  if (statusIndicator) {
-    statusIndicator.textContent = "Saved to local storage.";
+  if (statusIndicator && announce) {
+    statusIndicator.textContent = "Automatisch opgeslagen op dit apparaat.";
     statusIndicator.style.opacity = "1";
     setTimeout(() => {
       statusIndicator.style.opacity = "0";
@@ -78,7 +78,7 @@ function loadState() {
       incomeInput.value = state.income || "";
       currencySelect.value = state.currency || "€";
     } catch (e) {
-      console.error("Failed to parse saved state", e);
+      console.error("Opgeslagen budget kon niet worden geladen", e);
       resetToDefaults();
     }
   } else {
@@ -96,7 +96,13 @@ function resetToDefaults() {
 
 function fmt(v) {
   const cur = currencySelect.value || "€";
-  return cur + (Number(v) || 0).toFixed(2);
+  const currencyCodes = { "€": "EUR", "$": "USD", "£": "GBP" };
+  return new Intl.NumberFormat("nl-NL", {
+    style: "currency",
+    currency: currencyCodes[cur] || "EUR",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  }).format(Number(v) || 0);
 }
 
 function sanitizeCsvField(value) {
@@ -125,7 +131,8 @@ function createRowElement(r, i) {
   catInput.type = "text";
   catInput.className = "form-control";
   catInput.value = r.category;
-  catInput.placeholder = "Category Name";
+  catInput.placeholder = "Naam categorie";
+  catInput.setAttribute("aria-label", `Categorie ${i + 1}`);
   catInput.addEventListener("input", e => { rows[i].category = e.target.value; draw(); });
   tdCat.appendChild(catInput);
   tr.appendChild(tdCat);
@@ -146,8 +153,7 @@ function createRowElement(r, i) {
   amountInput.min = "0";
   amountInput.step = "any";
   amountInput.placeholder = "0.00";
-  // FIX: Make input wider (min 130px) as requested
-  amountInput.style.minWidth = "130px";
+  amountInput.setAttribute("aria-label", `Bedrag voor ${r.category || `uitgave ${i + 1}`}`);
 
   amountInput.addEventListener("input", e => {
     let value = e.target.value;
@@ -167,7 +173,8 @@ function createRowElement(r, i) {
   notesInput.type = "text";
   notesInput.className = "form-control text-muted";
   notesInput.value = r.notes;
-  notesInput.placeholder = r.noteHint || "Optional notes";
+  notesInput.placeholder = r.noteHint || "Optionele notitie";
+  notesInput.setAttribute("aria-label", `Notitie voor ${r.category || `uitgave ${i + 1}`}`);
   notesInput.style.fontSize = "0.9em";
   notesInput.addEventListener("input", e => { rows[i].notes = e.target.value; draw(); });
   tdNotes.appendChild(notesInput);
@@ -180,7 +187,8 @@ function createRowElement(r, i) {
   removeBtn.className = "btn-remove mx-auto";
   removeBtn.type = "button";
   removeBtn.innerHTML = "&times;";
-  removeBtn.title = "Remove row";
+  removeBtn.title = "Uitgave verwijderen";
+  removeBtn.setAttribute("aria-label", `${r.category || `Uitgave ${i + 1}`} verwijderen`);
   removeBtn.addEventListener("click", () => {
     rows.splice(i, 1);
     renderRows();
@@ -199,9 +207,9 @@ function renderRows() {
     const emptyRow = document.createElement("tr");
     emptyRow.innerHTML = `
         <td colspan="4" class="text-center py-5">
-            <div class="text-muted mb-3">No expenses added yet.</div>
+            <div class="text-muted mb-3">Nog geen uitgaven toegevoegd.</div>
             <button id="btn-empty-load-sample" class="btn btn-sm btn-outline-primary">
-                Load Sample Data
+                Voorbeeld laden
             </button>
         </td>
       `;
@@ -246,7 +254,7 @@ function updateProgressBar(income, expenses) {
   expenseBar.style.width = Math.min(percent, 100) + "%";
 
   // Change color based on health
-  if (expenses > income && income > 0) {
+  if (expenses > income) {
     expenseBar.style.background = "var(--color-expense)";
   } else if (percent > 80) {
     expenseBar.style.background = "#fbbf24"; // warning yellow/orange
@@ -263,8 +271,8 @@ function drawSummary() {
 
   // Format Rate Display
   const rateText = savings >= 0
-    ? `${Math.max(0, rate).toFixed(0)}% Saved`
-    : `Over budget`;
+    ? `${Math.max(0, rate).toFixed(0)}% beschikbaar`
+    : `Budget overschreden`;
 
   // Update DOM
   totalExpensesEl.textContent = fmt(expenses);
@@ -372,7 +380,7 @@ if (addRowBtn) addRowBtn.addEventListener("click", () => addRow("", "", ""));
 
 if (resetBtn) {
   resetBtn.addEventListener("click", () => {
-    if (confirm("Are you sure you want to reset all data?")) {
+    if (confirm("Weet je zeker dat je alle budgetgegevens wilt wissen?")) {
       resetToDefaults();
       renderRows(); // full re-render
       // Re-init chart not strictly needed if we just update data, but good for safety
@@ -396,7 +404,7 @@ if (exportBtn) {
   exportBtn.addEventListener("click", () => {
     const cur = currencySelect.value;
     const income = Number(incomeInput.value || 0);
-    const header = ["Category", "Amount(" + cur + ")", "Notes"].map(sanitizeCsvField);
+    const header = ["Categorie", "Bedrag (" + cur + ")", "Notitie"].map(sanitizeCsvField);
     const lines = [header.join(",")];
     rows.forEach(r => {
       lines.push([
@@ -406,15 +414,15 @@ if (exportBtn) {
       ].join(","));
     });
     lines.push("");
-    lines.push([sanitizeCsvField("Income"), sanitizeCsvField(income)].join(","));
-    lines.push([sanitizeCsvField("Total Expenses"), sanitizeCsvField(totalExpenses())].join(","));
-    lines.push([sanitizeCsvField("Savings"), sanitizeCsvField(income - totalExpenses())].join(","));
+    lines.push([sanitizeCsvField("Inkomen"), sanitizeCsvField(income)].join(","));
+    lines.push([sanitizeCsvField("Totale uitgaven"), sanitizeCsvField(totalExpenses())].join(","));
+    lines.push([sanitizeCsvField("Resterend"), sanitizeCsvField(income - totalExpenses())].join(","));
 
     const blob = new Blob([lines.join("\n")], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "budget-summary.csv";
+    a.download = "nlrekentools-maandbudget.csv";
     document.body.appendChild(a);
     a.click();
     a.remove();
@@ -477,4 +485,6 @@ function initChart() {
 loadState();
 renderRows();
 initChart();
-draw();
+drawSummary();
+drawChart();
+saveState({ announce: false });

@@ -1,4 +1,4 @@
-# Budgettools
+# NLrekentools
 
 Simple and powerful financial tools – Budget Calculator, Savings Tracker, and more.
 
@@ -8,8 +8,9 @@ Simple and powerful financial tools – Budget Calculator, Savings Tracker, and 
 - Buttons, cards, and form controls share polished focus/hover states
 
 ## Tools
-- [Budget Calculator](tools/budget-calculator/index.html)
-- [Savings Goal Calculator](tools/savings-goal-calculator/index.html)
+- [Budget berekenen](tools/budget-calculator/index.html)
+- [Spaardoel berekenen](tools/savings-goal-calculator/index.html)
+- [Abonnementskosten berekenen](tools/subscription-saver/index.html)
 - More static resources under the `tools/` directory
 
 ## Development

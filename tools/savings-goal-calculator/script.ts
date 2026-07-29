@@ -1,5 +1,5 @@
 /*
- * BudgetTools Savings Goal Calculator
+ * NLrekentools Savings Goal Calculator
  * All calculations happen on the client.
  */
 
@@ -689,7 +689,7 @@ class SavingsCalculatorUI {
           </table>
         </div>
         <button type="button" class="bt-button" data-action="toggle-rows" aria-expanded="false">View full schedule</button>
-        <p class="bt-footer">BudgetTools — calculations run in your browser. No data stored. Estimates only. Returns are not guaranteed.</p>
+        <p class="bt-footer">NLrekentools — calculations run in your browser. No data stored. Estimates only. Returns are not guaranteed.</p>
       </div>
     `;
 
@@ -930,7 +930,7 @@ class SavingsCalculatorUI {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'budgettools-savings-report.pdf';
+    link.download = 'nlrekentools-spaarrapport.pdf';
     link.click();
     URL.revokeObjectURL(url);
   }
@@ -942,7 +942,7 @@ class SavingsCalculatorUI {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'budgettools-savings-report.csv';
+    link.download = 'nlrekentools-spaarrapport.csv';
     link.click();
     URL.revokeObjectURL(url);
   }

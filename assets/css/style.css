@@ -50,6 +50,7 @@ html {
   font-size: 100%;
   scroll-behavior: smooth;
   background: var(--color-bg);
+  overflow-x: clip;
 }
 
 body {

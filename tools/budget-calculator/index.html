@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="nl" class="no-js">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Monthly Budget Calculator | BudgetTools</title>
+  <title>Maandbudget berekenen | Gratis budgetcalculator</title>
   <meta name="description"
-    content="Track income, expenses, and savings in real time with the BudgetTools calculator. Export CSV and print reports." />
+    content="Bereken gratis je maandbudget. Vul inkomsten en uitgaven in en zie direct hoeveel je overhoudt of kunt sparen." />
   <meta name="robots" content="index,follow" />
-  <link rel="canonical" href="https://budgettools.netlify.app/tools/budget-calculator/" />
+  <link rel="canonical" href="https://nlrekentools.nl/tools/budget-calculator/" />
 
   <!-- Global Assets -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -29,7 +29,7 @@
   <header class="site-header" role="banner">
     <div class="site-header__inner">
       <a class="site-logo" href="/">
-        <span>BudgetTools</span>
+        <span>NLrekentools</span>
       </a>
       <button class="site-nav__toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-menu">
         <span class="site-nav__toggle-box" aria-hidden="true">
@@ -122,11 +122,11 @@
     <!-- Unified Page Hero -->
     <section class="page-hero" aria-labelledby="hero-title">
       <div class="page-hero__inner">
-        <p class="page-hero__eyebrow">Personal Finance</p>
-        <h1 id="hero-title">Monthly Budget Calculator</h1>
+        <p class="page-hero__eyebrow">Persoonlijke financiën</p>
+        <h1 id="hero-title">Maandbudget berekenen</h1>
         <p class="page-hero__lede">
-          Gain clarity on your cash flow. Enter your income and expenses to see exactly where your money goes.
-          Everything stays private on your device.
+          Vul je netto inkomen en maandelijkse uitgaven in. Je ziet direct hoeveel je overhoudt en waar je geld naartoe gaat.
+          Alles blijft privé op je eigen apparaat.
         </p>
         <div id="status-indicator"
           style="opacity:0; transition: opacity 0.5s; font-size: 0.9rem; color: var(--bt-primary);"></div>
@@ -142,11 +142,11 @@
           <!-- Settings Card -->
           <div class="budget-card">
             <div class="section-title">
-              <h2>Income & Settings</h2>
+              <h2>Inkomen en instellingen</h2>
             </div>
             <div class="row g-4">
               <div class="col-md-6">
-                <label for="income" class="form-label">Monthly Net Income</label>
+                <label for="income" class="form-label">Netto maandinkomen</label>
                 <div class="currency-input-group">
                   <span class="currency-symbol js-currency-symbol">€</span>
                   <input type="number" id="income" placeholder="0.00" min="0" step="any" inputmode="decimal"
@@ -167,7 +167,7 @@
           <!-- Expenses Card -->
           <div class="budget-card">
             <div class="section-title">
-              <h2>Detailed Expenses</h2>
+              <h2>Maandelijkse uitgaven</h2>
               <div class="d-flex gap-2">
                 <div class="dropdown">
                   <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle"
@@ -185,7 +185,7 @@
                   </ul>
                 </div>
                 <button class="btn btn-primary btn-sm" id="addRow" type="button">
-                  + Add Expense
+                    + Uitgave toevoegen
                 </button>
               </div>
             </div>
@@ -215,7 +215,7 @@
           <!-- Visuals Card -->
           <div class="budget-card">
             <div class="section-title">
-              <h2>Spending Breakdown</h2>
+              <h2>Verdeling van je uitgaven</h2>
             </div>
             <div class="position-relative">
               <div id="chart-container" class="chart-container">
@@ -276,13 +276,13 @@
 
         </aside>
       </div>
-      <p class="calculator-footnote text-center mt-5">Your data never leaves your browser.</p>
+      <p class="calculator-footnote text-center mt-5">Je gegevens verlaten je browser niet.</p>
     </section>
   </main>
 
   <footer role="contentinfo">
     <div class="container footer-inner py-5 border-top">
-      <p class="mb-0">© <span data-year></span> BudgetTools. Built for transparent personal finance.</p>
+      <p class="mb-0">© <span data-year></span> NLrekentools. Built for transparent personal finance.</p>
       <nav aria-label="Footer" class="d-flex gap-3">
         <a href="/privacy.html">Privacy</a>
         <a href="/terms.html">Terms</a>

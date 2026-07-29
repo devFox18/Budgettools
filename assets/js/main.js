@@ -61,7 +61,7 @@
     const costs = form.elements.costs;
     const result = form.querySelector('[data-quick-result]');
     const note = form.querySelector('[data-quick-note]');
-    const money = new Intl.NumberFormat('en-IE', {
+    const money = new Intl.NumberFormat('nl-NL', {
       style: 'currency',
       currency: 'EUR',
       maximumFractionDigits: 0
@@ -74,8 +74,8 @@
       result.textContent = money.format(room);
       result.classList.toggle('negative', room < 0);
       note.textContent = room >= 0
-        ? `${percentage}% of your income is still available.`
-        : `Your essentials are ${percentage}% over your income.`;
+        ? `${percentage}% van je inkomen is nog beschikbaar.`
+        : `Je vaste lasten liggen ${percentage}% boven je inkomen.`;
     };
     form.addEventListener('input', update);
     form.addEventListener('submit', (event) => event.preventDefault());

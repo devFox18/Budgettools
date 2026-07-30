@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gratis rekentools voor je geld | NLrekentools</title>
-  <meta name="description" content="Bereken gratis en zonder account je maandbudget. De spaardoel- en abonnemententools van NLrekentools worden momenteel vernieuwd.">
+  <title>Bereken je maandbudget | NLrekentools</title>
+  <meta name="description" content="Bereken direct wat je deze maand overhoudt. De gratis budgettool werkt zonder account en verwerkt bedragen lokaal in je browser.">
   <meta name="theme-color" content="#102f49">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <link rel="canonical" href="https://nlrekentools.nl/">
   <meta property="og:locale" content="nl_NL">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="NLrekentools">
-  <meta property="og:title" content="Gratis rekentools voor je geld | NLrekentools">
-  <meta property="og:description" content="Bereken gratis je maandbudget. Duidelijk, onafhankelijk en zonder account.">
+  <meta property="og:title" content="Bereken je maandbudget | NLrekentools">
+  <meta property="og:description" content="Vul je inkomen en vaste lasten in en zie direct wat je deze maand overhoudt.">
   <meta property="og:url" content="https://nlrekentools.nl/">
   <meta name="twitter:card" content="summary">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/mature.css">
-  <link rel="stylesheet" href="/assets/css/civic.css?v=7">
+  <link rel="stylesheet" href="/assets/css/civic.css?v=8">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -53,7 +53,7 @@
   </script>
   <script>document.documentElement.classList.remove('no-js');</script>
 </head>
-<body>
+<body class="product-home">
   <a class="skip-link" href="#main-content">Naar de inhoud</a>
   <header class="site-header">
     <div class="site-header__inner">
@@ -73,7 +73,7 @@
           </li>
           <li class="site-nav__item"><a class="site-nav__link" href="#zo-werkt-het">Zo werkt het</a></li>
           <li class="site-nav__item"><a class="site-nav__link" href="#veelgestelde-vragen">Veelgestelde vragen</a></li>
-          <li class="site-nav__item"><a class="site-nav__cta" href="/tools/budget-calculator/">Bereken je budget</a></li>
+          <li class="site-nav__item"><a class="site-nav__cta" href="/tools/budget-calculator/">Open de budgettool</a></li>
         </ul>
       </nav>
     </div>
@@ -82,24 +82,21 @@
   <main id="main-content">
     <section class="hero">
       <div class="container">
-        <div class="hero__topline">
-          <span class="badge badge--lime">● Gratis, privé en zonder account</span>
-          <span class="hero__counter">1 actieve tool · 2 tools in herbouw</span>
-        </div>
         <div class="hero__grid">
         <div class="hero__copy">
-          <p class="hero__kicker">Waar wil je vandaag grip op krijgen?</p>
-          <h1 class="hero__title">Van geldvraag naar <span>duidelijk antwoord.</span></h1>
-          <p class="hero__lede">Kies je situatie, vul een paar bedragen in en weet meteen waar je staat. Gemaakt voor Nederlandse huishoudens.</p>
-          <div class="hero__actions">
-            <a class="btn btn--primary" href="#rekentools">Kies een rekentool <span aria-hidden="true">↓</span></a>
-            <a class="btn btn--secondary" href="#snelle-check">Doe de snelle check</a>
-          </div>
+          <p class="hero__kicker">Maandbudget</p>
+          <h1 class="hero__title">Wat houd je deze maand <span>over?</span></h1>
+          <p class="hero__lede">Vul twee bedragen in voor een snelle indicatie. Wil je meer detail, open dan het volledige budgetoverzicht.</p>
+          <ul class="product-facts" aria-label="Eigenschappen van de berekening">
+            <li><span aria-hidden="true">✓</span> Geen account nodig</li>
+            <li><span aria-hidden="true">✓</span> Bedragen blijven in je browser</li>
+            <li><span aria-hidden="true">✓</span> Uitkomst wordt direct bijgewerkt</li>
+          </ul>
         </div>
 
         <form class="quick-check game-card" id="snelle-check" data-quick-check>
-          <div class="card-topline"><span>Probeer het direct</span><span class="window-dots" aria-hidden="true">● ● ●</span></div>
-          <p class="quick-check__intro">Bekijk wat je na je vaste maandlasten overhoudt.</p>
+          <div class="card-topline"><span>Snelle budgetberekening</span><span class="tool-status tool-status--active">Beschikbaar</span></div>
+          <p class="quick-check__intro">Wat komt er maandelijks binnen en hoeveel gaat er naar je vaste lasten?</p>
           <div class="quick-check__fields">
             <label>Netto maandinkomen <span class="input-shell"><span>€</span><input name="income" type="number" min="0" step="50" value="2800" inputmode="decimal"></span></label>
             <label>Vaste maandlasten <span class="input-shell"><span>€</span><input name="costs" type="number" min="0" step="50" value="1950" inputmode="decimal"></span></label>
@@ -107,29 +104,31 @@
           <div class="quick-check__result" aria-live="polite">
             <span>Over deze maand</span><strong data-quick-result>€ 850</strong><small data-quick-note>30% van je inkomen is nog beschikbaar.</small>
           </div>
-          <a class="text-link" href="/tools/budget-calculator/">Open de uitgebreide budgetcalculator →</a>
+          <a class="btn btn--primary quick-check__open" href="/tools/budget-calculator/">Open het volledige budgetoverzicht <span aria-hidden="true">→</span></a>
         </form>
         </div>
-        <ul class="hero__meta" aria-label="Voordelen">
-          <li>Geen registratie</li><li>Geen serveropslag van bedragen</li><li>Werkt op ieder apparaat</li><li>Uitleg in gewone taal</li>
-        </ul>
       </div>
     </section>
 
-    <section class="marquee" aria-label="Belangrijkste voordelen">
-      <div>ONAFHANKELIJKE WEBSITE <span>•</span> GEEN OVERHEIDSDIENST <span>•</span> PRIVACY ALS UITGANGSPUNT <span>•</span> UITKOMSTEN ZIJN INDICATIEF</div>
+    <section class="service-note" aria-label="Over NLrekentools">
+      <div class="container service-note__inner">
+        <strong>Onafhankelijke rekentools</strong>
+        <span>Geen overheidsdienst</span>
+        <span>Geen verkoop of betaalmuur</span>
+        <span>Uitkomsten zijn indicatief</span>
+      </div>
     </section>
 
     <section class="section" id="rekentools">
       <div class="container">
-        <p class="section__eyebrow">Kies je situatie</p>
+        <p class="section__eyebrow">Alle rekentools</p>
         <div class="section-heading">
-          <h2 class="section__title">Wat wil je <span>uitrekenen?</span></h2>
-          <p>Begin bij de vraag die nu speelt. Je kunt later altijd een andere rekentool openen.</p>
+          <h2 class="section__title">Kies een <span>berekening.</span></h2>
+          <p>De budgettool is klaar voor gebruik. De andere twee tools worden opnieuw opgebouwd en krijgen daarna dezelfde heldere opzet.</p>
         </div>
         <div class="tool-grid tool-grid--bento">
           <article class="tool-card tool-card--blue tool-card--featured">
-            <div class="tool-card__top"><span class="tool-card__number">01</span><span class="tool-card__tag">Meest gekozen</span></div>
+            <div class="tool-card__top"><span class="tool-card__number">01</span><span class="tool-card__tag tool-card__tag--active">Beschikbaar</span></div>
             <div class="pixel-icon" aria-hidden="true">€</div>
             <div class="tool-card__body">
               <p class="tool-card__question">“Wat houd ik deze maand over?”</p>
@@ -137,7 +136,7 @@
               <p>Zet je netto inkomen en uitgaven overzichtelijk naast elkaar. Bekijk je vrije ruimte en verdeling per categorie.</p>
               <ul class="tool-card__features"><li>Inkomsten en lasten</li><li>Visuele verdeling</li><li>CSV-export</li></ul>
             </div>
-            <a class="tool-card__action" href="/tools/budget-calculator/">Start met je maandbudget <span aria-hidden="true">→</span></a>
+            <a class="tool-card__action" href="/tools/budget-calculator/">Budgettool openen <span aria-hidden="true">→</span></a>
           </article>
           <article class="tool-card tool-card--lime">
             <div class="tool-card__top"><span class="tool-card__number">02</span><span class="tool-card__tag">In herbouw</span></div><div class="pixel-icon" aria-hidden="true">↗</div>
@@ -155,68 +154,18 @@
       </div>
     </section>
 
-    <section class="insight-preview" aria-labelledby="insight-title">
-      <div class="container insight-preview__grid">
-        <div class="insight-preview__copy">
-          <p class="section__eyebrow">Van bedragen naar inzicht</p>
-          <h2 id="insight-title">Zie niet alleen de uitkomst. Begrijp wat die betekent.</h2>
-          <p>Een goede rekentool geeft meer dan één getal. Je ziet hoe bedragen zijn opgebouwd, waar de meeste ruimte zit en welke volgende stap logisch is.</p>
-          <ul class="insight-points">
-            <li><span aria-hidden="true">01</span><div><strong>Direct overzicht</strong><p>Inkomsten, uitgaven en resterend bedrag naast elkaar.</p></div></li>
-            <li><span aria-hidden="true">02</span><div><strong>Visuele verdeling</strong><p>Ontdek welke categorieën het zwaarst wegen.</p></div></li>
-            <li><span aria-hidden="true">03</span><div><strong>Praktische vervolgstap</strong><p>Gebruik de uitkomst om een haalbare keuze te maken.</p></div></li>
-          </ul>
-          <a class="text-link" href="/tools/budget-calculator/">Bekijk de budgetcalculator <span aria-hidden="true">→</span></a>
-        </div>
-
-        <figure class="dashboard-visual">
-          <figcaption><span>Voorbeeld maandbudget</span><span class="dashboard-visual__status">Actueel overzicht</span></figcaption>
-          <div class="dashboard-stats">
-            <div><small>Inkomen</small><strong>€ 3.200</strong></div>
-            <div><small>Uitgaven</small><strong>€ 2.340</strong></div>
-            <div class="dashboard-stats__positive"><small>Resterend</small><strong>€ 860</strong></div>
-          </div>
-          <div class="dashboard-chart">
-            <div class="dashboard-donut" role="img" aria-label="Voorbeeldverdeling: wonen 42%, boodschappen 23%, vervoer 15% en overige kosten 20%">
-              <div><strong>73%</strong><small>gebruikt</small></div>
-            </div>
-            <ul class="dashboard-legend">
-              <li><span class="legend-swatch legend-swatch--one"></span><span>Wonen</span><strong>42%</strong></li>
-              <li><span class="legend-swatch legend-swatch--two"></span><span>Boodschappen</span><strong>23%</strong></li>
-              <li><span class="legend-swatch legend-swatch--three"></span><span>Vervoer</span><strong>15%</strong></li>
-              <li><span class="legend-swatch legend-swatch--four"></span><span>Overig</span><strong>20%</strong></li>
-            </ul>
-          </div>
-          <div class="dashboard-tip"><span aria-hidden="true">✓</span><p><strong>Je houdt 27% over.</strong> Dat geeft ruimte voor sparen of onverwachte kosten.</p></div>
-        </figure>
-      </div>
-    </section>
-
     <section class="section process-section" id="zo-werkt-het">
       <div class="container process-grid">
         <div>
-          <p class="section__eyebrow">Zo werkt NLrekentools</p>
-          <h2 class="section__title">Geen gedoe. <span>Wel inzicht.</span></h2>
-          <p>Iedere tool volgt dezelfde eenvoudige route. Daardoor weet je vooraf precies wat je kunt verwachten.</p>
+          <p class="section__eyebrow">Zo werkt het</p>
+          <h2 class="section__title">Van invoer naar <span>overzicht.</span></h2>
+          <p>Iedere tool gebruikt dezelfde voorspelbare werkwijze.</p>
         </div>
         <ol class="level-list">
-          <li><span>01 · Kies</span><div><h3>Start met één geldvraag</h3><p>Geen keuzestress: kies de situatie die vandaag belangrijk is.</p></div></li>
-          <li><span>02 · Reken</span><div><h3>Gebruik je eigen bedragen</h3><p>De berekening gebeurt meteen en volledig in je browser.</p></div></li>
-          <li><span>03 · Beslis</span><div><h3>Zie je volgende stap</h3><p>Je krijgt een duidelijke uitkomst waarmee je verder kunt.</p></div></li>
+          <li><span>01 · Invoer</span><div><h3>Vul je eigen bedragen in</h3><p>De velden leggen kort uit welke bedragen nodig zijn.</p></div></li>
+          <li><span>02 · Berekening</span><div><h3>Bekijk de uitkomst direct</h3><p>De berekening vindt plaats in je browser en wordt meteen bijgewerkt.</p></div></li>
+          <li><span>03 · Overzicht</span><div><h3>Bewaar of exporteer je resultaat</h3><p>Gebruik het overzicht om je eigen financiële keuzes te ondersteunen.</p></div></li>
         </ol>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container">
-        <p class="section__eyebrow">Grip op je huishoudgeld</p>
-        <div class="section-heading">
-          <h2 class="section__title">Waarom je financiën <span>berekenen?</span></h2>
-          <div>
-            <p>Een overzicht van inkomsten en vaste lasten maakt keuzes concreet. Je ziet waar ruimte zit, welk spaarbedrag realistisch is en welke kleine kosten op jaarbasis groot worden.</p>
-            <p>NLrekentools geeft een indicatie op basis van jouw invoer. Controleer belangrijke bedragen altijd zelf en zie de uitkomst niet als persoonlijk financieel advies.</p>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -240,24 +189,11 @@
       </div>
     </section>
 
-    <section class="final-cta" aria-labelledby="final-cta-title">
-      <div class="container final-cta__inner">
-        <div>
-          <p class="section__eyebrow">Begin vandaag</p>
-          <h2 id="final-cta-title">Eén berekening kan al veel duidelijk maken.</h2>
-          <p>Kies de vraag die nu speelt. Je hoeft niets aan te maken en je gegevens blijven op je eigen apparaat.</p>
-        </div>
-        <div class="final-cta__actions">
-          <a class="btn btn--primary" href="/tools/budget-calculator/">Bereken je maandbudget <span aria-hidden="true">→</span></a>
-          <a class="btn btn--secondary" href="#zo-werkt-het">Lees hoe het werkt</a>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer>
     <div class="container footer-grid">
-      <div><a class="site-logo site-logo--footer" href="/"><span class="logo-mark">NL</span><span>NLrekentools</span></a><p>Slim rekenen aan je geld, zonder gedoe.</p></div>
+      <div><a class="site-logo site-logo--footer" href="/"><span class="logo-mark">NL</span><span>NLrekentools</span></a><p>Onafhankelijke rekentools voor je huishoudgeld.</p></div>
       <nav aria-label="Rekentools"><strong>Rekentools</strong><a href="/tools/budget-calculator/">Budget berekenen</a><a href="/tools/savings-goal-calculator/">Spaardoel berekenen</a><a href="/tools/subscription-saver/">Abonnementskosten</a></nav>
       <nav aria-label="Informatie"><strong>Informatie</strong><a href="/privacy.html">Privacy</a><a href="/terms.html">Gebruiksvoorwaarden</a><a href="/contact.html">Contact</a></nav>
     </div>

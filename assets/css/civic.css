@@ -316,6 +316,116 @@ p, li {
   border-left-color: var(--civic-line);
 }
 
+/* Product-first homepage: the working calculation is the primary content. */
+.product-home .hero {
+  padding: clamp(2rem, 3vw, 3rem) 0;
+  background:
+    linear-gradient(90deg, #fff 0 61%, var(--civic-blue-050) 61% 100%);
+}
+
+.product-home .hero__grid {
+  grid-template-columns: minmax(0, .82fr) minmax(420px, 1.18fr);
+  gap: clamp(2rem, 5vw, 5rem);
+  padding-block: 0;
+}
+
+.product-home .hero .hero__title {
+  max-width: 13ch;
+  font-size: clamp(2.6rem, 4.2vw, 3.75rem);
+}
+
+.product-facts {
+  display: grid;
+  gap: .7rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  color: var(--civic-muted);
+  list-style: none;
+}
+
+.product-facts li {
+  display: flex;
+  gap: .65rem;
+  align-items: center;
+}
+
+.product-facts li span {
+  display: grid;
+  width: 1.45rem;
+  height: 1.45rem;
+  flex: 0 0 1.45rem;
+  place-items: center;
+  color: #fff;
+  background: var(--civic-blue-700);
+  border-radius: 50%;
+  font-size: .72rem;
+  font-weight: 850;
+}
+
+.tool-status {
+  display: inline-flex;
+  align-items: center;
+  padding: .25rem .45rem;
+  border-radius: 4px;
+  font-size: .67rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: none;
+}
+
+.tool-status--active,
+.tool-card__tag--active {
+  color: #174f3d;
+  background: #e4f3ec;
+  border: 1px solid #b9ddce;
+}
+
+.quick-check__open {
+  width: 100%;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+.service-note {
+  color: #fff;
+  background: var(--civic-navy-900);
+  border-bottom: 4px solid var(--civic-yellow-400);
+}
+
+.service-note__inner {
+  display: flex;
+  min-height: 56px;
+  gap: 1rem 2rem;
+  align-items: center;
+  justify-content: space-between;
+  font-size: .78rem;
+}
+
+.service-note__inner strong {
+  color: #fff;
+}
+
+.service-note__inner span {
+  position: relative;
+  color: #dce8ee;
+}
+
+.service-note__inner span::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -1.1rem;
+  width: 4px;
+  height: 4px;
+  background: var(--civic-yellow-400);
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.product-home #rekentools {
+  padding-top: clamp(3.5rem, 7vw, 5.5rem);
+}
+
 /* Quiet trust band: replaces the loud marquee treatment */
 .marquee {
   padding: .85rem 0;
@@ -778,6 +888,10 @@ footer p,
 
 /* Responsive behaviour */
 @media (max-width: 960px) {
+  .product-home .hero__grid {
+    grid-template-columns: 1fr;
+  }
+
   .tool-grid.tool-grid--bento {
     grid-template-columns: 1fr 1fr;
   }
@@ -825,6 +939,11 @@ footer p,
     background: #fff;
   }
 
+  .product-home .hero {
+    padding-block: 2.75rem;
+    background: #fff;
+  }
+
   .hero .hero__title,
   .tool-page .page-hero h1,
   :is(.tool-page, .budget-page) .unified-tool-hero h1 {
@@ -845,6 +964,17 @@ footer p,
 }
 
 @media (max-width: 560px) {
+  .service-note__inner {
+    display: grid;
+    min-height: 0;
+    gap: .55rem;
+    padding-block: 1rem;
+  }
+
+  .service-note__inner span::before {
+    display: none;
+  }
+
   .hero__topline,
   .section-heading,
   .dashboard-visual figcaption {

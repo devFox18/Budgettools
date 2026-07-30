@@ -115,6 +115,7 @@
   </style>
   <link rel="stylesheet" href="/assets/css/tools.css" />
   <link rel="stylesheet" href="/assets/css/mature.css" />
+  <link rel="stylesheet" href="/assets/css/tool-design.css?v=2" />
 </head>
 <body class="tool-page">
   <a class="skip-link" href="#main-content">Naar de inhoud</a>
@@ -190,26 +191,23 @@
     </div>
   </header>
     <main id="main-content">
-    <section class="page-hero">
-      <div class="page-hero__inner">
-        <p class="page-hero__eyebrow">Terugkerende kosten</p>
-        <h1>Abonnementskosten berekenen</h1>
-        <p class="page-hero__lede">Breng al je abonnementen samen en bekijk direct wat je per maand en per jaar betaalt.</p>
-        <p class="page-hero__meta">Alles blijft op dit apparaat. Laad voorbeelddata of exporteer je eigen overzicht.</p>
-        <div class="hero-actions button-row">
-          <button type="button" class="btn" id="demoDataButtonTop">Voorbeeld laden</button>
-          <button type="button" class="btn btn--ghost" id="exportCsvButtonTop">CSV exporteren</button>
-          <button type="button" class="btn btn--inline" data-open-shortcuts>Sneltoetsen</button>
+    <section class="page-hero unified-tool-hero" aria-labelledby="subscription-heading">
+      <div class="page-hero__inner unified-tool-hero__inner">
+        <div class="unified-tool-hero__copy">
+          <p class="page-hero__eyebrow unified-tool-hero__eyebrow">Abonnementen</p>
+          <h1 id="subscription-heading">Abonnementskosten berekenen</h1>
+          <p class="page-hero__lede unified-tool-hero__lede">Breng al je abonnementen samen en bekijk direct wat je per maand en per jaar betaalt.</p>
+          <p class="page-hero__meta unified-tool-hero__meta">Laad voorbeelddata of maak direct je eigen overzicht.</p>
         </div>
-        <ul class="checklist">
-          <li>Bekijk je maandelijkse en jaarlijkse kosten.</li>
-          <li>Filter op categorie of betaalfrequentie.</li>
-          <li>Vergelijk wat pauzeren of opzeggen je oplevert.</li>
+        <ul class="unified-tool-trust" aria-label="Eigenschappen">
+          <li><span aria-hidden="true">✓</span> Maand- en jaartotaal</li>
+          <li><span aria-hidden="true">✓</span> Handige bespaarsuggesties</li>
+          <li><span aria-hidden="true">✓</span> Blijft op je apparaat</li>
         </ul>
       </div>
     </section>
-    <section class="calculator-wrap" aria-label="Abonnementenoverzicht">
-      <div class="calculator-layout">
+    <section class="calculator-wrap unified-tool-main" aria-label="Abonnementenoverzicht">
+      <div class="calculator-layout unified-tool-layout">
         <div class="calculator-layout__app">
       <section class="summary-section" aria-label="Totalen van je abonnementen">
         <div class="summary-grid">

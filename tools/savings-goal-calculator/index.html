@@ -119,6 +119,7 @@
   </style>
   <link rel="stylesheet" href="/assets/css/tools.css" />
   <link rel="stylesheet" href="/assets/css/mature.css" />
+  <link rel="stylesheet" href="/assets/css/tool-design.css?v=2" />
 </head>
 <body class="tool-page">
   <a class="skip-link" href="#main-content">Naar de inhoud</a>
@@ -194,17 +195,24 @@
     </div>
   </header>
   <main id="main-content">
-    <section class="page-hero" aria-labelledby="savings-heading">
-      <div class="page-hero__inner">
-        <p class="page-hero__eyebrow">Spaardoel calculator</p>
-        <h1 id="savings-heading">Bereken je spaardoel stap voor stap</h1>
-        <p class="page-hero__lede">Vul je spaardoel, huidige spaargeld en geplande inleg in. Je ziet direct wanneer je jouw doel kunt bereiken.</p>
-        <p class="page-hero__meta">Rente en startdatum zijn optioneel. Laat ze leeg voor een snelle schatting.</p>
+    <section class="page-hero unified-tool-hero" aria-labelledby="savings-heading">
+      <div class="page-hero__inner unified-tool-hero__inner">
+        <div class="unified-tool-hero__copy">
+          <p class="page-hero__eyebrow unified-tool-hero__eyebrow">Spaardoel</p>
+          <h1 id="savings-heading">Bereken je spaardoel stap voor stap</h1>
+          <p class="page-hero__lede unified-tool-hero__lede">Vul je spaardoel, huidige spaargeld en geplande inleg in. Je ziet direct wanneer je jouw doel kunt bereiken.</p>
+          <p class="page-hero__meta unified-tool-hero__meta">Rente en startdatum zijn optioneel. Laat ze leeg voor een snelle schatting.</p>
+        </div>
+        <ul class="unified-tool-trust" aria-label="Eigenschappen">
+          <li><span aria-hidden="true">✓</span> Direct resultaat</li>
+          <li><span aria-hidden="true">✓</span> Geen account</li>
+          <li><span aria-hidden="true">✓</span> Blijft op je apparaat</li>
+        </ul>
       </div>
     </section>
 
-    <section class="calculator-wrap" aria-label="Spaardoel calculator">
-      <div class="calculator-layout">
+    <section class="calculator-wrap unified-tool-main" aria-label="Spaardoel calculator">
+      <div class="calculator-layout unified-tool-layout">
         <div class="calculator-layout__app" id="savings-calculator"></div>
         <aside class="calculator-layout__aside" aria-label="Extra uitleg">
 
@@ -233,7 +241,7 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <script type="module" src="script.js"></script>
+  <script type="module" src="script.js?v=2"></script>
   <script defer src="/assets/js/main.js"></script>
 </body>
 </html>

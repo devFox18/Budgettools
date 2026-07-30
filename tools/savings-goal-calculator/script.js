@@ -122,7 +122,7 @@ function buildCsv(summaryLines, projection, locale) {
         rows.push([line]);
     });
     rows.push([]);
-    rows.push(['Month', 'Date', 'Starting Balance', 'Contribution', 'Interest', 'Ending Balance']);
+    rows.push(['Maand', 'Datum', 'Beginsaldo', 'Inleg', 'Rente', 'Eindsaldo']);
     projection.forEach((row) => {
         rows.push([
             (row.monthIndex + 1).toString(),
@@ -144,32 +144,32 @@ function describeDuration(months, locale) {
     const remainingMonths = months % 12;
     const parts = [];
     if (years > 0) {
-        parts.push(`${years} ${years === 1 ? 'year' : 'years'}`);
+        parts.push(`${years} jaar`);
     }
     if (remainingMonths > 0) {
-        parts.push(`${remainingMonths} ${remainingMonths === 1 ? 'month' : 'months'}`);
+        parts.push(`${remainingMonths} ${remainingMonths === 1 ? 'maand' : 'maanden'}`);
     }
     if (parts.length === 0) {
-        return '0 months';
+        return '0 maanden';
     }
     return parts.join(' ');
 }
 function summariseProjection(projection, totalContributions, totalInterest, locale, currency, finishDate, requiredMonthlyContribution, mode = 'time', inflation) {
     const summaryLines = [];
-    summaryLines.push(`Mode: ${mode === 'time' ? 'Time to reach goal' : 'Monthly savings needed'}`);
+    summaryLines.push(`Berekening: ${mode === 'time' ? 'Tijd tot spaardoel' : 'Benodigde maandelijkse inleg'}`);
     if (finishDate) {
         const dateFormatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' });
-        summaryLines.push(`Projected finish date: ${dateFormatter.format(finishDate)}`);
+        summaryLines.push(`Verwachte einddatum: ${dateFormatter.format(finishDate)}`);
     }
     if (requiredMonthlyContribution !== undefined) {
-        summaryLines.push(`Required monthly savings: ${formatCurrency(requiredMonthlyContribution, locale, currency)}`);
+        summaryLines.push(`Benodigde maandelijkse inleg: ${formatCurrency(requiredMonthlyContribution, locale, currency)}`);
     }
-    summaryLines.push(`Total contributions: ${formatCurrency(totalContributions, locale, currency)}`);
-    summaryLines.push(`Total interest: ${formatCurrency(totalInterest, locale, currency)}`);
+    summaryLines.push(`Totale inleg: ${formatCurrency(totalContributions, locale, currency)}`);
+    summaryLines.push(`Totale rente: ${formatCurrency(totalInterest, locale, currency)}`);
     if (inflation) {
-        summaryLines.push(`Real (today's money) finish: ${formatCurrency(inflation.realEndingBalance, locale, currency)}`);
-        summaryLines.push(`Real contributions: ${formatCurrency(inflation.realContributions, locale, currency)}`);
-        summaryLines.push(`Real interest: ${formatCurrency(inflation.realInterest, locale, currency)}`);
+        summaryLines.push(`Eindbedrag in geld van nu: ${formatCurrency(inflation.realEndingBalance, locale, currency)}`);
+        summaryLines.push(`Inleg in geld van nu: ${formatCurrency(inflation.realContributions, locale, currency)}`);
+        summaryLines.push(`Rente in geld van nu: ${formatCurrency(inflation.realInterest, locale, currency)}`);
     }
     return summaryLines;
 }
@@ -438,12 +438,12 @@ class SavingsCalculatorUI {
       <header class="bt-savings-header">
         <div class="bt-savings-header__intro">
           <div>
-            <h2>Savings goal calculator</h2>
-            <p class="bt-demo__lede">Choose whether you want to see how long it takes to reach your goal or how much to save each month for a deadline.</p>
+            <h2>Spaardoel berekenen</h2>
+            <p class="bt-demo__lede">Kies of je wilt weten wanneer je jouw doel bereikt of hoeveel je maandelijks moet sparen voor een einddatum.</p>
           </div>
-          <div class="bt-mode-toggle" role="group" aria-label="Calculation mode">
-            <button type="button" data-mode="time" aria-pressed="false">Time to reach goal</button>
-            <button type="button" data-mode="monthly" aria-pressed="false">Monthly savings by date</button>
+          <div class="bt-mode-toggle" role="group" aria-label="Soort berekening">
+            <button type="button" data-mode="time" aria-pressed="false">Wanneer bereik ik mijn doel?</button>
+            <button type="button" data-mode="monthly" aria-pressed="false">Hoeveel moet ik sparen?</button>
           </div>
         </div>
       </header>
@@ -451,58 +451,58 @@ class SavingsCalculatorUI {
         <div class="bt-form-column">
           <div class="bt-mobile-summary" id="bt-mobile-summary" aria-live="polite" data-has-results="false">
             <div class="bt-mobile-summary__card" tabindex="-1">
-              <p class="bt-mobile-summary__placeholder">Your results will appear here after you calculate.</p>
+              <p class="bt-mobile-summary__placeholder">Je resultaat verschijnt hier na de berekening.</p>
             </div>
           </div>
           <form class="bt-grid" novalidate>
             <div class="bt-field">
-              <label for="goalAmount">Goal amount</label>
+              <label for="goalAmount">Doelbedrag</label>
               <input id="goalAmount" name="goalAmount" type="number" inputmode="decimal" min="0" step="0.01" class="bt-input" placeholder="10000" />
             </div>
             <div class="bt-field">
-              <label for="currentSavings">Current savings</label>
+              <label for="currentSavings">Huidig spaargeld</label>
               <input id="currentSavings" name="currentSavings" type="number" inputmode="decimal" min="0" step="0.01" class="bt-input" placeholder="0" />
             </div>
             <div class="bt-field" data-field="monthlyContribution">
-              <label for="monthlyContribution">Monthly contribution</label>
+              <label for="monthlyContribution">Maandelijkse inleg</label>
               <input id="monthlyContribution" name="monthlyContribution" type="number" inputmode="decimal" min="0" step="0.01" class="bt-input" placeholder="250" />
-              <small>Required for time-to-goal calculations.</small>
+              <small>Nodig om te berekenen wanneer je het doel bereikt.</small>
             </div>
             <div class="bt-field" data-field="targetDate">
-              <label for="targetDate">Target date</label>
+              <label for="targetDate">Gewenste einddatum</label>
               <input id="targetDate" name="targetDate" type="month" class="bt-input" />
-              <small>Required for target-date calculations.</small>
+              <small>Nodig om de maandelijkse inleg te berekenen.</small>
             </div>
             <div class="bt-field">
-              <label for="apr">Annual interest rate (APR %)</label>
+              <label for="apr">Jaarlijkse rente (%)</label>
               <input id="apr" name="apr" type="number" inputmode="decimal" min="0" max="50" step="0.01" class="bt-input" placeholder="3" />
             </div>
             <div class="bt-field">
-              <label for="compounding">Compounding frequency</label>
+              <label for="compounding">Renteberekening</label>
               <select id="compounding" name="compounding" class="bt-input">
-                <option value="monthly">Monthly</option>
-                <option value="quarterly">Quarterly</option>
-                <option value="yearly">Yearly</option>
+                <option value="monthly">Maandelijks</option>
+                <option value="quarterly">Per kwartaal</option>
+                <option value="yearly">Jaarlijks</option>
               </select>
             </div>
             <div class="bt-field">
-              <label for="inflation">Inflation rate (optional %)</label>
+              <label for="inflation">Inflatie (optioneel, %)</label>
               <input id="inflation" name="inflation" type="number" inputmode="decimal" min="0" max="20" step="0.01" class="bt-input" placeholder="2" />
             </div>
             <div class="bt-field">
-              <label for="currency">Currency</label>
+              <label for="currency">Valuta</label>
               <select id="currency" name="currency" class="bt-input"></select>
             </div>
             <div class="bt-field">
-              <label for="locale">Locale</label>
+              <label for="locale">Getalnotatie</label>
               <select id="locale" name="locale" class="bt-input"></select>
             </div>
             <div class="bt-remember">
               <input type="checkbox" id="rememberInputs" />
-              <label for="rememberInputs">Save my last inputs on this device</label>
+              <label for="rememberInputs">Bewaar mijn invoer op dit apparaat</label>
             </div>
             <div class="bt-form-actions">
-              <button type="submit" class="bt-submit">Calculate</button>
+              <button type="submit" class="bt-submit">Berekenen</button>
             </div>
           </form>
           <div id="bt-message" class="bt-message" aria-live="polite"></div>
@@ -518,35 +518,35 @@ class SavingsCalculatorUI {
         resultsCard.setAttribute('hidden', '');
         resultsCard.innerHTML = `
       <div class="bt-results-header">
-        <h3 id="bt-results-heading">Your results</h3>
-        <p class="bt-results-subtitle">Results refresh each time you calculate.</p>
+        <h3 id="bt-results-heading">Jouw resultaat</h3>
+        <p class="bt-results-subtitle">Het resultaat wordt bijgewerkt wanneer je de invoer wijzigt.</p>
       </div>
       <div id="bt-summary-region" class="bt-summary" role="region" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
       <p class="sr-only" id="bt-summary-announcer" aria-live="polite"></p>
       <div class="bt-actions">
-        <button type="button" class="bt-button" data-action="reset">Reset</button>
-        <button type="button" class="bt-button" data-action="copy">Copy results</button>
-        <button type="button" class="bt-button" data-action="download-pdf">Download PDF</button>
-        <button type="button" class="bt-button" data-action="download-csv">Download CSV</button>
+        <button type="button" class="bt-button" data-action="reset">Opnieuw</button>
+        <button type="button" class="bt-button" data-action="copy">Resultaat kopiëren</button>
+        <button type="button" class="bt-button" data-action="download-pdf">PDF downloaden</button>
+        <button type="button" class="bt-button" data-action="download-csv">CSV downloaden</button>
       </div>
       <div class="bt-results-details" id="bt-results-details">
         <div class="bt-table-wrapper">
           <table class="bt-projection-table">
             <thead>
               <tr>
-                <th scope="col">Month</th>
-                <th scope="col">Date</th>
-                <th scope="col">Starting balance</th>
-                <th scope="col">Contribution</th>
-                <th scope="col">Interest</th>
-                <th scope="col">Ending balance</th>
+                <th scope="col">Maand</th>
+                <th scope="col">Datum</th>
+                <th scope="col">Beginsaldo</th>
+                <th scope="col">Inleg</th>
+                <th scope="col">Rente</th>
+                <th scope="col">Eindsaldo</th>
               </tr>
             </thead>
             <tbody id="bt-table-body"></tbody>
           </table>
         </div>
-        <button type="button" class="bt-button" data-action="toggle-rows" aria-expanded="false">Show full schedule</button>
-        <p class="bt-footer">NLrekentools — calculations run in your browser. No data stored. Estimates only. Returns are not guaranteed.</p>
+        <button type="button" class="bt-button" data-action="toggle-rows" aria-expanded="false">Volledig schema tonen</button>
+        <p class="bt-footer">NLrekentools — de berekening draait in je browser. De uitkomst is indicatief.</p>
       </div>
     `;
         const summaryMount = document.querySelector('[data-results-summary]');
@@ -752,7 +752,7 @@ class SavingsCalculatorUI {
         const text = lines.join('\n');
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(text).then(() => {
-                this.showMessage('Summary copied to clipboard.');
+                this.showMessage('Het resultaat is gekopieerd.');
             }).catch(() => {
                 this.fallbackCopy(text);
             });
@@ -771,10 +771,10 @@ class SavingsCalculatorUI {
         textArea.select();
         try {
             document.execCommand('copy');
-            this.showMessage('Summary copied to clipboard.');
+            this.showMessage('Het resultaat is gekopieerd.');
         }
         catch (error) {
-            this.showMessage('Unable to copy to clipboard.');
+            this.showMessage('Kopiëren is niet gelukt.');
         }
         document.body.removeChild(textArea);
     }
@@ -814,7 +814,7 @@ class SavingsCalculatorUI {
     setSummaryPlaceholder(message) {
         if (!this.summaryRegion)
             return;
-        const text = message !== null && message !== void 0 ? message : 'Add your info and press Calculate to see your results.';
+        const text = message !== null && message !== void 0 ? message : 'Vul je gegevens in en kies Berekenen om het resultaat te zien.';
         const paragraph = document.createElement('p');
         paragraph.className = 'bt-summary__placeholder';
         paragraph.textContent = text;
@@ -834,7 +834,7 @@ class SavingsCalculatorUI {
         this.summaryAnnouncer.textContent = '';
         window.setTimeout(() => {
             if (this.summaryAnnouncer) {
-                this.summaryAnnouncer.textContent = 'Results updated';
+                this.summaryAnnouncer.textContent = 'Resultaat bijgewerkt';
             }
         }, 60);
     }
@@ -844,7 +844,7 @@ class SavingsCalculatorUI {
             return;
         if (!this.resultSummary) {
             this.mobileSummaryRegion.dataset.hasResults = 'false';
-            const placeholderText = ((_b = (_a = this.summaryRegion) === null || _a === void 0 ? void 0 : _a.textContent) === null || _b === void 0 ? void 0 : _b.trim()) || 'Your results will appear here after you calculate.';
+            const placeholderText = ((_b = (_a = this.summaryRegion) === null || _a === void 0 ? void 0 : _a.textContent) === null || _b === void 0 ? void 0 : _b.trim()) || 'Je resultaat verschijnt hier na de berekening.';
             this.mobileSummaryCard.innerHTML = `<p class="bt-mobile-summary__placeholder">${placeholderText}</p>`;
             return;
         }
@@ -853,19 +853,19 @@ class SavingsCalculatorUI {
         const currency = this.state.currency;
         const durationText = describeDuration(months, locale);
         const formatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long' });
-        const finishText = finishDate ? formatter.format(finishDate) : 'Goal already reached';
+        const finishText = finishDate ? formatter.format(finishDate) : 'Doel al bereikt';
         const contributions = formatCurrency(totalContributions, locale, currency);
         const interest = formatCurrency(totalInterest, locale, currency);
         const monthlyText = requiredMonthlyContribution !== undefined ? formatCurrency(requiredMonthlyContribution, locale, currency) : null;
-        const highlightLabel = monthlyText ? 'Monthly savings needed' : 'Estimated time';
+        const highlightLabel = monthlyText ? 'Benodigde maandelijkse inleg' : 'Geschatte looptijd';
         const highlightValue = monthlyText !== null && monthlyText !== void 0 ? monthlyText : durationText;
         const metrics = [];
         if (monthlyText) {
-            metrics.push({ label: 'Monthly savings needed', value: monthlyText });
+            metrics.push({ label: 'Benodigde maandelijkse inleg', value: monthlyText });
         }
-        metrics.push({ label: 'Estimated time', value: durationText });
-        metrics.push({ label: 'Total contributions', value: contributions });
-        metrics.push({ label: 'Total interest', value: interest });
+        metrics.push({ label: 'Geschatte looptijd', value: durationText });
+        metrics.push({ label: 'Totale inleg', value: contributions });
+        metrics.push({ label: 'Totale rente', value: interest });
         this.mobileSummaryRegion.dataset.hasResults = 'true';
         const metricsHtml = metrics.map((metric) => `
         <div class="bt-mobile-summary__metric">
@@ -876,11 +876,11 @@ class SavingsCalculatorUI {
         this.mobileSummaryCard.innerHTML = `
       <p class="bt-mobile-summary__eyebrow">${highlightLabel}</p>
       <p class="bt-mobile-summary__value">${highlightValue}</p>
-      <p class="bt-mobile-summary__meta">Projected finish: ${finishText}</p>
+      <p class="bt-mobile-summary__meta">Verwachte einddatum: ${finishText}</p>
       <dl class="bt-mobile-summary__metrics">
         ${metricsHtml}
       </dl>
-      <a class="bt-mobile-summary__link" href="#bt-results-details">Jump to full results</a>
+      <a class="bt-mobile-summary__link" href="#bt-results-details">Bekijk het volledige resultaat</a>
     `;
     }
     focusResults() {
@@ -913,7 +913,7 @@ class SavingsCalculatorUI {
         const lines = summariseProjection(projection, totalContributions, totalInterest, this.state.locale, this.state.currency, finishDate, requiredMonthlyContribution, mode, inflation);
         if (includeTableHint) {
             lines.push('');
-            lines.push('Projection preview shown in tool. Use "Show full schedule" or download CSV for full history.');
+            lines.push('De tool toont een korte vooruitblik. Bekijk het volledige schema of download de CSV voor alle maanden.');
         }
         return lines;
     }
@@ -926,7 +926,7 @@ class SavingsCalculatorUI {
         this.setSummaryPlaceholder();
         this.updateMobileSummary();
         if (!this.state.goalAmount || this.state.goalAmount <= 0) {
-            const message = 'Enter a goal amount to begin.';
+            const message = 'Vul een doelbedrag in om te beginnen.';
             this.showMessage(message);
             this.setSummaryPlaceholder(message);
             this.updateMobileSummary();
@@ -945,7 +945,7 @@ class SavingsCalculatorUI {
                 startDate: new Date(),
             });
             if (!result) {
-                const message = 'Increase monthly savings or adjust your goal to get a result.';
+                const message = 'Verhoog je maandelijkse inleg of pas je doelbedrag aan.';
                 this.showMessage(message);
                 this.setSummaryPlaceholder(message);
                 this.updateMobileSummary();
@@ -967,7 +967,7 @@ class SavingsCalculatorUI {
                 startDate: new Date(),
             });
             if (!result) {
-                const message = 'Goal may already be met or the target date is too soon.';
+                const message = 'Je doel is mogelijk al bereikt of de gekozen einddatum is te dichtbij.';
                 this.showMessage(message);
                 this.setSummaryPlaceholder(message);
                 this.updateMobileSummary();
@@ -995,11 +995,11 @@ class SavingsCalculatorUI {
         const fragment = document.createDocumentFragment();
         const durationText = describeDuration(months, locale);
         const formatter = new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long' });
-        const finishText = finishDate ? formatter.format(finishDate) : 'Goal already reached';
+        const finishText = finishDate ? formatter.format(finishDate) : 'Doel al bereikt';
         const contributionsText = formatCurrency(totalContributions, locale, currency);
         const interestText = formatCurrency(totalInterest, locale, currency);
         const highlightMonthly = mode === 'monthly' && requiredMonthlyContribution !== undefined;
-        const highlightLabel = highlightMonthly ? 'Monthly savings needed' : 'Estimated time';
+        const highlightLabel = highlightMonthly ? 'Benodigde maandelijkse inleg' : 'Geschatte looptijd';
         const highlightValue = highlightMonthly && requiredMonthlyContribution !== undefined
             ? formatCurrency(requiredMonthlyContribution, locale, currency)
             : durationText;
@@ -1013,7 +1013,7 @@ class SavingsCalculatorUI {
         value.textContent = highlightValue;
         const meta = document.createElement('p');
         meta.className = 'bt-summary__meta';
-        meta.textContent = finishDate ? `Projected finish: ${finishText}` : 'Goal already reached.';
+        meta.textContent = finishDate ? `Verwachte einddatum: ${finishText}` : 'Je spaardoel is al bereikt.';
         hero.append(eyebrow, value, meta);
         fragment.appendChild(hero);
         const goalAmount = Math.max(0, (_a = this.state.goalAmount) !== null && _a !== void 0 ? _a : 0);
@@ -1027,10 +1027,10 @@ class SavingsCalculatorUI {
             progress.setAttribute('aria-valuemin', '0');
             progress.setAttribute('aria-valuemax', goalAmount.toString());
             progress.setAttribute('aria-valuenow', Math.min(goalAmount, currentSavings).toString());
-            progress.setAttribute('aria-valuetext', `${percent}% of goal saved`);
+            progress.setAttribute('aria-valuetext', `${percent}% van het doel gespaard`);
             const label = document.createElement('div');
             label.className = 'bt-progress__label';
-            label.innerHTML = `<span>Current progress</span><span>${formatCurrency(currentSavings, locale, currency)} of ${formatCurrency(goalAmount, locale, currency)} (${percent}%)</span>`;
+            label.innerHTML = `<span>Huidige voortgang</span><span>${formatCurrency(currentSavings, locale, currency)} van ${formatCurrency(goalAmount, locale, currency)} (${percent}%)</span>`;
             const bar = document.createElement('div');
             bar.className = 'bt-progress__bar';
             const valueBar = document.createElement('div');
@@ -1053,18 +1053,18 @@ class SavingsCalculatorUI {
             metrics.appendChild(wrapper);
         };
         if (highlightMonthly) {
-            addMetric('Estimated time', durationText);
+            addMetric('Geschatte looptijd', durationText);
         }
         if (finishDate) {
-            addMetric('Projected finish date', finishText);
+            addMetric('Verwachte einddatum', finishText);
         }
-        addMetric('Total contributions', contributionsText);
-        addMetric('Total interest', interestText);
+        addMetric('Totale inleg', contributionsText);
+        addMetric('Totale rente', interestText);
         if (inflation) {
-            addMetric('Goal in today\'s money', formatCurrency(inflation.realGoalValue, locale, currency));
-            addMetric('Projected finish (real)', formatCurrency(inflation.realEndingBalance, locale, currency));
-            addMetric('Contributions (real)', formatCurrency(inflation.realContributions, locale, currency));
-            addMetric('Interest (real)', formatCurrency(inflation.realInterest, locale, currency));
+            addMetric('Doel in geld van nu', formatCurrency(inflation.realGoalValue, locale, currency));
+            addMetric('Eindbedrag in geld van nu', formatCurrency(inflation.realEndingBalance, locale, currency));
+            addMetric('Inleg in geld van nu', formatCurrency(inflation.realContributions, locale, currency));
+            addMetric('Rente in geld van nu', formatCurrency(inflation.realInterest, locale, currency));
         }
         fragment.appendChild(metrics);
         this.summaryRegion.setAttribute('data-has-results', 'true');
@@ -1123,7 +1123,7 @@ class SavingsCalculatorUI {
         const hasMoreRows = projection.length > PREVIEW_ROW_COUNT;
         this.showAllButton.style.display = hasMoreRows ? 'inline-flex' : 'none';
         if (hasMoreRows) {
-            this.showAllButton.textContent = this.showAllRows ? 'Show first 6 rows' : 'Show full schedule';
+            this.showAllButton.textContent = this.showAllRows ? 'Eerste 6 maanden tonen' : 'Volledig schema tonen';
             this.showAllButton.setAttribute('aria-expanded', this.showAllRows ? 'true' : 'false');
         }
         else {

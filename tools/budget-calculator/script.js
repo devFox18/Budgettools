@@ -338,9 +338,9 @@ function drawSummary() {
 
 function randomColor(i) {
   const palette = [
-    "#176b4d", "#4f7f6c", "#79a38f", "#b58a4b",
-    "#85715e", "#47708f", "#7a6b91", "#b26b5f",
-    "#66865a", "#9a7d54", "#517d7a", "#8b6874"
+    "#12344d", "#1c5978", "#397894", "#5c92aa",
+    "#80aabd", "#a8c3cf", "#d0dfe6", "#d5a83f",
+    "#b77a3b", "#7b6b91", "#6d7f52", "#955d67"
   ];
   return palette[i % palette.length];
 }

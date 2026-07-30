@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#102f49" />
   <title>Maandbudget berekenen | Gratis budgetcalculator</title>
   <meta name="description"
     content="Bereken gratis je maandbudget. Vul inkomsten en uitgaven in en zie direct hoeveel je overhoudt of kunt sparen." />
@@ -40,6 +41,7 @@
   <link rel="stylesheet" href="/assets/css/mature.css" />
   <link rel="stylesheet" href="/tools/budget-calculator/budget-v2.css?v=6" />
   <link rel="stylesheet" href="/assets/css/tool-design.css?v=3" />
+  <link rel="stylesheet" href="/assets/css/civic.css?v=7" />
 
   <script>
     document.documentElement.classList.remove('no-js');
@@ -52,7 +54,7 @@
   <header class="site-header" role="banner">
     <div class="site-header__inner">
       <a class="site-logo" href="/">
-        <span>NLrekentools</span>
+        <span class="logo-mark" aria-hidden="true">NL</span><span>NLrekentools</span>
       </a>
       <button class="site-nav__toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-menu">
         <span class="site-nav__toggle-box" aria-hidden="true">
@@ -284,7 +286,7 @@
 
   <footer role="contentinfo">
     <div class="container footer-inner py-5 border-top">
-      <p class="mb-0">© <span data-year></span> NLrekentools. Helder rekenen aan je geld.</p>
+      <p class="mb-0">© <span data-year></span> NLrekentools. Helder rekenen aan je geld.<span class="footer-independence">Onafhankelijke website, geen onderdeel van de overheid.</span></p>
       <nav aria-label="Footer" class="d-flex gap-3">
         <a href="/privacy.html">Privacy</a>
         <a href="/terms.html">Voorwaarden</a>
@@ -294,7 +296,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script defer src="/assets/js/main.js"></script>
-  <script defer src="/tools/budget-calculator/script.js?v=6"></script>
+  <script defer src="/tools/budget-calculator/script.js?v=7"></script>
 </body>
 
 </html>

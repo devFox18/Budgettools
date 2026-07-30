@@ -42,6 +42,7 @@
   <link rel="stylesheet" href="/tools/budget-calculator/budget-v2.css?v=6" />
   <link rel="stylesheet" href="/assets/css/tool-design.css?v=3" />
   <link rel="stylesheet" href="/assets/css/civic.css?v=9" />
+  <link rel="stylesheet" href="/tools/budget-calculator/budget-flow.css?v=1" />
 
   <script>
     document.documentElement.classList.remove('no-js');
@@ -143,8 +144,8 @@
       <div class="budget-hero__inner unified-tool-hero__inner">
         <div class="unified-tool-hero__copy">
           <p class="budget-eyebrow unified-tool-hero__eyebrow">Maandbudget</p>
-          <h1 id="hero-title">Weet wat je overhoudt.</h1>
-          <p class="budget-hero__lede unified-tool-hero__lede">Zet je inkomen en uitgaven overzichtelijk naast elkaar. Je ziet direct waar je geld naartoe gaat en hoeveel ruimte er deze maand overblijft.</p>
+          <h1 id="hero-title">Maak je maandbudget stap voor stap.</h1>
+          <p class="budget-hero__lede unified-tool-hero__lede">Begin met je inkomen, voeg daarna je vaste en variabele uitgaven toe en bekijk als laatste je complete budgetoverzicht.</p>
         </div>
         <ul class="budget-trust unified-tool-trust" aria-label="Eigenschappen">
           <li><span aria-hidden="true">✓</span> Geen account</li>
@@ -157,19 +158,55 @@
     <section class="budget-app unified-tool-main" aria-label="Budgetcalculator">
       <div id="status-indicator" class="save-status" role="status" aria-live="polite"></div>
 
+      <div class="budget-flow-bar">
+        <nav class="budget-steps" aria-label="Stappen van de budgetberekening">
+          <button type="button" class="budget-step is-active" data-budget-step="income" aria-controls="panel-income" aria-current="step">
+            <span class="budget-step__number">1</span>
+            <span><strong>Inkomen</strong><small>Wat komt er binnen?</small></span>
+          </button>
+          <button type="button" class="budget-step" data-budget-step="expenses" aria-controls="panel-expenses">
+            <span class="budget-step__number">2</span>
+            <span><strong>Uitgaven</strong><small>Vast en variabel</small></span>
+          </button>
+          <button type="button" class="budget-step" data-budget-step="summary" aria-controls="panel-summary">
+            <span class="budget-step__number">3</span>
+            <span><strong>Overzicht</strong><small>Bekijk je resultaat</small></span>
+          </button>
+        </nav>
+
+        <details class="budget-actions">
+          <summary>Meer acties <span aria-hidden="true">⋯</span></summary>
+          <div class="budget-actions__menu">
+            <button class="budget-action" id="loadSample" type="button">Voorbeeld invullen</button>
+            <button class="budget-action" id="export" type="button">CSV downloaden</button>
+            <button class="budget-action" id="print" type="button">Afdrukken</button>
+            <button class="budget-action budget-action--danger" id="reset" type="button">Alles wissen</button>
+          </div>
+        </details>
+      </div>
+
       <div class="budget-workspace">
         <div class="budget-workspace__main">
-          <section class="budget-panel budget-panel--income" aria-labelledby="income-heading">
+          <section class="budget-panel budget-panel--income" id="panel-income" data-step-panel="income" aria-labelledby="income-heading">
             <div class="budget-panel__heading">
               <span class="step-number" aria-hidden="true">1</span>
-              <div><p class="step-label">Begin hier</p><h2 id="income-heading">Wat komt er binnen?</h2></div>
+              <div><p class="step-label">Stap 1 van 3</p><h2 id="income-heading">Wat komt er iedere maand binnen?</h2></div>
             </div>
+            <p class="budget-panel__intro">Gebruik bedragen die daadwerkelijk op je rekening binnenkomen. Vakantiegeld of een jaarlijkse bonus hoef je alleen mee te rekenen als je deze naar een maandbedrag hebt omgerekend.</p>
             <div class="income-grid">
               <label for="income">Netto maandinkomen
                 <span class="currency-input-group">
                   <span class="currency-symbol js-currency-symbol" aria-hidden="true">€</span>
                   <input type="number" id="income" placeholder="0,00" min="0" step="any" inputmode="decimal" class="form-control" />
                 </span>
+                <small>Bijvoorbeeld salaris, uitkering of pensioen.</small>
+              </label>
+              <label for="extraIncome">Overige inkomsten per maand <span class="optional-label">(optioneel)</span>
+                <span class="currency-input-group">
+                  <span class="currency-symbol js-currency-symbol" aria-hidden="true">€</span>
+                  <input type="number" id="extraIncome" placeholder="0,00" min="0" step="any" inputmode="decimal" class="form-control" />
+                </span>
+                <small>Bijvoorbeeld toeslagen, alimentatie of bijverdiensten.</small>
               </label>
               <label for="currency">Valuta
                 <select id="currency" class="form-select">
@@ -177,66 +214,85 @@
                   <option value="$">Amerikaanse dollar ($)</option>
                   <option value="£">Britse pond (£)</option>
                 </select>
+                <small>Deze valuta wordt voor alle bedragen gebruikt.</small>
               </label>
+            </div>
+            <div class="step-actions step-actions--end">
+              <button class="button button--primary button--next" type="button" data-go-step="expenses">Naar uitgaven <span aria-hidden="true">→</span></button>
             </div>
           </section>
 
-          <section class="budget-panel budget-panel--expenses" aria-labelledby="expenses-heading">
-            <div class="budget-panel__heading budget-panel__heading--actions">
+          <section class="budget-panel budget-panel--expenses" id="panel-expenses" data-step-panel="expenses" aria-labelledby="expenses-heading" hidden>
+            <div class="budget-panel__heading">
               <span class="step-number" aria-hidden="true">2</span>
-              <div><p class="step-label">Maak het compleet</p><h2 id="expenses-heading">Waar geef je geld aan uit?</h2></div>
-              <button class="button button--primary" id="addRow" type="button">Uitgave toevoegen</button>
+              <div><p class="step-label">Stap 2 van 3</p><h2 id="expenses-heading">Waar gaat je geld naartoe?</h2></div>
             </div>
+            <p class="budget-panel__intro">Splits je uitgaven op in bedragen die iedere maand ongeveer gelijk zijn en bedragen die kunnen wisselen.</p>
 
-            <div class="expense-toolbar" aria-label="Budgetacties">
-              <div class="expense-toolbar__group">
-                <span class="expense-toolbar__label">Snel beginnen</span>
-                <button class="button button--quiet" id="loadSample" type="button">Voorbeeld invullen</button>
-              </div>
-              <div class="expense-toolbar__group">
-                <span class="expense-toolbar__label">Overzicht bewaren</span>
-                <div class="expense-toolbar__actions">
-                  <button class="button button--quiet" id="export" type="button">CSV downloaden</button>
-                  <button class="button button--quiet" id="print" type="button">Afdrukken</button>
+            <section class="expense-group" aria-labelledby="fixed-expenses-heading">
+              <div class="expense-group__header">
+                <div>
+                  <p class="expense-group__eyebrow">Iedere maand ongeveer gelijk</p>
+                  <h3 id="fixed-expenses-heading">Vaste lasten</h3>
                 </div>
+                <button class="button button--quiet" id="addFixedRow" type="button">Vaste last toevoegen</button>
               </div>
-              <div class="expense-toolbar__group expense-toolbar__group--danger">
-                <span class="expense-toolbar__label">Opnieuw beginnen</span>
-                <button class="button button--danger" id="reset" type="button">Alles wissen</button>
+              <div class="bt-table-wrapper">
+                <table class="expense-table">
+                  <colgroup>
+                    <col class="expense-table__category" />
+                    <col class="expense-table__amount" />
+                    <col class="expense-table__note" />
+                    <col class="expense-table__action" />
+                  </colgroup>
+                  <thead>
+                    <tr><th scope="col">Categorie</th><th scope="col">Per maand</th><th scope="col">Details</th><th scope="col"><span class="sr-only">Acties</span></th></tr>
+                  </thead>
+                  <tbody id="fixedRows"></tbody>
+                </table>
               </div>
-            </div>
+            </section>
 
-            <div class="bt-table-wrapper">
-              <table class="expense-table">
-                <colgroup>
-                  <col class="expense-table__category" />
-                  <col class="expense-table__amount" />
-                  <col class="expense-table__note" />
-                  <col class="expense-table__action" />
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th scope="col">Categorie</th>
-                    <th scope="col">Per maand</th>
-                    <th scope="col">Toelichting <span class="optional-label">(optioneel)</span></th>
-                    <th scope="col"><span class="sr-only">Acties</span></th>
-                  </tr>
-                </thead>
-                <tbody id="rows"></tbody>
-              </table>
-            </div>
+            <section class="expense-group" aria-labelledby="variable-expenses-heading">
+              <div class="expense-group__header">
+                <div>
+                  <p class="expense-group__eyebrow">Kan per maand veranderen</p>
+                  <h3 id="variable-expenses-heading">Variabele uitgaven</h3>
+                </div>
+                <button class="button button--quiet" id="addVariableRow" type="button">Variabele uitgave toevoegen</button>
+              </div>
+              <div class="bt-table-wrapper">
+                <table class="expense-table">
+                  <colgroup>
+                    <col class="expense-table__category" />
+                    <col class="expense-table__amount" />
+                    <col class="expense-table__note" />
+                    <col class="expense-table__action" />
+                  </colgroup>
+                  <thead>
+                    <tr><th scope="col">Categorie</th><th scope="col">Per maand</th><th scope="col">Details</th><th scope="col"><span class="sr-only">Acties</span></th></tr>
+                  </thead>
+                  <tbody id="variableRows"></tbody>
+                </table>
+              </div>
+            </section>
 
             <div class="expense-total">
               <span>Totale uitgaven</span>
               <strong id="totalExpenses">€ 0,00</strong>
             </div>
+            <div class="step-actions">
+              <button class="button button--quiet" type="button" data-go-step="income"><span aria-hidden="true">←</span> Terug naar inkomen</button>
+              <button class="button button--primary button--next" type="button" data-go-step="summary">Bekijk budgetoverzicht <span aria-hidden="true">→</span></button>
+            </div>
           </section>
 
-          <section class="budget-panel budget-panel--chart" aria-labelledby="chart-heading">
+          <section class="budget-panel budget-panel--chart" id="panel-summary" data-step-panel="summary" aria-labelledby="chart-heading" hidden>
             <div class="budget-panel__heading">
               <span class="step-number" aria-hidden="true">3</span>
-              <div><p class="step-label">Bekijk de verdeling</p><h2 id="chart-heading">Waar gaat je geld naartoe?</h2></div>
+              <div><p class="step-label">Stap 3 van 3</p><h2 id="chart-heading">Verdeling van je uitgaven</h2></div>
             </div>
+            <p class="budget-panel__intro">Bekijk welke categorieën het zwaarst wegen. De bedragen in het overzicht hiernaast worden direct bijgewerkt.</p>
             <div class="chart-layout">
               <div class="chart-stage">
                 <div id="chart-container" class="chart-container">
@@ -248,13 +304,17 @@
               </div>
               <div id="legend" class="chart-legend"></div>
             </div>
+            <div class="step-actions">
+              <button class="button button--quiet" type="button" data-go-step="expenses"><span aria-hidden="true">←</span> Uitgaven aanpassen</button>
+            </div>
           </section>
         </div>
 
         <aside class="budget-workspace__aside" aria-label="Budgetresultaat">
           <section class="result-card" aria-live="polite">
             <div class="result-card__header">
-              <p class="step-label">Jouw maand</p>
+              <div class="result-card__status"><span aria-hidden="true">✓</span> Lokaal opgeslagen</div>
+              <p class="step-label">Live samenvatting</p>
               <h2>Budgetoverzicht</h2>
             </div>
             <dl class="result-list">
@@ -270,7 +330,7 @@
               </div>
             </div>
             <p class="result-card__insight" id="budgetMessage">Vul je inkomen en uitgaven in om te zien hoeveel ruimte je overhoudt.</p>
-            <a class="result-card__chart-link" href="#chart-heading">Bekijk de verdeling van je uitgaven <span aria-hidden="true">↓</span></a>
+            <button class="result-card__chart-link" type="button" data-go-step="summary">Bekijk de verdeling van je uitgaven <span aria-hidden="true">→</span></button>
             <p class="result-card__note">Wordt direct bijgewerkt en alleen op dit apparaat opgeslagen.</p>
           </section>
 
@@ -296,7 +356,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script defer src="/assets/js/main.js"></script>
-  <script defer src="/tools/budget-calculator/script.js?v=7"></script>
+  <script defer src="/tools/budget-calculator/script.js?v=8"></script>
 </body>
 
 </html>

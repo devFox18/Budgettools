@@ -3,30 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Spaardoel berekenen | Gratis spaardoel calculator</title>
-  <meta name="description" content="Bereken gratis hoeveel je per maand moet sparen of wanneer je jouw spaardoel bereikt. Direct resultaat en zonder account." />
+  <title>Spaardoeltool wordt vernieuwd | NLrekentools</title>
+  <meta name="description" content="De spaardoeltool van NLrekentools wordt opnieuw opgebouwd met een logischere invoer en een helder resultaat." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://nlrekentools.nl/tools/savings-goal-calculator/" />
   <meta property="og:locale" content="nl_NL" />
   <meta property="og:site_name" content="NLrekentools" />
-  <meta property="og:title" content="Spaardoel berekenen | NLrekentools" />
-  <meta property="og:description" content="Bereken hoeveel je per maand moet sparen en wanneer je jouw spaardoel bereikt." />
+  <meta property="og:title" content="Spaardoeltool wordt vernieuwd | NLrekentools" />
+  <meta property="og:description" content="We bouwen de spaardoeltool opnieuw op met een rustigere en logischere gegevensstructuur." />
   <meta property="og:url" content="https://nlrekentools.nl/tools/savings-goal-calculator/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Spaardoel berekenen | NLrekentools" />
-  <meta name="twitter:description" content="Maak gratis en zonder account een helder spaarplan voor jouw doel." />
+  <meta name="twitter:title" content="Spaardoeltool wordt vernieuwd | NLrekentools" />
+  <meta name="twitter:description" content="De spaardoeltool krijgt een nieuwe, logischere opbouw." />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Spaardoel calculator",
+    "@type": "WebPage",
+    "name": "Spaardoeltool wordt vernieuwd",
     "url": "https://nlrekentools.nl/tools/savings-goal-calculator/",
-    "applicationCategory": "FinanceApplication",
-    "operatingSystem": "Iedere moderne webbrowser",
     "inLanguage": "nl-NL",
-    "description": "Gratis calculator voor een persoonlijk spaardoel en maandelijkse inleg.",
-    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}
+    "description": "De spaardoeltool wordt opnieuw opgebouwd met een logischere gegevensstructuur."
   }
   </script>
   <meta name="theme-color" content="#f6f8fb" />
@@ -119,7 +116,7 @@
   </style>
   <link rel="stylesheet" href="/assets/css/tools.css" />
   <link rel="stylesheet" href="/assets/css/mature.css" />
-  <link rel="stylesheet" href="/assets/css/tool-design.css?v=2" />
+  <link rel="stylesheet" href="/assets/css/tool-design.css?v=3" />
 </head>
 <body class="tool-page">
   <a class="skip-link" href="#main-content">Naar de inhoud</a>
@@ -201,17 +198,32 @@
           <p class="page-hero__eyebrow unified-tool-hero__eyebrow">Spaardoel</p>
           <h1 id="savings-heading">Bereken je spaardoel stap voor stap</h1>
           <p class="page-hero__lede unified-tool-hero__lede">Vul je spaardoel, huidige spaargeld en geplande inleg in. Je ziet direct wanneer je jouw doel kunt bereiken.</p>
-          <p class="page-hero__meta unified-tool-hero__meta">Rente en startdatum zijn optioneel. Laat ze leeg voor een snelle schatting.</p>
+          <p class="page-hero__meta unified-tool-hero__meta">De bestaande calculator is leeggemaakt zodat we de invoer en resultaten opnieuw kunnen opbouwen.</p>
         </div>
         <ul class="unified-tool-trust" aria-label="Eigenschappen">
-          <li><span aria-hidden="true">✓</span> Direct resultaat</li>
-          <li><span aria-hidden="true">✓</span> Geen account</li>
-          <li><span aria-hidden="true">✓</span> Blijft op je apparaat</li>
+          <li><span aria-hidden="true">✓</span> Schone basis</li>
+          <li><span aria-hidden="true">✓</span> Nieuwe datastructuur</li>
+          <li><span aria-hidden="true">✓</span> Rustig ontwerp blijft</li>
         </ul>
       </div>
     </section>
 
-    <section class="calculator-wrap unified-tool-main" aria-label="Spaardoel calculator">
+    <section class="unified-tool-main tool-reset" aria-labelledby="savings-reset-heading">
+      <article class="tool-reset__card">
+        <span class="tool-reset__icon" aria-hidden="true">↻</span>
+        <p class="tool-reset__eyebrow">Nieuwe opbouw</p>
+        <h2 id="savings-reset-heading">De spaardoeltool is klaar voor de herbouw</h2>
+        <p class="tool-reset__lede">De oude invoervelden, berekeningen en voorbeeldresultaten zijn uit de actieve pagina gehaald. We kunnen hier straks opnieuw beginnen met een heldere gegevensstructuur.</p>
+        <div class="tool-reset__actions">
+          <a class="btn btn--primary" href="/tools/budget-calculator/">Gebruik de budgettool</a>
+          <a class="btn btn--ghost" href="/#rekentools">Bekijk alle rekentools</a>
+        </div>
+        <p class="tool-reset__note">Er worden op deze pagina nu geen financiële gegevens verwerkt of opgeslagen.</p>
+      </article>
+    </section>
+
+    <template id="previous-savings-tool">
+    <section class="calculator-wrap unified-tool-main" aria-label="Voormalige spaardoel calculator">
       <div class="calculator-layout unified-tool-layout">
         <div class="calculator-layout__app" id="savings-calculator"></div>
         <aside class="calculator-layout__aside" aria-label="Extra uitleg">
@@ -229,6 +241,7 @@
       </div>
       <p class="calculator-footnote">De uitkomst is een schatting. Alles wordt lokaal in je browser berekend.</p>
     </section>
+    </template>
   </main>
   <footer role="contentinfo">
     <div class="footer-inner">
@@ -241,7 +254,6 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <script type="module" src="script.js?v=2"></script>
   <script defer src="/assets/js/main.js"></script>
 </body>
 </html>

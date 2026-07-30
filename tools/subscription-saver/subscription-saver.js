@@ -13,6 +13,16 @@
   const STORAGE_KEY = 'bt_subscription_saver_v1';
   const FX = { USD: 1, EUR: 0.93, GBP: 0.8 };
   const CURRENCY_SYMBOLS = { USD: '$', EUR: '€', GBP: '£' };
+  const CATEGORY_LABELS = {
+    Streaming: 'Streaming',
+    Music: 'Muziek',
+    Gaming: 'Games',
+    Productivity: 'Productiviteit',
+    Phone: 'Telefoon',
+    Internet: 'Internet',
+    Fitness: 'Sport',
+    Other: 'Overig'
+  };
   const QUICK_ADD_ITEMS = [
     { name: 'Netflix', category: 'Streaming', frequency: 'monthly', price: 15.99 },
     { name: 'Spotify', category: 'Music', frequency: 'monthly', price: 9.99 },
@@ -27,14 +37,14 @@
   ];
   const SUGGESTION_LIMIT = 3;
   const OPTIMIZE_REASON_COPY = {
-    expensive: 'High monthly cost',
-    duplicate: 'Duplicate category',
-    manual: 'Manually selected'
+    expensive: 'Hoge maandkosten',
+    duplicate: 'Dubbele categorie',
+    manual: 'Zelf geselecteerd'
   };
   const SUGGESTION_REASON_COPY = {
-    expensive: 'High monthly cost',
-    duplicate: 'Duplicate in category',
-    unused: 'Marked as rarely used'
+    expensive: 'Hoge maandkosten',
+    duplicate: 'Meerdere in dezelfde categorie',
+    unused: 'Mogelijk weinig gebruikt'
   };
   const clone = (value) => {
     if (typeof structuredClone === 'function') {
@@ -69,7 +79,7 @@
 
   function getFormatter(currency) {
     if (!currencyFormatters.has(currency)) {
-      currencyFormatters.set(currency, new Intl.NumberFormat('en-US', {
+      currencyFormatters.set(currency, new Intl.NumberFormat('nl-NL', {
         style: 'currency',
         currency,
         minimumFractionDigits: 2,
@@ -87,11 +97,11 @@
   };
 
   const DEMO_ROWS = [
-    { name: 'Netflix', category: 'Streaming', frequency: 'monthly', price: 15.99, nextBilling: '', notes: '4K plan', included: true },
+    { name: 'Netflix', category: 'Streaming', frequency: 'monthly', price: 15.99, nextBilling: '', notes: '4K-pakket', included: true },
     { name: 'Spotify', category: 'Music', frequency: 'monthly', price: 9.99, nextBilling: '', notes: '', included: true },
     { name: 'Xbox Game Pass', category: 'Gaming', frequency: 'monthly', price: 12.99, nextBilling: '', notes: '', included: true },
-    { name: 'Adobe Creative Cloud', category: 'Productivity', frequency: 'monthly', price: 60, nextBilling: '', notes: 'All apps', included: true },
-    { name: 'Mobile Plan', category: 'Phone', frequency: 'monthly', price: 25, nextBilling: '', notes: '', included: true },
+    { name: 'Adobe Creative Cloud', category: 'Productivity', frequency: 'monthly', price: 60, nextBilling: '', notes: 'Alle apps', included: true },
+    { name: 'Mobiel abonnement', category: 'Phone', frequency: 'monthly', price: 25, nextBilling: '', notes: '', included: true },
     { name: 'Amazon Prime', category: 'Streaming', frequency: 'yearly', price: 99, nextBilling: '', notes: '', included: true }
   ];
 
@@ -99,7 +109,7 @@
     rows: [],
     sort: { key: 'name', dir: 'asc' },
     filters: { query: '', categories: [], frequency: 'all' },
-    currency: 'USD'
+    currency: 'EUR'
   };
 
   const elements = {
@@ -200,7 +210,7 @@
         categories: Array.isArray(parsed.filters.categories) ? parsed.filters.categories.filter(Boolean) : [],
         frequency: ['monthly', 'yearly'].includes(parsed.filters.frequency) ? parsed.filters.frequency : 'all'
       } : clone(defaultState.filters);
-      const currency = typeof parsed.currency === 'string' && FX[parsed.currency] ? parsed.currency : 'USD';
+      const currency = typeof parsed.currency === 'string' && FX[parsed.currency] ? parsed.currency : 'EUR';
       return { rows, sort, filters, currency };
     } catch (error) {
       console.warn('Failed to load subscription saver state', error);
@@ -239,7 +249,7 @@
 
   function updateCurrencyPrefix() {
     if (elements.currencyPrefix) {
-      elements.currencyPrefix.textContent = CURRENCY_SYMBOLS[state.currency] ?? '$';
+      elements.currencyPrefix.textContent = CURRENCY_SYMBOLS[state.currency] ?? '€';
     }
   }
 
@@ -428,7 +438,7 @@
     syncCurrencyControls();
     closeQuickAddPopover();
     render();
-    toast(`Currency switched to ${next}.`);
+    toast(`Valuta gewijzigd naar ${next}.`);
   }
 
   function buildQuickAddPopover() {
@@ -533,7 +543,7 @@
     if (elements.price) {
       elements.price.focus();
     }
-    toast(`${item.name} details loaded.`);
+    toast(`${item.name} is ingevuld.`);
   }
 
   function handleDocumentClick(event) {
@@ -678,7 +688,7 @@
     }
 
     if (priceRaw === '' || Number.isNaN(priceValue) || priceValue < 0) {
-      elements.priceError.textContent = 'Price must be zero or higher.';
+      elements.priceError.textContent = 'Het bedrag moet nul of hoger zijn.';
       elements.price.setCustomValidity('Invalid price');
       elements.price.focus();
       return;
@@ -703,7 +713,7 @@
     elements.frequencyMonthly.checked = true;
     render();
     elements.name.focus();
-    toast(`${name} added to tracker.`);
+    toast(`${name} is toegevoegd.`);
   }
 
   function monthlyCost(row) {
@@ -720,14 +730,18 @@
   }
 
   function formatFrequency(frequency) {
-    return frequency === 'yearly' ? 'Yearly' : 'Monthly';
+    return frequency === 'yearly' ? 'Jaarlijks' : 'Maandelijks';
+  }
+
+  function formatCategory(category) {
+    return CATEGORY_LABELS[category] || category;
   }
 
   function formatDate(value) {
     if (!value) return '—';
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return '—';
-    return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
+    return new Intl.DateTimeFormat('nl-NL', { day: 'numeric', month: 'short', year: 'numeric' }).format(date);
   }
 
   function applyFilters(rows) {
@@ -889,7 +903,7 @@
     const includeLabel = document.createElement('label');
     includeLabel.className = 'sr-only';
     includeLabel.setAttribute('for', includeCheckbox.id);
-    includeLabel.textContent = `Include ${row.name} in totals`;
+    includeLabel.textContent = `${row.name} meetellen in totalen`;
     includeCell.appendChild(includeLabel);
     tr.appendChild(includeCell);
 
@@ -908,7 +922,7 @@
     tr.appendChild(nameCell);
 
     const categoryCell = document.createElement('td');
-    categoryCell.textContent = row.category;
+    categoryCell.textContent = formatCategory(row.category);
     tr.appendChild(categoryCell);
 
     const frequencyCell = document.createElement('td');
@@ -941,8 +955,8 @@
 
     const editButton = document.createElement('button');
     editButton.type = 'button';
-    editButton.textContent = 'Edit';
-    editButton.setAttribute('aria-label', `Edit ${row.name}`);
+    editButton.textContent = 'Bewerken';
+    editButton.setAttribute('aria-label', `${row.name} bewerken`);
     editButton.dataset.action = 'edit';
     editButton.dataset.rowId = row.id;
     editButton.addEventListener('click', () => {
@@ -954,12 +968,12 @@
 
     const deleteButton = document.createElement('button');
     deleteButton.type = 'button';
-    deleteButton.textContent = 'Delete';
-    deleteButton.setAttribute('aria-label', `Delete ${row.name}`);
+    deleteButton.textContent = 'Verwijderen';
+    deleteButton.setAttribute('aria-label', `${row.name} verwijderen`);
     deleteButton.dataset.action = 'delete';
     deleteButton.dataset.rowId = row.id;
     deleteButton.addEventListener('click', () => {
-      const confirmed = window.confirm(`Delete ${row.name}?`);
+      const confirmed = window.confirm(`Wil je ${row.name} verwijderen?`);
       if (!confirmed) return;
       state.rows = state.rows.filter((item) => item.id !== row.id);
       persist();
@@ -991,7 +1005,7 @@
     const includeLabel = document.createElement('label');
     includeLabel.className = 'sr-only';
     includeLabel.setAttribute('for', includeCheckbox.id);
-    includeLabel.textContent = `Include ${row.name} in totals`;
+    includeLabel.textContent = `${row.name} meetellen in totalen`;
     includeCell.appendChild(includeLabel);
     tr.appendChild(includeCell);
 
@@ -1000,8 +1014,8 @@
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.value = editDraft.name;
-    nameInput.placeholder = 'Subscription name';
-    nameInput.setAttribute('aria-label', 'Subscription name');
+    nameInput.placeholder = 'Naam abonnement';
+    nameInput.setAttribute('aria-label', 'Naam abonnement');
     nameInput.dataset.focusInitial = 'true';
     nameInput.addEventListener('input', (event) => {
       editDraft.name = event.target.value;
@@ -1012,8 +1026,8 @@
     const notesArea = document.createElement('textarea');
     notesArea.rows = 2;
     notesArea.value = editDraft.notes || '';
-    notesArea.placeholder = 'Notes (optional)';
-    notesArea.setAttribute('aria-label', 'Notes');
+    notesArea.placeholder = 'Notitie (optioneel)';
+    notesArea.setAttribute('aria-label', 'Notitie');
     notesArea.addEventListener('input', (event) => {
       editDraft.notes = event.target.value;
     });
@@ -1026,13 +1040,13 @@
     ['Streaming', 'Music', 'Gaming', 'Productivity', 'Phone', 'Internet', 'Fitness', 'Other'].forEach((value) => {
       const option = document.createElement('option');
       option.value = value;
-      option.textContent = value;
+      option.textContent = formatCategory(value);
       if (value === editDraft.category) {
         option.selected = true;
       }
       categorySelect.appendChild(option);
     });
-    categorySelect.setAttribute('aria-label', 'Category');
+    categorySelect.setAttribute('aria-label', 'Categorie');
     categorySelect.addEventListener('change', (event) => {
       editDraft.category = event.target.value;
     });
@@ -1043,14 +1057,14 @@
     const frequencyCell = document.createElement('td');
     frequencyCell.className = 'edit-cell';
     const frequencySelect = document.createElement('select');
-    [['monthly', 'Monthly'], ['yearly', 'Yearly']].forEach(([value, label]) => {
+    [['monthly', 'Maandelijks'], ['yearly', 'Jaarlijks']].forEach(([value, label]) => {
       const option = document.createElement('option');
       option.value = value;
       option.textContent = label;
       if (value === editDraft.frequency) option.selected = true;
       frequencySelect.appendChild(option);
     });
-    frequencySelect.setAttribute('aria-label', 'Billing frequency');
+    frequencySelect.setAttribute('aria-label', 'Betaalfrequentie');
     frequencySelect.addEventListener('change', (event) => {
       editDraft.frequency = event.target.value;
       monthlyValue.textContent = formatCurrency(monthlyCost(editDraft));
@@ -1067,7 +1081,7 @@
     priceInput.min = '0';
     priceInput.step = '0.01';
     priceInput.value = toCurrency(editDraft.price, state.currency);
-    priceInput.setAttribute('aria-label', 'Price');
+    priceInput.setAttribute('aria-label', 'Bedrag');
     priceInput.addEventListener('input', (event) => {
       const raw = event.target.value;
       const numeric = Number.parseFloat(raw);
@@ -1102,7 +1116,7 @@
     const nextBillingInput = document.createElement('input');
     nextBillingInput.type = 'date';
     nextBillingInput.value = editDraft.nextBilling || '';
-    nextBillingInput.setAttribute('aria-label', 'Next billing date');
+    nextBillingInput.setAttribute('aria-label', 'Volgende afschrijving');
     nextBillingInput.addEventListener('change', (event) => {
       editDraft.nextBilling = event.target.value;
     });
@@ -1117,13 +1131,13 @@
 
     const saveButton = document.createElement('button');
     saveButton.type = 'button';
-    saveButton.textContent = 'Save';
+    saveButton.textContent = 'Opslaan';
     saveButton.dataset.action = 'save';
     saveButton.addEventListener('click', () => saveEdit(row));
 
     const cancelButton = document.createElement('button');
     cancelButton.type = 'button';
-    cancelButton.textContent = 'Cancel';
+    cancelButton.textContent = 'Annuleren';
     cancelButton.dataset.action = 'cancel';
     cancelButton.addEventListener('click', () => cancelEdit());
 
@@ -1155,11 +1169,11 @@
     if (!editDraft) return;
     const trimmedName = editDraft.name.trim();
     if (!trimmedName) {
-      showEditError('Name is required.');
+      showEditError('Vul een naam in.');
       return;
     }
     if (editDraft.priceEmpty || Number.isNaN(editDraft.price) || editDraft.price < 0) {
-      showEditError('Price must be zero or higher.');
+      showEditError('Het bedrag moet nul of hoger zijn.');
       return;
     }
 
@@ -1226,7 +1240,7 @@
     row.included = included;
     persist();
     render();
-    toast(`${row.name} ${included ? 'included in totals.' : 'paused from totals.'}`);
+    toast(`${row.name} ${included ? 'telt mee in de totalen.' : 'is gepauzeerd in de totalen.'}`);
   }
 
   function renderMobileCards(rows) {
@@ -1269,7 +1283,7 @@
     const includeLabel = document.createElement('label');
     includeLabel.className = 'sr-only';
     includeLabel.setAttribute('for', includeCheckbox.id);
-    includeLabel.textContent = `Include ${row.name} in totals`;
+    includeLabel.textContent = `${row.name} meetellen in totalen`;
     header.appendChild(includeLabel);
 
     const name = document.createElement('div');
@@ -1287,12 +1301,12 @@
 
     const meta = document.createElement('div');
     meta.className = 'subscription-card__meta';
-    meta.innerHTML = `<span>${row.category}</span><span>${formatFrequency(row.frequency)}</span><span>Next: ${formatDate(row.nextBilling)}</span>`;
+    meta.innerHTML = `<span>${formatCategory(row.category)}</span><span>${formatFrequency(row.frequency)}</span><span>Volgende: ${formatDate(row.nextBilling)}</span>`;
     card.appendChild(meta);
 
     const amounts = document.createElement('div');
     amounts.className = 'subscription-card__amounts';
-    amounts.innerHTML = `<span>Price: ${formatCurrency(row.price)}</span><span>Monthly: ${formatCurrency(monthlyCost(row))}</span><span>Yearly: ${formatCurrency(yearlyCost(row))}</span>`;
+    amounts.innerHTML = `<span>Bedrag: ${formatCurrency(row.price)}</span><span>Per maand: ${formatCurrency(monthlyCost(row))}</span><span>Per jaar: ${formatCurrency(yearlyCost(row))}</span>`;
     card.appendChild(amounts);
 
     const actions = document.createElement('div');
@@ -1300,8 +1314,8 @@
 
     const editButton = document.createElement('button');
     editButton.type = 'button';
-    editButton.textContent = 'Edit';
-    editButton.setAttribute('aria-label', `Edit ${row.name}`);
+    editButton.textContent = 'Bewerken';
+    editButton.setAttribute('aria-label', `${row.name} bewerken`);
     editButton.dataset.action = 'edit';
     editButton.dataset.rowId = row.id;
     editButton.addEventListener('click', () => {
@@ -1313,12 +1327,12 @@
 
     const deleteButton = document.createElement('button');
     deleteButton.type = 'button';
-    deleteButton.textContent = 'Delete';
-    deleteButton.setAttribute('aria-label', `Delete ${row.name}`);
+    deleteButton.textContent = 'Verwijderen';
+    deleteButton.setAttribute('aria-label', `${row.name} verwijderen`);
     deleteButton.dataset.action = 'delete';
     deleteButton.dataset.rowId = row.id;
     deleteButton.addEventListener('click', () => {
-      const confirmed = window.confirm(`Delete ${row.name}?`);
+      const confirmed = window.confirm(`Wil je ${row.name} verwijderen?`);
       if (!confirmed) return;
       state.rows = state.rows.filter((item) => item.id !== row.id);
       persist();
@@ -1350,7 +1364,7 @@
     const includeLabel = document.createElement('label');
     includeLabel.className = 'sr-only';
     includeLabel.setAttribute('for', includeCheckbox.id);
-    includeLabel.textContent = `Include ${row.name} in totals`;
+    includeLabel.textContent = `${row.name} meetellen in totalen`;
     header.appendChild(includeLabel);
 
     const nameField = document.createElement('div');
@@ -1358,8 +1372,8 @@
     const nameInput = document.createElement('input');
     nameInput.type = 'text';
     nameInput.value = editDraft.name;
-    nameInput.placeholder = 'Subscription name';
-    nameInput.setAttribute('aria-label', 'Subscription name');
+    nameInput.placeholder = 'Naam abonnement';
+    nameInput.setAttribute('aria-label', 'Naam abonnement');
     nameInput.dataset.focusInitial = 'true';
     nameInput.addEventListener('input', (event) => {
       editDraft.name = event.target.value;
@@ -1374,8 +1388,8 @@
     const notesInput = document.createElement('textarea');
     notesInput.rows = 2;
     notesInput.value = editDraft.notes || '';
-    notesInput.placeholder = 'Notes (optional)';
-    notesInput.setAttribute('aria-label', 'Notes');
+    notesInput.placeholder = 'Notitie (optioneel)';
+    notesInput.setAttribute('aria-label', 'Notitie');
     notesInput.addEventListener('input', (event) => {
       editDraft.notes = event.target.value;
     });
@@ -1388,11 +1402,11 @@
     ['Streaming', 'Music', 'Gaming', 'Productivity', 'Phone', 'Internet', 'Fitness', 'Other'].forEach((value) => {
       const option = document.createElement('option');
       option.value = value;
-      option.textContent = value;
+      option.textContent = formatCategory(value);
       if (value === editDraft.category) option.selected = true;
       categorySelect.appendChild(option);
     });
-    categorySelect.setAttribute('aria-label', 'Category');
+    categorySelect.setAttribute('aria-label', 'Categorie');
     categorySelect.addEventListener('change', (event) => {
       editDraft.category = event.target.value;
     });
@@ -1403,18 +1417,18 @@
     const frequencyField = document.createElement('div');
     frequencyField.className = 'edit-field';
     const frequencySelect = document.createElement('select');
-    [['monthly', 'Monthly'], ['yearly', 'Yearly']].forEach(([value, label]) => {
+    [['monthly', 'Maandelijks'], ['yearly', 'Jaarlijks']].forEach(([value, label]) => {
       const option = document.createElement('option');
       option.value = value;
       option.textContent = label;
       if (value === editDraft.frequency) option.selected = true;
       frequencySelect.appendChild(option);
     });
-    frequencySelect.setAttribute('aria-label', 'Billing frequency');
+    frequencySelect.setAttribute('aria-label', 'Betaalfrequentie');
     frequencySelect.addEventListener('change', (event) => {
       editDraft.frequency = event.target.value;
-      monthlyValue.textContent = `Monthly: ${formatCurrency(monthlyCost(editDraft))}`;
-      yearlyValue.textContent = `Yearly: ${formatCurrency(yearlyCost(editDraft))}`;
+      monthlyValue.textContent = `Per maand: ${formatCurrency(monthlyCost(editDraft))}`;
+      yearlyValue.textContent = `Per jaar: ${formatCurrency(yearlyCost(editDraft))}`;
     });
     addEditFieldKeyboard(frequencySelect);
     frequencyField.appendChild(frequencySelect);
@@ -1427,7 +1441,7 @@
     priceInput.min = '0';
     priceInput.step = '0.01';
     priceInput.value = toCurrency(editDraft.price, state.currency);
-    priceInput.setAttribute('aria-label', 'Price');
+    priceInput.setAttribute('aria-label', 'Bedrag');
     priceInput.addEventListener('input', (event) => {
       const raw = event.target.value;
       const numeric = Number.parseFloat(raw);
@@ -1435,8 +1449,8 @@
       const isInvalid = Number.isNaN(numeric);
       editDraft.priceEmpty = isEmpty || isInvalid;
       editDraft.price = isEmpty || isInvalid ? 0 : fromCurrency(numeric, state.currency);
-      monthlyValue.textContent = `Monthly: ${formatCurrency(monthlyCost(editDraft))}`;
-      yearlyValue.textContent = `Yearly: ${formatCurrency(yearlyCost(editDraft))}`;
+      monthlyValue.textContent = `Per maand: ${formatCurrency(monthlyCost(editDraft))}`;
+      yearlyValue.textContent = `Per jaar: ${formatCurrency(yearlyCost(editDraft))}`;
       showEditError('');
     });
     addEditFieldKeyboard(priceInput);
@@ -1446,9 +1460,9 @@
     const amounts = document.createElement('div');
     amounts.className = 'subscription-card__amounts';
     const monthlyValue = document.createElement('span');
-    monthlyValue.textContent = `Monthly: ${formatCurrency(monthlyCost(editDraft))}`;
+    monthlyValue.textContent = `Per maand: ${formatCurrency(monthlyCost(editDraft))}`;
     const yearlyValue = document.createElement('span');
-    yearlyValue.textContent = `Yearly: ${formatCurrency(yearlyCost(editDraft))}`;
+    yearlyValue.textContent = `Per jaar: ${formatCurrency(yearlyCost(editDraft))}`;
     amounts.appendChild(monthlyValue);
     amounts.appendChild(yearlyValue);
     card.appendChild(amounts);
@@ -1458,7 +1472,7 @@
     const nextBillingInput = document.createElement('input');
     nextBillingInput.type = 'date';
     nextBillingInput.value = editDraft.nextBilling || '';
-    nextBillingInput.setAttribute('aria-label', 'Next billing date');
+    nextBillingInput.setAttribute('aria-label', 'Volgende afschrijving');
     nextBillingInput.addEventListener('change', (event) => {
       editDraft.nextBilling = event.target.value;
     });
@@ -1470,11 +1484,11 @@
     actions.className = 'subscription-card__actions';
     const saveButton = document.createElement('button');
     saveButton.type = 'button';
-    saveButton.textContent = 'Save';
+    saveButton.textContent = 'Opslaan';
     saveButton.addEventListener('click', () => saveEdit(row));
     const cancelButton = document.createElement('button');
     cancelButton.type = 'button';
-    cancelButton.textContent = 'Cancel';
+    cancelButton.textContent = 'Annuleren';
     cancelButton.addEventListener('click', () => cancelEdit());
     actions.appendChild(saveButton);
     actions.appendChild(cancelButton);
@@ -1525,27 +1539,27 @@
     if (!node) return;
     const diff = displayValue - baselineValue;
     if (Math.abs(diff) < 0.01) {
-      node.textContent = 'Showing all included subscriptions.';
+      node.textContent = 'Alle actieve abonnementen worden meegerekend.';
       return;
     }
     if (diff < 0) {
-      node.textContent = `Filtered view hides ${formatCurrency(Math.abs(diff))} each cycle.`;
+      node.textContent = `De filters verbergen ${formatCurrency(Math.abs(diff))} per periode.`;
       return;
     }
-    node.textContent = `Filtered view adds ${formatCurrency(diff)} compared to all data.`;
+    node.textContent = `De gefilterde weergave bevat ${formatCurrency(diff)} meer dan het volledige overzicht.`;
   }
 
   function updateSavingsHelper(node, displayValue, allValue) {
     if (!node) return;
     if (allValue <= 0.009) {
-      node.textContent = 'All tracked subscriptions are currently included in totals.';
+      node.textContent = 'Alle bijgehouden abonnementen tellen momenteel mee.';
       return;
     }
     if (Math.abs(displayValue - allValue) < 0.01) {
-      node.textContent = 'Potential savings from excluded subscriptions (all categories).';
+      node.textContent = 'Mogelijke besparing van abonnementen die niet worden meegerekend.';
       return;
     }
-    node.textContent = `Filters cover ${formatCurrency(displayValue)} of ${formatCurrency(allValue)} monthly savings opportunities.`;
+    node.textContent = `De filters tonen ${formatCurrency(displayValue)} van de mogelijke maandelijkse besparing van ${formatCurrency(allValue)}.`;
   }
 
   function updateMiniSummary() {
@@ -1624,7 +1638,7 @@
         button.dataset.optimizeId = row.id;
         const isSelected = optimizeState.selected.has(row.id);
         button.setAttribute('aria-pressed', String(isSelected));
-        button.setAttribute('aria-label', `${isSelected ? 'Deselect' : 'Select'} ${row.name} for optimization`);
+        button.setAttribute('aria-label', `${isSelected ? 'Deselecteer' : 'Selecteer'} ${row.name} voor de besparingsvergelijking`);
         const reasons = optimizeState.reasons.get(row.id);
         const reasonSet = reasons instanceof Set ? reasons : new Set(reasons || []);
         const reasonLabel = Array.from(reasonSet).map((reason) => OPTIMIZE_REASON_COPY[reason] || reason).join(' · ');
@@ -1662,7 +1676,7 @@
 
   function launchOptimize(source = 'primary') {
     if (!state.rows.length) {
-      toast('Add subscriptions before optimizing.');
+      toast('Voeg eerst abonnementen toe.');
       return;
     }
 
@@ -1691,16 +1705,16 @@
     });
 
     if (!selected.size) {
-      toast('No optimization suggestions yet.');
+      toast('Nog geen bespaarsuggesties beschikbaar.');
       return;
     }
 
     optimizeState = { active: true, selected, reasons };
     render();
     if (source === 'mini') {
-      toast('Optimization suggestions ready below.');
+      toast('De bespaarsuggesties staan hieronder.');
     } else {
-      toast('Optimization view showing your top opportunities.');
+      toast('Je grootste bespaarkansen worden nu getoond.');
     }
   }
 
@@ -1712,7 +1726,7 @@
       const emptyTag = elements.suggestionsList.tagName === 'UL' ? 'li' : 'p';
       const empty = document.createElement(emptyTag);
       empty.className = 'suggestions-empty';
-      empty.textContent = 'No smart suggestions yet. Add more details or subscriptions to see quick wins.';
+      empty.textContent = 'Nog geen suggesties. Voeg abonnementen en notities toe om bespaarkansen te vinden.';
       elements.suggestionsList.replaceChildren(empty);
       return;
     }
@@ -1743,9 +1757,9 @@
       action.className = 'suggestion-item__action';
       action.dataset.suggestionId = row.id;
       const willPause = row.included;
-      action.textContent = willPause ? 'Mark to pause' : 'Resume';
+      action.textContent = willPause ? 'Markeer om te pauzeren' : 'Weer meetellen';
       action.setAttribute('aria-pressed', String(!row.included));
-      action.setAttribute('aria-label', willPause ? `Pause ${row.name}` : `Resume ${row.name}`);
+      action.setAttribute('aria-label', willPause ? `${row.name} markeren om te pauzeren` : `${row.name} weer meetellen`);
       item.appendChild(action);
 
       fragment.appendChild(item);
@@ -1797,7 +1811,7 @@
     row.included = !row.included;
     persist();
     render();
-    toast(row.included ? `${row.name} added back to totals.` : `${row.name} marked to pause.`);
+    toast(row.included ? `${row.name} telt weer mee.` : `${row.name} is gemarkeerd om te pauzeren.`);
   }
 
   function findDuplicateCategories(sourceRows = state.rows) {
@@ -1835,7 +1849,7 @@
 
   function pauseOptimizeSelection() {
     if (!optimizeState.selected.size) {
-      toast('Select subscriptions to pause first.');
+      toast('Selecteer eerst abonnementen om te pauzeren.');
       return;
     }
     let updated = 0;
@@ -1847,9 +1861,9 @@
     });
     if (updated) {
       persist();
-      toast(`Paused ${updated} subscription${updated === 1 ? '' : 's'}.`);
+      toast(`${updated} ${updated === 1 ? 'abonnement is' : 'abonnementen zijn'} gepauzeerd.`);
     } else {
-      toast('Selected subscriptions are already paused.');
+      toast('De geselecteerde abonnementen zijn al gepauzeerd.');
     }
     optimizeState.active = false;
     optimizeState.selected.clear();
@@ -1861,13 +1875,13 @@
     optimizeState.active = false;
     optimizeState.selected.clear();
     render();
-    toast('Cleared optimization view.');
+    toast('De besparingsweergave is gewist.');
   }
 
   function updateTableMeta(rows) {
     if (!elements.tableCount) return;
     const total = rows.length;
-    const label = total === 1 ? 'subscription' : 'subscriptions';
+    const label = total === 1 ? 'abonnement' : 'abonnementen';
     elements.tableCount.textContent = `${total} ${label}`;
   }
 
@@ -1893,7 +1907,7 @@
     }, {});
 
     const sortedEntries = Object.entries(dataByCategory).sort((a, b) => b[1] - a[1]);
-    const labels = sortedEntries.map(([label]) => label);
+    const labels = sortedEntries.map(([label]) => formatCategory(label));
     const data = sortedEntries.map(([, value]) => Number(value.toFixed(2)));
     const total = data.reduce((sum, value) => sum + value, 0);
 
@@ -1907,7 +1921,7 @@
       return;
     }
 
-    const colors = ['#0ea5e9', '#a855f7', '#f97316', '#22c55e', '#facc15', '#ec4899', '#14b8a6', '#6366f1'];
+    const colors = ['#176b4d', '#4f7f6c', '#79a38f', '#b58a4b', '#85715e', '#47708f', '#7a6b91', '#b26b5f'];
     const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (chartInstance) {
@@ -1998,16 +2012,16 @@
   function exportCsv() {
     const filtered = sortRows(applyFilters(state.rows));
     if (!filtered.length) {
-      toast('No subscriptions to export yet.');
+      toast('Er zijn nog geen abonnementen om te exporteren.');
       return;
     }
-    const header = ['Included', 'Name', 'Category', 'Frequency', 'Price', 'Monthly', 'Yearly', 'NextBilling', 'Notes', 'Currency'];
+    const header = ['Meegerekend', 'Naam', 'Categorie', 'Frequentie', 'Bedrag', 'Per maand', 'Per jaar', 'Volgende afschrijving', 'Notitie', 'Valuta'];
     const rows = filtered.map((row) => {
       const priceDisplay = toCurrency(row.price, state.currency).toFixed(2);
       const monthlyDisplay = toCurrency(monthlyCost(row), state.currency).toFixed(2);
       const yearlyDisplay = toCurrency(yearlyCost(row), state.currency).toFixed(2);
       return [
-        row.included ? 'Yes' : 'No',
+        row.included ? 'Ja' : 'Nee',
         sanitizeCsvField(row.name),
         sanitizeCsvField(row.category),
         sanitizeCsvField(formatFrequency(row.frequency)),
@@ -2024,12 +2038,12 @@
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'subscriptions.csv';
+    link.download = 'nlrekentools-abonnementen.csv';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    toast('Exported subscriptions as CSV.');
+    toast('Het abonnementenoverzicht is als CSV geëxporteerd.');
   }
 
   function sanitizeCsvField(value) {
@@ -2042,7 +2056,7 @@
   }
 
   function handleReset() {
-    const confirmed = window.confirm('Clear all subscriptions and reset filters?');
+    const confirmed = window.confirm('Wil je alle abonnementen en filters wissen?');
     if (!confirmed) return;
     localStorage.removeItem(STORAGE_KEY);
     state = clone(defaultState);
@@ -2055,7 +2069,7 @@
     syncCurrencyControls();
     pendingFocus = { fallback: elements.search };
     render();
-    toast('All subscriptions and filters reset.');
+    toast('Alle abonnementen en filters zijn gewist.');
   }
 
   function insertDemoData() {
@@ -2072,6 +2086,6 @@
     });
     persist();
     render();
-    toast('Loaded demo subscriptions.');
+    toast('Voorbeeldabonnementen zijn geladen.');
   }
 })();

@@ -7,13 +7,15 @@
   <meta name="description" content="Tel je abonnementen op en bereken gratis je totale kosten per maand en jaar. Ontdek direct hoeveel je kunt besparen." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="https://nlrekentools.nl/tools/subscription-saver/" />
-  <meta property="og:title" content="Subscription Saver Tool — NLrekentools" />
-  <meta property="og:description" content="Log your streaming, productivity, and other subscriptions to uncover how much you really spend each month." />
+  <meta property="og:locale" content="nl_NL" />
+  <meta property="og:site_name" content="NLrekentools" />
+  <meta property="og:title" content="Abonnementskosten berekenen | NLrekentools" />
+  <meta property="og:description" content="Tel je abonnementen op en ontdek direct wat ze per maand en per jaar kosten." />
   <meta property="og:url" content="https://nlrekentools.nl/tools/subscription-saver/" />
   <meta property="og:type" content="website" />
-  <meta property="twitter:card" content="summary" />
-  <meta property="twitter:title" content="Subscription Saver Tool — NLrekentools" />
-  <meta property="twitter:description" content="List your subscriptions, calculate monthly and yearly totals, and see where to pause or cancel." />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Abonnementskosten berekenen | NLrekentools" />
+  <meta name="twitter:description" content="Maak gratis een overzicht van je maandelijkse en jaarlijkse abonnementskosten." />
   <meta name="theme-color" content="#f6f8fb" />
   <script>
     document.documentElement.classList.remove('no-js');
@@ -143,8 +145,6 @@
               <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/budget-calculator/">Budget berekenen</a></li>
               <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/savings-goal-calculator/">Spaardoel berekenen</a></li>
               <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/tools/subscription-saver/" aria-current="page">Abonnementskosten</a></li>
-              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Budget Planner · Coming soon</span></li>
-              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Tax Estimator · Coming soon</span></li>
             </ul>
           </li>
 
@@ -156,10 +156,9 @@
               </svg>
             </button>
             <ul class="site-nav__sub-list" id="nav-resources-menu" aria-labelledby="nav-resources" data-nav-submenu>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#guides">Blog &amp; articles</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#newsletter">Tips &amp; guides</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#testimonials">Customer stories</a></li>
-              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Updates &amp; changelog · Coming soon</span></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#rekentools">Alle rekentools</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#zo-werkt-het">Zo werkt het</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/#veelgestelde-vragen">Veelgestelde vragen</a></li>
             </ul>
           </li>
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
@@ -170,9 +169,8 @@
               </svg>
             </button>
             <ul class="site-nav__sub-list" id="nav-privacy-menu" aria-labelledby="nav-privacy" data-nav-submenu>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/privacy.html">Privacy policy</a></li>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/terms.html">Terms of use</a></li>
-              <li class="site-nav__sub-item"><span class="site-nav__sub-link" role="presentation" data-disabled="true">Cookie policy · Coming soon</span></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/privacy.html">Privacybeleid</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/terms.html">Gebruiksvoorwaarden</a></li>
             </ul>
           </li>
           <li class="site-nav__item site-nav__item--has-children" data-nav-item>
@@ -183,7 +181,7 @@
               </svg>
             </button>
             <ul class="site-nav__sub-list" id="nav-contact-menu" aria-labelledby="nav-contact" data-nav-submenu>
-              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/contact.html">Contact form</a></li>
+              <li class="site-nav__sub-item"><a class="site-nav__sub-link" href="/contact.html">Contact opnemen</a></li>
             </ul>
           </li>
 
@@ -210,32 +208,32 @@
         </ul>
       </div>
     </section>
-    <section class="calculator-wrap" aria-label="Subscription saver">
+    <section class="calculator-wrap" aria-label="Abonnementenoverzicht">
       <div class="calculator-layout">
         <div class="calculator-layout__app">
-      <section class="summary-section" aria-label="Subscription totals">
+      <section class="summary-section" aria-label="Totalen van je abonnementen">
         <div class="summary-grid">
           <article class="card summary-card" aria-live="polite">
             <header class="summary-card__header">
-              <h2 class="summary-card__title">Monthly total</h2>
+              <h2 class="summary-card__title">Totaal per maand</h2>
             </header>
-            <p class="summary-card__value" id="totalMonthly">$0.00</p>
-            <p class="summary-card__meta" id="monthlyDelta">Showing all included subscriptions.</p>
+            <p class="summary-card__value" id="totalMonthly">€ 0,00</p>
+            <p class="summary-card__meta" id="monthlyDelta">Alle actieve abonnementen worden meegerekend.</p>
           </article>
           <article class="card summary-card" aria-live="polite">
             <header class="summary-card__header">
-              <h2 class="summary-card__title">Yearly total</h2>
+              <h2 class="summary-card__title">Totaal per jaar</h2>
             </header>
-            <p class="summary-card__value" id="totalYearly">$0.00</p>
-            <p class="summary-card__meta" id="yearlyDelta">Showing all included subscriptions.</p>
+            <p class="summary-card__value" id="totalYearly">€ 0,00</p>
+            <p class="summary-card__meta" id="yearlyDelta">Alle actieve abonnementen worden meegerekend.</p>
           </article>
           <article class="card summary-card summary-card--savings" aria-live="polite">
             <header class="summary-card__header">
-              <h2 class="summary-card__title">Potential savings</h2>
-              <button type="button" class="btn btn--inline summary-card__action" id="optimizeButton" aria-pressed="false">Optimization view</button>
+              <h2 class="summary-card__title">Mogelijke besparing</h2>
+              <button type="button" class="btn btn--inline summary-card__action" id="optimizeButton" aria-pressed="false">Besparingen bekijken</button>
             </header>
-            <p class="summary-card__value" id="potentialSavings">$0.00</p>
-            <p class="summary-card__meta" id="savingsHelper">All tracked subscriptions are currently included in totals.</p>
+            <p class="summary-card__value" id="potentialSavings">€ 0,00</p>
+            <p class="summary-card__meta" id="savingsHelper">Alle bijgehouden abonnementen tellen momenteel mee.</p>
           </article>
         </div>
       </section>
@@ -245,106 +243,106 @@
               <div class="card controls-card">
                 <div class="controls-card__col controls-card__col--filters">
                   <div class="controls-card__header">
-                    <h2 id="manage-heading">Manage subscriptions</h2>
-                    <p>Filter the list, export a snapshot, or load demo data to explore ideas.</p>
+                    <h2 id="manage-heading">Beheer je abonnementen</h2>
+                    <p>Zoek, filter of exporteer je overzicht. Je kunt ook een voorbeeld laden.</p>
                   </div>
                   <div class="controls-grid">
                     <div class="controls-field controls-field--search">
-                      <label for="searchInput">Search</label>
-                      <input type="search" id="searchInput" name="searchInput" placeholder="Search name or category" autocomplete="off" />
+                      <label for="searchInput">Zoeken</label>
+                      <input type="search" id="searchInput" name="searchInput" placeholder="Zoek op naam of categorie" autocomplete="off" />
                     </div>
                     <div class="controls-field controls-field--currency">
-                      <label for="currencySelect">Currency</label>
+                      <label for="currencySelect">Valuta</label>
                       <select id="currencySelect" name="currencySelect">
-                        <option value="USD">USD - United States dollar</option>
                         <option value="EUR">EUR - Euro</option>
-                        <option value="GBP">GBP - Pound sterling</option>
+                        <option value="USD">USD - Amerikaanse dollar</option>
+                        <option value="GBP">GBP - Britse pond</option>
                       </select>
                     </div>
-                    <div class="controls-actions" role="group" aria-label="Table actions">
-                      <button type="button" class="btn btn--ghost" id="exportCsvButton">Export CSV</button>
-                      <button type="button" class="btn btn--ghost" id="demoDataButton">Demo data</button>
-                      <button type="button" class="btn btn--ghost" id="resetButton">Reset all</button>
+                    <div class="controls-actions" role="group" aria-label="Acties voor het overzicht">
+                      <button type="button" class="btn btn--ghost" id="exportCsvButton">CSV exporteren</button>
+                      <button type="button" class="btn btn--ghost" id="demoDataButton">Voorbeeld laden</button>
+                      <button type="button" class="btn btn--ghost" id="resetButton">Alles wissen</button>
                     </div>
                     <fieldset class="controls-field controls-field--frequency">
-                      <legend>Billing frequency</legend>
+                      <legend>Betaalfrequentie</legend>
                       <div class="controls-options controls-options--radios">
-                        <label><input type="radio" name="frequencyFilter" value="all" checked /><span>All</span></label>
-                        <label><input type="radio" name="frequencyFilter" value="monthly" /><span>Monthly</span></label>
-                        <label><input type="radio" name="frequencyFilter" value="yearly" /><span>Yearly</span></label>
+                        <label><input type="radio" name="frequencyFilter" value="all" checked /><span>Alles</span></label>
+                        <label><input type="radio" name="frequencyFilter" value="monthly" /><span>Maandelijks</span></label>
+                        <label><input type="radio" name="frequencyFilter" value="yearly" /><span>Jaarlijks</span></label>
                       </div>
                     </fieldset>
                     <fieldset class="controls-field controls-field--categories">
-                      <legend>Categories</legend>
+                      <legend>Categorieën</legend>
                       <div class="controls-options controls-options--checkboxes">
                         <label><input type="checkbox" value="Streaming" data-category-filter /><span>Streaming</span></label>
-                        <label><input type="checkbox" value="Music" data-category-filter /><span>Music</span></label>
-                        <label><input type="checkbox" value="Gaming" data-category-filter /><span>Gaming</span></label>
-                        <label><input type="checkbox" value="Productivity" data-category-filter /><span>Productivity</span></label>
-                        <label><input type="checkbox" value="Phone" data-category-filter /><span>Phone</span></label>
+                        <label><input type="checkbox" value="Music" data-category-filter /><span>Muziek</span></label>
+                        <label><input type="checkbox" value="Gaming" data-category-filter /><span>Games</span></label>
+                        <label><input type="checkbox" value="Productivity" data-category-filter /><span>Productiviteit</span></label>
+                        <label><input type="checkbox" value="Phone" data-category-filter /><span>Telefoon</span></label>
                         <label><input type="checkbox" value="Internet" data-category-filter /><span>Internet</span></label>
-                        <label><input type="checkbox" value="Fitness" data-category-filter /><span>Fitness</span></label>
-                        <label><input type="checkbox" value="Other" data-category-filter /><span>Other</span></label>
+                        <label><input type="checkbox" value="Fitness" data-category-filter /><span>Sport</span></label>
+                        <label><input type="checkbox" value="Other" data-category-filter /><span>Overig</span></label>
                       </div>
                     </fieldset>
                   </div>
-                  <p class="controls-card__note">Your subscriptions stay private - everything saves to this device only.</p>
+                  <p class="controls-card__note">Je abonnementen blijven privé en worden alleen op dit apparaat opgeslagen.</p>
                 </div>
               <div class="controls-card__divider" aria-hidden="true"></div>
               <div class="controls-card__col controls-card__col--form" aria-labelledby="add-subscription-heading">
                 <div class="controls-form">
                   <div class="controls-form__header">
-                    <h2 id="add-subscription-heading">Add a subscription</h2>
-                    <button type="button" class="btn btn--inline" id="quickAddButton" aria-haspopup="menu" aria-expanded="false">Quick add</button>
+                    <h2 id="add-subscription-heading">Abonnement toevoegen</h2>
+                    <button type="button" class="btn btn--inline" id="quickAddButton" aria-haspopup="menu" aria-expanded="false">Snel toevoegen</button>
                   </div>
-                  <p class="controls-form__helper">Keep totals accurate by logging each recurring charge.</p>
+                  <p class="controls-form__helper">Voeg iedere terugkerende betaling toe voor een volledig overzicht.</p>
                   <form id="subscriptionForm" novalidate>
                     <div class="form-grid">
                       <div class="form-field form-field--full">
-                        <label for="subscriptionName">Name</label>
+                        <label for="subscriptionName">Naam</label>
                         <input type="text" id="subscriptionName" name="subscriptionName" required autocomplete="off" />
                       </div>
                       <div class="form-field">
-                        <label for="subscriptionCategory">Category</label>
+                        <label for="subscriptionCategory">Categorie</label>
                         <select id="subscriptionCategory" name="subscriptionCategory" required>
-                          <option value="">Select a category</option>
+                          <option value="">Kies een categorie</option>
                           <option value="Streaming">Streaming</option>
-                          <option value="Music">Music</option>
-                          <option value="Gaming">Gaming</option>
-                          <option value="Productivity">Productivity</option>
-                          <option value="Phone">Phone</option>
+                          <option value="Music">Muziek</option>
+                          <option value="Gaming">Games</option>
+                          <option value="Productivity">Productiviteit</option>
+                          <option value="Phone">Telefoon</option>
                           <option value="Internet">Internet</option>
-                          <option value="Fitness">Fitness</option>
-                          <option value="Other">Other</option>
+                          <option value="Fitness">Sport</option>
+                          <option value="Other">Overig</option>
                         </select>
                       </div>
                       <fieldset class="form-field form-field--frequency">
-                        <legend>Frequency</legend>
+                        <legend>Frequentie</legend>
                         <div class="subscription-form__radios">
-                          <label><input type="radio" id="frequencyMonthly" name="subscriptionFrequency" value="monthly" checked />Monthly</label>
-                          <label><input type="radio" id="frequencyYearly" name="subscriptionFrequency" value="yearly" />Yearly</label>
+                          <label><input type="radio" id="frequencyMonthly" name="subscriptionFrequency" value="monthly" checked />Maandelijks</label>
+                          <label><input type="radio" id="frequencyYearly" name="subscriptionFrequency" value="yearly" />Jaarlijks</label>
                         </div>
                       </fieldset>
                       <div class="form-field form-field--price">
-                        <label for="subscriptionPrice">Price</label>
+                        <label for="subscriptionPrice">Bedrag</label>
                         <div class="input-prefix-group">
-                          <span class="input-prefix currency-prefix" aria-hidden="true">$</span>
+                          <span class="input-prefix currency-prefix" aria-hidden="true">€</span>
                           <input type="number" id="subscriptionPrice" name="subscriptionPrice" inputmode="decimal" min="0" step="0.01" aria-describedby="priceHint priceError" required />
                         </div>
-                        <p class="input-hint" id="priceHint">Enter the amount you pay per billing cycle.</p>
+                        <p class="input-hint" id="priceHint">Vul het bedrag per betaalperiode in.</p>
                         <p class="input-error" id="priceError" role="alert" aria-live="polite"></p>
                       </div>
                       <div class="form-field">
-                        <label for="subscriptionNextBilling">Next billing date <span class="optional">(optional)</span></label>
+                        <label for="subscriptionNextBilling">Volgende afschrijving <span class="optional">(optioneel)</span></label>
                         <input type="date" id="subscriptionNextBilling" name="subscriptionNextBilling" />
                       </div>
                       <div class="form-field form-field--full">
-                        <label for="subscriptionNotes">Notes <span class="optional">(optional)</span></label>
-                        <textarea id="subscriptionNotes" name="subscriptionNotes" rows="3" placeholder="Add plan details, trial endings, or reminders"></textarea>
+                        <label for="subscriptionNotes">Notitie <span class="optional">(optioneel)</span></label>
+                        <textarea id="subscriptionNotes" name="subscriptionNotes" rows="3" placeholder="Bijvoorbeeld proefperiode, pakket of herinnering"></textarea>
                       </div>
                     </div>
                     <div class="form-footer">
-                      <button type="submit" class="btn"><span>Add subscription</span></button>
+                      <button type="submit" class="btn"><span>Abonnement toevoegen</span></button>
                     </div>
                   </form>
                 </div>
@@ -354,99 +352,99 @@
           <section class="card table-card" aria-labelledby="subscriptions-heading">
             <div class="table-card__header">
               <div>
-                <h2 id="subscriptions-heading">Subscriptions</h2>
-                <p class="table-card__caption" id="tableDescription">Results update instantly as you edit, filter, or reorder.</p>
+                <h2 id="subscriptions-heading">Jouw abonnementen</h2>
+                <p class="table-card__caption" id="tableDescription">Bedragen worden direct bijgewerkt wanneer je iets wijzigt of filtert.</p>
               </div>
-              <p class="table-card__count" id="tableCount" aria-live="polite">0 subscriptions</p>
+              <p class="table-card__count" id="tableCount" aria-live="polite">0 abonnementen</p>
             </div>
             <div class="table-responsive" role="region" aria-live="polite">
               <table class="subscription-table" aria-describedby="tableDescription">
                 <thead>
                   <tr>
-                    <th scope="col" class="col-include"><span class="sr-only">Include in totals</span></th>
-                    <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort="name">Name</button></th>
-                    <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort="category">Category</button></th>
-                    <th scope="col">Frequency</th>
-                    <th scope="col" class="numeric">Price</th>
-                    <th scope="col" class="numeric" aria-sort="none"><button type="button" class="sort-button" data-sort="monthly">Monthly cost</button></th>
-                    <th scope="col" class="numeric" aria-sort="none"><button type="button" class="sort-button" data-sort="yearly">Yearly cost</button></th>
-                    <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort="nextBilling">Next billing</button></th>
-                    <th scope="col" class="col-actions">Actions</th>
+                    <th scope="col" class="col-include"><span class="sr-only">Meetellen in totaal</span></th>
+                    <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort="name">Naam</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort="category">Categorie</button></th>
+                    <th scope="col">Frequentie</th>
+                    <th scope="col" class="numeric">Bedrag</th>
+                    <th scope="col" class="numeric" aria-sort="none"><button type="button" class="sort-button" data-sort="monthly">Per maand</button></th>
+                    <th scope="col" class="numeric" aria-sort="none"><button type="button" class="sort-button" data-sort="yearly">Per jaar</button></th>
+                    <th scope="col" aria-sort="none"><button type="button" class="sort-button" data-sort="nextBilling">Volgende afschrijving</button></th>
+                    <th scope="col" class="col-actions">Acties</th>
                   </tr>
                 </thead>
                 <tbody id="subscriptionTableBody"></tbody>
               </table>
               <div class="mobile-card-list" id="mobileCardList" hidden aria-live="polite"></div>
-              <div class="table-empty" id="tableEmpty" role="status">No subscriptions yet. Add your first one to start tracking.</div>
-              <div class="table-empty" id="noMatches" role="status" hidden>No subscriptions match your filters. Try adjusting search or categories.</div>
+              <div class="table-empty" id="tableEmpty" role="status">Nog geen abonnementen. Voeg je eerste abonnement toe.</div>
+              <div class="table-empty" id="noMatches" role="status" hidden>Geen abonnementen gevonden. Pas je zoekterm of filters aan.</div>
             </div>
           </section>
           <section class="card chart-card" aria-labelledby="chart-heading">
             <div class="chart-card__header">
-              <h2 id="chart-heading">Monthly cost by category</h2>
-              <p class="chart-card__caption">Click legend items to focus on a few categories at a time.</p>
+              <h2 id="chart-heading">Maandkosten per categorie</h2>
+              <p class="chart-card__caption">Klik op een categorie in de legenda om deze te tonen of verbergen.</p>
             </div>
             <div class="chart-card__canvas">
-              <canvas id="subscriptionChart" width="420" height="420" role="img" aria-label="Donut chart of monthly subscription cost by category"></canvas>
+              <canvas id="subscriptionChart" width="420" height="420" role="img" aria-label="Diagram van maandelijkse abonnementskosten per categorie"></canvas>
             </div>
-            <p class="chart-empty" id="chartEmpty">Add a subscription to see where your money goes.</p>
+            <p class="chart-empty" id="chartEmpty">Voeg een abonnement toe om de verdeling te bekijken.</p>
           </section>
         </div>
-        <aside class="tool-body__aside" aria-label="Quick insights">
+        <aside class="tool-body__aside" aria-label="Snelle inzichten">
           <section class="mini-summary card" id="miniSummary" hidden aria-hidden="true">
-            <h2 class="mini-summary__title">Quick totals</h2>
+            <h2 class="mini-summary__title">Kort overzicht</h2>
             <dl class="mini-summary__grid">
               <div class="mini-summary__row">
-                <dt>Monthly</dt>
-                <dd class="mini-summary__value" id="miniMonthly">$0.00</dd>
+                <dt>Per maand</dt>
+                <dd class="mini-summary__value" id="miniMonthly">€ 0,00</dd>
               </div>
               <div class="mini-summary__row">
-                <dt>Yearly</dt>
-                <dd class="mini-summary__value" id="miniYearly">$0.00</dd>
+                <dt>Per jaar</dt>
+                <dd class="mini-summary__value" id="miniYearly">€ 0,00</dd>
               </div>
               <div class="mini-summary__row">
-                <dt>Potential savings</dt>
-                <dd class="mini-summary__value" id="miniSavings">$0.00</dd>
+                <dt>Mogelijke besparing</dt>
+                <dd class="mini-summary__value" id="miniSavings">€ 0,00</dd>
               </div>
             </dl>
-            <button type="button" class="btn btn--inline mini-summary__optimize" id="miniOptimize" aria-pressed="false">Open optimization view</button>
+            <button type="button" class="btn btn--inline mini-summary__optimize" id="miniOptimize" aria-pressed="false">Bekijk besparingen</button>
           </section>
           <section class="card suggestions-card" aria-labelledby="suggestions-heading">
             <div class="suggestions-card__header">
-              <h2 id="suggestions-heading">Smart suggestions</h2>
-              <p>Spot subscriptions worth pausing based on cost, duplicates, and notes.</p>
+              <h2 id="suggestions-heading">Bespaarsuggesties</h2>
+              <p>Bekijk welke abonnementen mogelijk gepauzeerd of opgezegd kunnen worden.</p>
             </div>
             <ul class="suggestions-list" id="suggestionsList">
-              <li class="suggestions-empty">No smart suggestions yet. Add more details or subscriptions to see quick wins.</li>
+              <li class="suggestions-empty">Nog geen suggesties. Voeg abonnementen en notities toe om bespaarkansen te vinden.</li>
             </ul>
           </section>
           <section class="card optimize-panel" id="optimizePanel" aria-labelledby="optimize-heading" hidden aria-hidden="true">
             <div class="optimize-panel__header">
-              <h2 id="optimize-heading">Optimization focus</h2>
-              <p>Toggle items to compare, then pause or clear the view.</p>
+              <h2 id="optimize-heading">Besparingen vergelijken</h2>
+              <p>Selecteer abonnementen om te zien wat pauzeren oplevert.</p>
             </div>
             <div class="optimize-actions">
-              <button type="button" class="btn btn--ghost" id="optimizePause" disabled>Pause selected</button>
-              <button type="button" class="btn btn--inline" id="optimizeClear" disabled>Clear view</button>
+              <button type="button" class="btn btn--ghost" id="optimizePause" disabled>Geselecteerde pauzeren</button>
+              <button type="button" class="btn btn--inline" id="optimizeClear" disabled>Selectie wissen</button>
             </div>
             <div class="optimize-list" id="optimizeList" role="list"></div>
           </section>
         </aside>
       </section>
         </div>
-        <aside class="calculator-layout__aside" aria-label="Quick start">
+        <aside class="calculator-layout__aside" aria-label="Zo begin je">
           <div class="card card--subtle quick-start-card">
-            <h2>Quick start</h2>
+            <h2>Zo begin je</h2>
             <ol class="quick-start">
-              <li>Add your subscriptions with price and billing cadence.</li>
-              <li>Use filters to compare categories and highlight overlaps.</li>
-              <li>Switch to optimization view to queue items to pause.</li>
+              <li>Voeg abonnementen toe met bedrag en betaalfrequentie.</li>
+              <li>Gebruik filters om categorieën en dubbele diensten te vergelijken.</li>
+              <li>Bekijk welke abonnementen je mogelijk kunt pauzeren.</li>
             </ol>
-            <p class="quick-start__note">Totals update instantly and stay local to your browser.</p>
+            <p class="quick-start__note">Totalen worden direct bijgewerkt en blijven in je browser.</p>
           </div>
         </aside>
       </div>
-      <p class="calculator-footnote">Totals update instantly and stay on this device - export or print whenever you're ready.</p>
+      <p class="calculator-footnote">Bedragen worden direct bijgewerkt en blijven op dit apparaat. Je kunt het overzicht altijd exporteren.</p>
     </section>
   </main>
 
@@ -455,39 +453,39 @@
     <div class="shortcuts-modal__backdrop" data-close-modal></div>
     <div class="shortcuts-modal__card">
       <header class="shortcuts-modal__header">
-        <h2 id="shortcuts-title">Keyboard shortcuts</h2>
-        <button type="button" class="shortcuts-modal__close" data-close-modal aria-label="Close shortcuts">Close</button>
+        <h2 id="shortcuts-title">Sneltoetsen</h2>
+        <button type="button" class="shortcuts-modal__close" data-close-modal aria-label="Sneltoetsen sluiten">Sluiten</button>
       </header>
       <div class="shortcuts-modal__content">
         <dl class="shortcut-list">
           <div class="shortcut-list__row">
             <dt><kbd>/</kbd></dt>
-            <dd>Focus search</dd>
+            <dd>Ga naar zoeken</dd>
           </div>
           <div class="shortcut-list__row">
             <dt><kbd>N</kbd></dt>
-            <dd>Focus name field</dd>
+            <dd>Ga naar het naamveld</dd>
           </div>
           <div class="shortcut-list__row">
             <dt><kbd>E</kbd></dt>
-            <dd>Export CSV</dd>
+            <dd>CSV exporteren</dd>
           </div>
           <div class="shortcut-list__row">
             <dt><kbd>Shift</kbd> + <kbd>/</kbd></dt>
-            <dd>Toggle shortcuts panel</dd>
+            <dd>Sneltoetsen tonen of verbergen</dd>
           </div>
           <div class="shortcut-list__row">
             <dt><kbd>Esc</kbd></dt>
-            <dd>Cancel edits or close menus</dd>
+            <dd>Wijziging annuleren of menu sluiten</dd>
           </div>
         </dl>
-        <p class="shortcuts-modal__hint">Shortcuts work when you're not typing in a field.</p>
+        <p class="shortcuts-modal__hint">Sneltoetsen werken wanneer je niet in een invoerveld typt.</p>
       </div>
     </div>
   </div>
   <footer role="contentinfo">
     <div class="footer-inner">
-      <p>© <span data-year></span> NLrekentools. Built for transparent personal finance.</p>
+      <p>© <span data-year></span> NLrekentools. Helder rekenen aan je geld.</p>
       <nav aria-label="Footer">
         <a href="/privacy.html">Privacy</a>
         <a href="/terms.html">Terms</a>
@@ -502,14 +500,14 @@
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Subscription Saver Tool",
+    "name": "Abonnementskosten berekenen",
     "url": "https://nlrekentools.nl/tools/subscription-saver/",
-    "description": "Interactive subscription tracker with totals, filters, and export to help you lower recurring costs.",
+    "description": "Gratis Nederlandse rekentool om abonnementskosten te verzamelen, vergelijken en verlagen.",
     "isPartOf": { "@id": "https://nlrekentools.nl/#website" },
     "inLanguage": "nl-NL",
     "potentialAction": {
       "@type": "Action",
-      "name": "Track subscriptions",
+      "name": "Abonnementskosten bijhouden",
       "target": "https://nlrekentools.nl/tools/subscription-saver/"
     },
     "about": {
@@ -517,7 +515,7 @@
       "name": "NLrekentools abonnementenkosten calculator",
       "applicationCategory": "FinanceApplication",
       "operatingSystem": "Web",
-      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "USD" }
+      "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "EUR" }
     }
   }
   </script>

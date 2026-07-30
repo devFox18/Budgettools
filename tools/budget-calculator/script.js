@@ -48,6 +48,11 @@ const legend = document.getElementById("legend");
 const expenseBar = document.getElementById("expenseBar");
 const budgetMessageEl = document.getElementById("budgetMessage");
 const progressContainer = document.querySelector(".budget-progress-container");
+const finalResultEl = document.getElementById("finalResult");
+const finalResultTitleEl = document.getElementById("finalResultTitle");
+const finalResultTextEl = document.getElementById("finalResultText");
+const finalRemainingEl = document.getElementById("finalRemaining");
+const finalRemainingShareEl = document.getElementById("finalRemainingShare");
 const stepButtons = Array.from(document.querySelectorAll("[data-budget-step]"));
 const stepPanels = Array.from(document.querySelectorAll("[data-step-panel]"));
 const stepNavigationButtons = Array.from(document.querySelectorAll("[data-go-step]"));
@@ -311,6 +316,7 @@ function drawSummary() {
   sumIncomeEl.textContent = fmt(income);
   sumExpensesEl.textContent = fmt(expenses);
   sumSavingsEl.textContent = fmt(savings);
+  finalRemainingEl.textContent = fmt(savings);
 
   // Savings Rate / Status Logic
   if (savingsRateEl) {
@@ -355,6 +361,44 @@ function drawSummary() {
 
     budgetMessageEl.textContent = message;
     budgetMessageEl.dataset.tone = tone;
+  }
+
+  if (finalResultEl) {
+    let finalTitle = "Vul je budget verder in";
+    let finalText = "Zodra je inkomen en uitgaven bekend zijn, zie je hier wat er deze maand overblijft.";
+    let finalShare = "Nog geen compleet budget";
+    let finalTone = "neutral";
+
+    if (income > 0 && expenses === 0) {
+      finalTitle = "Je inkomen staat klaar";
+      finalText = "Voeg je vaste en variabele uitgaven toe om je maandresultaat compleet te maken.";
+      finalShare = "Nog geen uitgaven ingevuld";
+    } else if (income > 0 && savings < 0) {
+      finalTitle = "Je budget komt deze maand tekort";
+      finalText = `Je uitgaven zijn ${fmt(Math.abs(savings))} hoger dan je totale inkomen. Bekijk vooral de grootste categorieën hieronder.`;
+      finalShare = `${Math.abs(100 - usedRate).toFixed(0)}% boven je inkomen`;
+      finalTone = "danger";
+    } else if (income > 0 && expenses > 0 && usedRate >= 90) {
+      finalTitle = "Je budget heeft weinig vrije ruimte";
+      finalText = `Je houdt ${fmt(savings)} over. Een kleine onverwachte uitgave kan daardoor direct merkbaar zijn.`;
+      finalShare = `${Math.max(0, 100 - usedRate).toFixed(0)}% van je inkomen over`;
+      finalTone = "warning";
+    } else if (income > 0 && expenses > 0) {
+      finalTitle = "Je houdt deze maand ruimte over";
+      finalText = `Na alle ingevulde uitgaven blijft ${fmt(savings)} beschikbaar voor sparen, een buffer of andere keuzes.`;
+      finalShare = `${Math.max(0, 100 - usedRate).toFixed(0)}% van je inkomen over`;
+      finalTone = "positive";
+    } else if (income === 0 && expenses > 0) {
+      finalTitle = "Je uitgaven zijn al ingevuld";
+      finalText = "Voeg je maandinkomen toe om te berekenen of deze uitgaven binnen je budget passen.";
+      finalShare = "Inkomen ontbreekt";
+      finalTone = "warning";
+    }
+
+    finalResultTitleEl.textContent = finalTitle;
+    finalResultTextEl.textContent = finalText;
+    finalRemainingShareEl.textContent = finalShare;
+    finalResultEl.dataset.tone = finalTone;
   }
 
   updateProgressBar(income, expenses);

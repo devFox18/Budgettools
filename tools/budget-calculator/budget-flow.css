@@ -335,6 +335,184 @@
   margin-top: .35rem;
 }
 
+.final-result {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, .45fr);
+  gap: 1.5rem;
+  align-items: stretch;
+  overflow: hidden;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  color: #fff;
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, .06), transparent 52%),
+    var(--flow-navy);
+  border-radius: 10px;
+}
+
+.final-result::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 5px;
+  background: var(--flow-blue);
+}
+
+.final-result__copy {
+  align-self: center;
+}
+
+.final-result__eyebrow {
+  margin: 0 0 .65rem;
+  color: var(--flow-yellow);
+  font-size: .68rem;
+  font-weight: 850;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.final-result h3 {
+  max-width: 18ch;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.55rem, 3vw, 2.3rem);
+  line-height: 1.06;
+  letter-spacing: -.04em;
+}
+
+.final-result__copy > p:last-child {
+  max-width: 55ch;
+  margin: .85rem 0 0;
+  color: #dce8ee;
+  font-size: .86rem;
+  line-height: 1.6;
+}
+
+.final-result__amount {
+  display: grid;
+  align-content: center;
+  min-height: 170px;
+  padding: 1.25rem;
+  color: var(--flow-navy);
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, .15);
+}
+
+.final-result__amount span {
+  color: var(--flow-muted);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.final-result__amount strong {
+  margin: .35rem 0;
+  color: var(--flow-blue);
+  font-size: clamp(1.9rem, 3vw, 2.45rem);
+  line-height: 1;
+  letter-spacing: -.055em;
+  font-variant-numeric: tabular-nums;
+}
+
+.final-result__amount small {
+  color: var(--flow-muted);
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.final-result[data-tone="positive"]::before {
+  background: #4f9a79;
+}
+
+.final-result[data-tone="positive"] .final-result__amount {
+  background: #e8f5ef;
+}
+
+.final-result[data-tone="positive"] .final-result__amount strong {
+  color: #176b4d;
+}
+
+.final-result[data-tone="warning"]::before {
+  background: var(--flow-yellow);
+}
+
+.final-result[data-tone="warning"] .final-result__amount {
+  background: #fff6d8;
+}
+
+.final-result[data-tone="warning"] .final-result__amount strong {
+  color: #805a0b;
+}
+
+.final-result[data-tone="danger"]::before {
+  background: #c65b5b;
+}
+
+.final-result[data-tone="danger"] .final-result__amount {
+  background: #fff0f0;
+}
+
+.final-result[data-tone="danger"] .final-result__amount strong {
+  color: #a33636;
+}
+
+.chart-section-heading {
+  display: flex;
+  gap: 1.5rem;
+  align-items: end;
+  justify-content: space-between;
+  padding-top: 2rem;
+  margin: 2rem 0 1rem;
+  border-top: 1px solid var(--flow-line);
+}
+
+.chart-section-heading h3 {
+  margin: 0;
+  color: var(--flow-navy);
+  font-size: 1.15rem;
+}
+
+.chart-section-heading > p {
+  max-width: 36ch;
+  margin: 0;
+  color: var(--flow-muted);
+  font-size: .78rem;
+  text-align: right;
+}
+
+.budget-page #panel-summary .chart-layout {
+  padding: 1.25rem;
+  background: #f5f8f9;
+  border: 1px solid var(--flow-line);
+  border-radius: 9px;
+}
+
+.budget-page #panel-summary .chart-container {
+  height: 300px;
+}
+
+.budget-page #panel-summary .legend-item {
+  background: #fff;
+  border-color: #d9e3e8;
+}
+
+.budget-page[data-active-budget-step="summary"] .result-card {
+  overflow: hidden;
+  border-top: 5px solid var(--flow-blue);
+  box-shadow: 0 14px 34px rgba(16, 47, 73, .12);
+}
+
+.budget-page[data-active-budget-step="summary"] .result-list__balance {
+  padding-inline: .75rem;
+  margin-inline: -.75rem;
+  background: var(--flow-soft);
+  border-radius: 7px;
+}
+
 .result-card__status {
   display: inline-flex;
   width: fit-content;
@@ -411,6 +589,23 @@
     grid-template-columns: 1fr;
   }
 
+  .final-result {
+    grid-template-columns: 1fr;
+  }
+
+  .final-result__amount {
+    min-height: 0;
+  }
+
+  .chart-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .chart-section-heading > p {
+    text-align: left;
+  }
+
   .expense-group__header {
     align-items: stretch;
     flex-direction: column;
@@ -479,6 +674,18 @@
 
   .budget-page .budget-panel {
     padding: 1rem;
+  }
+
+  .final-result {
+    padding: 1rem;
+  }
+
+  .final-result h3 {
+    font-size: 1.55rem;
+  }
+
+  .final-result__amount strong {
+    font-size: 2.15rem;
   }
 
   .step-actions {

@@ -42,7 +42,7 @@
   <link rel="stylesheet" href="/tools/budget-calculator/budget-v2.css?v=6" />
   <link rel="stylesheet" href="/assets/css/tool-design.css?v=3" />
   <link rel="stylesheet" href="/assets/css/civic.css?v=9" />
-  <link rel="stylesheet" href="/tools/budget-calculator/budget-flow.css?v=1" />
+  <link rel="stylesheet" href="/tools/budget-calculator/budget-flow.css?v=2" />
 
   <script>
     document.documentElement.classList.remove('no-js');
@@ -290,9 +290,30 @@
           <section class="budget-panel budget-panel--chart" id="panel-summary" data-step-panel="summary" aria-labelledby="chart-heading" hidden>
             <div class="budget-panel__heading">
               <span class="step-number" aria-hidden="true">3</span>
-              <div><p class="step-label">Stap 3 van 3</p><h2 id="chart-heading">Verdeling van je uitgaven</h2></div>
+              <div><p class="step-label">Stap 3 van 3</p><h2 id="chart-heading">Jouw budgetoverzicht</h2></div>
             </div>
-            <p class="budget-panel__intro">Bekijk welke categorieën het zwaarst wegen. De bedragen in het overzicht hiernaast worden direct bijgewerkt.</p>
+            <p class="budget-panel__intro">Je maand in één oogopslag, gevolgd door de verdeling van je uitgaven.</p>
+
+            <section class="final-result" id="finalResult" data-tone="neutral" aria-labelledby="finalResultTitle">
+              <div class="final-result__copy">
+                <p class="final-result__eyebrow">Jouw maandresultaat</p>
+                <h3 id="finalResultTitle">Vul je budget verder in</h3>
+                <p id="finalResultText">Zodra je inkomen en uitgaven bekend zijn, zie je hier wat er deze maand overblijft.</p>
+              </div>
+              <div class="final-result__amount">
+                <span>Resterend</span>
+                <strong id="finalRemaining">€ 0,00</strong>
+                <small id="finalRemainingShare">Nog geen compleet budget</small>
+              </div>
+            </section>
+
+            <div class="chart-section-heading">
+              <div>
+                <p class="step-label">Verdeling</p>
+                <h3>Uitgaven per categorie</h3>
+              </div>
+              <p>Zo zie je direct welke onderdelen het zwaarst meetellen.</p>
+            </div>
             <div class="chart-layout">
               <div class="chart-stage">
                 <div id="chart-container" class="chart-container">
@@ -356,7 +377,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script defer src="/assets/js/main.js"></script>
-  <script defer src="/tools/budget-calculator/script.js?v=8"></script>
+  <script defer src="/tools/budget-calculator/script.js?v=9"></script>
 </body>
 
 </html>
